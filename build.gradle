@@ -16,10 +16,10 @@ dependencies {
 }
 
 subprojects {
-	apply plugin 'java'
-	apply plugin 'fabric-loom'
-	apply plugin 'maven-publish'
-	apply plugin 'org.jetbrains.kotlin.jvm'
+	apply plugin: 'java'
+	apply plugin: 'fabric-loom'
+	apply plugin: 'maven-publish'
+	apply plugin: 'org.jetbrains.kotlin.jvm'
 
 	repositories {
 		maven { url "https://maven.terraformersmc.com/" }
@@ -30,9 +30,19 @@ subprojects {
 	dependencies {
 		minecraft "com.mojang:minecraft:${rootProject.minecraft_version}"
 		mappings loom.officialMojangMappings()
-		modImplementation "net.fabricmc:fabric-loader:${rootProject.loader_version}"
-		modImplementation "net.fabricmc.fabric-api:fabric-api:${rootProject.fabric_version}"
+		modImplementation "net.fabricmc:fabric-loader:${rootProject.fabric_loader_version}"
+		modImplementation "net.fabricmc.fabric-api:fabric-api:${rootProject.fabric_api_version}"
 		modImplementation "net.fabricmc:fabric-language-kotlin:${rootProject.fabric_kotlin_version}"
+		modApi "com.terraformersmc:modmenu:${rootProject.modmenu_version}"
+	}
+
+	processResources {
+		inputs.property "version", project.version
+		filteringCharset "UTF-8"
+
+		filesMatching("fabric.mod.json") {
+			expand "version": project.version
+		}
 	}
 
 }

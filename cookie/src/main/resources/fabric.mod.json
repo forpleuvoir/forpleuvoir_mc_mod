@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "id": "cookie",
+  "version": "${version}",
+  "name": "Cookie",
+  "description": "☆Cookie☆",
+  "authors": [
+	"forpleuvoir"
+  ],
+  "contact": {
+	"email": "695801070@qq.com",
+	"website": "还没有",
+	"repo": "还没有"
+  },
+  "license": "MIT",
+  "environment": "*",
+  "entrypoints": {
+	"client": [
+	  {
+		"adapter": "kotlin",
+		"value": "forpleuvoir.mc.cookie.CookieClient"
+	  }
+	],
+	"server": [
+	  {
+		"adapter": "kotlin",
+		"value": "forpleuvoir.mc.cookie.CookieServer"
+	  }
+	]
+  },
+  "mixins": [
+	"cookie.server.mixins.json",
+	"cookie.client.mixins.json"
+  ],
+  "depends": {
+	"fabricloader": ">=0.14.0",
+	"fabric": "*",
+	"minecraft": "1.19.x",
+	"fabric-language-kotlin": ">=1.8.0+kotlin.1.7.0"
+  }
+}
