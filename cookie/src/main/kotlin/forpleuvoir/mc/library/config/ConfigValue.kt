@@ -16,6 +16,8 @@ package forpleuvoir.mc.library.config
  */
 interface ConfigValue<T> {
 
+	val defaultValue: T
+
 	fun setValue(value: T)
 
 	fun getValue(): T
