@@ -44,6 +44,7 @@ abstract class ConfigBase<T> : Config<T>, JsonSerializer {
 					|| containsMatchIn(description.string)
 					|| containsMatchIn(key)
 					|| containsMatchIn(getValue().toString())
+					|| containsMatchIn(type.type)
 		}
 	}
 

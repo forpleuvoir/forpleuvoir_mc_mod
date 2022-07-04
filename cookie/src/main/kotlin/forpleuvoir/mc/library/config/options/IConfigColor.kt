@@ -17,4 +17,4 @@ import forpleuvoir.mc.library.utils.color.Color
  * @author forpleuvoir
 
  */
-interface IConfigColor : ConfigValue<Color<*>>
+interface IConfigColor : ConfigValue<Color<out Number>>
