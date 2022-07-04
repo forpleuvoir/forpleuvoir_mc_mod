@@ -20,10 +20,11 @@ enum class ConfigTypes : ConfigType {
 	DOUBLE,
 	COLOR,
 	STRING,
-	STRINGS,
+	STRING_LIST,
 	OPTIONS,
 	HOTKEY,
 	GROUP,
+	PAIRS,
 	MAP,
 	BOOLEAN_WITH_KEY_BIND
 	;

@@ -2,8 +2,8 @@ package forpleuvoir.mc.library.config
 
 import forpleuvoir.mc.library.api.Matchable
 import forpleuvoir.mc.library.api.Notifiable
+import forpleuvoir.mc.library.api.Option
 import forpleuvoir.mc.library.api.Resettable
-import net.minecraft.network.chat.MutableComponent
 
 /**
  * 单个配置
@@ -19,14 +19,7 @@ import net.minecraft.network.chat.MutableComponent
  * @author forpleuvoir
 
  */
-interface Config<T> : ConfigValue<T>, Notifiable<T>, Resettable, Matchable {
-
+interface Config<T> : Option, ConfigValue<T>, Notifiable<T>, Resettable, Matchable {
 	val type: ConfigType
-
-	val key: String
-
-	val displayName: MutableComponent
-
-	val description: MutableComponent
 
 }
