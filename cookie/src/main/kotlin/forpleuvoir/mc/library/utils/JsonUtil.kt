@@ -58,23 +58,23 @@ class JsonObjectScope {
 
 	val jsonObject: JsonObject = JsonObject()
 
-	infix fun String.to(value: String) {
+	infix fun String.at(value: String) {
 		jsonObject.addProperty(this, value)
 	}
 
-	infix fun String.to(value: Number) {
+	infix fun String.at(value: Number) {
 		jsonObject.addProperty(this, value)
 	}
 
-	infix fun String.to(value: Boolean) {
+	infix fun String.at(value: Boolean) {
 		jsonObject.addProperty(this, value)
 	}
 
-	infix fun String.to(value: Char) {
+	infix fun String.at(value: Char) {
 		jsonObject.addProperty(this, value)
 	}
 
-	infix fun String.to(value: JsonElement) {
+	infix fun String.at(value: JsonElement) {
 		jsonObject.add(this, value)
 	}
 }

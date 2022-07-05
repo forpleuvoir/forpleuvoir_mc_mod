@@ -17,9 +17,9 @@ import forpleuvoir.mc.library.config.ConfigValue
  * @author forpleuvoir
 
  */
-interface IConfigGroup : ConfigValue<Set<Config<*>>>{
+interface IConfigGroup : ConfigValue<Set<Config<*, *>>> {
 
-	fun getConfigFromKey(key: String): Config<*>?
+	fun getConfigFromKey(key: String): Config<*, *>?
 
 	fun getKeys(): Set<String>
 

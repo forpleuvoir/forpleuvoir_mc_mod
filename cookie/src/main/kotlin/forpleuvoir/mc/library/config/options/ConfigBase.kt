@@ -81,9 +81,7 @@ abstract class ConfigBase<T> : Config<T, JsonElement>, JsonSerializer {
 	}
 
 	override fun hashCode(): Int {
-		var result = getValue().hashCode()
-		result = 31 * result + key.hashCode()
-		return result
+		return key.hashCode()
 	}
 
 }
