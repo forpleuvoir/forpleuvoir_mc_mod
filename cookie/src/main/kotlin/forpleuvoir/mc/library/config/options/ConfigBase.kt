@@ -18,7 +18,7 @@ import forpleuvoir.mc.library.config.Config
  * @author forpleuvoir
 
  */
-abstract class ConfigBase<T> : Config<T>, JsonSerializer {
+abstract class ConfigBase<T> : Config<T, JsonElement>, JsonSerializer {
 
 	protected abstract var configValue: T
 
@@ -29,6 +29,8 @@ abstract class ConfigBase<T> : Config<T>, JsonSerializer {
 			onChanged()
 		}
 	}
+
+	override fun init() {}
 
 	private var onChangedCallback: T.() -> Unit = {}
 

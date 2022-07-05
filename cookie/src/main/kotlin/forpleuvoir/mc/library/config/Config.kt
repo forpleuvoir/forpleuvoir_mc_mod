@@ -1,9 +1,7 @@
 package forpleuvoir.mc.library.config
 
-import forpleuvoir.mc.library.api.Matchable
-import forpleuvoir.mc.library.api.Notifiable
-import forpleuvoir.mc.library.api.Option
-import forpleuvoir.mc.library.api.Resettable
+import forpleuvoir.mc.library.api.*
+import forpleuvoir.mc.library.api.serialization.Serializable
 
 /**
  * 单个配置
@@ -19,7 +17,8 @@ import forpleuvoir.mc.library.api.Resettable
  * @author forpleuvoir
 
  */
-interface Config<T> : Option, ConfigValue<T>, Notifiable<T>, Resettable, Matchable {
+interface Config<T, S> : Option, ConfigValue<T>, Notifiable<T>, Resettable, Matchable, Serializable<S>, Initializable {
+
 	val type: ConfigType
 
 }

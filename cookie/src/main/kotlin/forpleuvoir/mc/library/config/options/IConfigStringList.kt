@@ -16,4 +16,16 @@ import forpleuvoir.mc.library.config.ConfigValue
  * @author forpleuvoir
 
  */
-interface IConfigStringList : ConfigValue<MutableList<String>>
+interface IConfigStringList : ConfigValue<MutableList<String>> {
+
+	fun add(element: String)
+
+	operator fun get(index: Int): String
+
+	operator fun set(index: Int, element: String)
+
+	fun remove(index: Int): String
+
+	fun remove(element: String): String
+
+}

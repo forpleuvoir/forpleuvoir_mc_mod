@@ -16,4 +16,14 @@ import forpleuvoir.mc.library.config.ConfigValue
  * @author forpleuvoir
 
  */
-interface IConfigPairs<K, V> : ConfigValue<MutableList<Pair<K, V>>>
+interface IConfigPairs<K, V> : ConfigValue<MutableList<Pair<K, V>>> {
+
+	fun add(key: K, value: V)
+
+	fun remove(key: K): V
+
+	fun get(key: K): V
+
+	fun get(index: Int): Pair<K, V>
+
+}

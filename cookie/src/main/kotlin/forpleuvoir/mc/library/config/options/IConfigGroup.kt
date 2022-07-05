@@ -17,4 +17,12 @@ import forpleuvoir.mc.library.config.ConfigValue
  * @author forpleuvoir
 
  */
-interface IConfigGroup : ConfigValue<MutableSet<Config<*>>>
+interface IConfigGroup : ConfigValue<Set<Config<*>>>{
+
+	fun getConfigFromKey(key: String): Config<*>?
+
+	fun getKeys(): Set<String>
+
+	fun containsKey(key: String): Boolean = getKeys().contains(key)
+
+}
