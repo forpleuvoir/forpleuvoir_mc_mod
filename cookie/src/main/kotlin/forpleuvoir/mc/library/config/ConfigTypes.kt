@@ -25,6 +25,7 @@ enum class ConfigTypes : ConfigType {
 	HOTKEY,
 	GROUP,
 	PAIRS,
+	STRING_MAP,
 	MAP,
 	BOOLEAN_WITH_KEY_BIND
 	;

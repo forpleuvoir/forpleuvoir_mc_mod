@@ -22,11 +22,11 @@ import net.minecraft.network.chat.MutableComponent
  * @author forpleuvoir
 
  */
-class ConfigInteger(
+open class ConfigInteger(
 	override val key: String,
 	override val displayName: MutableComponent,
 	override val description: MutableComponent,
-	override val defaultValue: Int,
+	final override val defaultValue: Int,
 	override val minValue: Int = Int.MIN_VALUE,
 	override val maxValue: Int = Int.MAX_VALUE,
 ) : ConfigBase<Int>(), IConfigInteger {

@@ -18,7 +18,7 @@ import forpleuvoir.mc.library.config.Config
  * @author forpleuvoir
 
  */
-abstract class ConfigBase<T> : Config<T, JsonElement>, JsonSerializer {
+abstract class ConfigBase<T> : Config<T> {
 
 	protected abstract var configValue: T
 

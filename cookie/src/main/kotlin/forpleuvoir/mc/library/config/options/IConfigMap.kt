@@ -16,17 +16,18 @@ import forpleuvoir.mc.library.config.ConfigValue
  * @author forpleuvoir
 
  */
-interface IConfigMap<K, V> : ConfigValue<MutableMap<K, V>> {
+interface IConfigMap<K, V> : ConfigValue<Map<K, V>> {
 
 	operator fun set(key: K, value: V)
 
-	operator fun get(key: K): V
+	operator fun get(key: K): V?
 
-	fun remove(key: K): V
+	fun remove(key: K): V?
 
 	fun rename(origin: K, current: K)
 
 	fun rest(originKey: K, currentKey: K, value: V)
 
+	fun clear()
 
 }

@@ -1,6 +1,7 @@
 package forpleuvoir.mc.library.config
 
 import forpleuvoir.mc.library.api.*
+import forpleuvoir.mc.library.api.serialization.JsonSerializer
 import forpleuvoir.mc.library.api.serialization.Serializable
 
 /**
@@ -17,7 +18,7 @@ import forpleuvoir.mc.library.api.serialization.Serializable
  * @author forpleuvoir
 
  */
-interface Config<T, S> : Option, ConfigValue<T>, Notifiable<T>, Resettable, Matchable, Serializable<S>, Initializable {
+interface Config<T> : Option, ConfigValue<T>, Notifiable<T>, Resettable, Matchable, JsonSerializer, Initializable {
 
 	val type: ConfigType
 

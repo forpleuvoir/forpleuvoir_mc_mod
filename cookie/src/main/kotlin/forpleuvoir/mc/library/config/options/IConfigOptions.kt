@@ -17,4 +17,4 @@ import forpleuvoir.mc.library.config.ConfigValue
  * @author forpleuvoir
 
  */
-interface IConfigOptions : ConfigValue<MutableSet<Option>>
+interface IConfigOptions : ConfigValue<Set<Option>>

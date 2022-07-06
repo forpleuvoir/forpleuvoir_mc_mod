@@ -24,19 +24,23 @@ import net.minecraft.network.chat.MutableComponent
  * @author forpleuvoir
 
  */
-class ConfigGroup(
+open class ConfigGroup(
 	override val key: String,
 	override val displayName: MutableComponent,
 	override val description: MutableComponent,
-	override val defaultValue: Set<Config<*, *>>,
-) : ConfigBase<Set<Config<*, *>>>(), IConfigGroup {
+	final override val defaultValue: Set<Config<*>>,
+) : ConfigBase<Set<Config<*>>>(), IConfigGroup {
 
 	override val type: ConfigType
 		get() = ConfigTypes.GROUP
 
-	override var configValue: Set<Config<*, *>> = ImmutableSet.copyOf(defaultValue)
+	override var configValue: Set<Config<*>> = ImmutableSet.copyOf(defaultValue)
 
-	override fun getConfigFromKey(key: String): Config<*, *>? {
+	override fun resetDefValue() {
+		setValue(ImmutableSet.copyOf(defaultValue))
+	}
+
+	override fun getConfigFromKey(key: String): Config<*>? {
 		return getValue().find { it.key == key }
 	}
 
@@ -55,7 +59,7 @@ class ConfigGroup(
 
 	override val serialize: JsonElement
 		get() = jsonObject {
-			getValue().forEach { it.key at it.serialize as JsonElement }
+			getValue().forEach { it.key at it.serialize }
 		}
 
 

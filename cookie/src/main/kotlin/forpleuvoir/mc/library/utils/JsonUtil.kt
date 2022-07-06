@@ -40,6 +40,10 @@ fun Any.toJsonStr(): String {
 }
 
 fun jsonArray(vararg elements: Any): JsonArray {
+	return jsonArray(elements.toList())
+}
+
+fun jsonArray(elements: Iterable<Any>): JsonArray {
 	return JsonArray().apply {
 		for (element in elements) {
 			when (element) {
@@ -83,6 +87,21 @@ fun jsonObject(scope: JsonObjectScope.() -> Unit): JsonObject {
 	val jsonObjectScope = JsonObjectScope()
 	jsonObjectScope.scope()
 	return jsonObjectScope.jsonObject
+}
+
+fun jsonObject(map: Map<String, Any>): JsonObject {
+	return jsonObject {
+		map.forEach { (key, element) ->
+			when (element) {
+				is Boolean     -> key at element
+				is Number      -> key at element
+				is String      -> key at element
+				is Char        -> key at element
+				is JsonElement -> key at element
+				else           -> key at element.toJsonObject()
+			}
+		}
+	}
 }
 
 inline fun <reified T> JsonObject.getOr(key: String, or: T): T {
