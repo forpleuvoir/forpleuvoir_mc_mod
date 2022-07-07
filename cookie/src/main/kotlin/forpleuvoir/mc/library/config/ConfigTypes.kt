@@ -21,6 +21,7 @@ enum class ConfigTypes : ConfigType {
 	COLOR,
 	STRING,
 	STRING_LIST,
+	STRING_PAIRS,
 	OPTIONS,
 	HOTKEY,
 	GROUP,

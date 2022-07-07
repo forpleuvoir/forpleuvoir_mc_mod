@@ -3,6 +3,7 @@ package forpleuvoir.mc.library.config.options
 import com.google.gson.JsonElement
 import forpleuvoir.mc.library.api.serialization.JsonSerializer
 import forpleuvoir.mc.library.config.Config
+import java.util.concurrent.ConcurrentHashMap
 
 /**
  *
@@ -32,7 +33,7 @@ abstract class ConfigBase<T> : Config<T> {
 
 	override fun init() {}
 
-	private var onChangedCallback: T.() -> Unit = {}
+	private var onChangedCallbacks: MutableMap<Any, T.() -> Unit> = ConcurrentHashMap()
 
 	override fun getValue(): T = configValue
 
@@ -66,12 +67,14 @@ abstract class ConfigBase<T> : Config<T> {
 		}
 	}
 
-	override fun setOnChangedCallback(callback: T.() -> Unit) {
-		onChangedCallback = callback
+	override fun Any.subscribeChange(callback: T.() -> Unit) {
+		onChangedCallbacks[this] = callback
 	}
 
 	override fun onChanged() {
-		onChangedCallback(getValue())
+		onChangedCallbacks.forEach { (k, v) ->
+			v.invoke(getValue())
+		}
 	}
 
 	override fun equals(other: Any?): Boolean {

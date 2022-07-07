@@ -18,12 +18,16 @@ import forpleuvoir.mc.library.config.ConfigValue
  */
 interface IConfigPairs<K, V> : ConfigValue<List<Pair<K, V>>> {
 
-	fun add(key: K, value: V)
+	fun add(key: K, value: V): Boolean
 
-	fun remove(key: K): V
+	fun remove(key: K, value: V): Boolean
 
-	fun get(key: K): V
+	fun remove(index: Int): Pair<K, V>?
 
-	fun get(index: Int): Pair<K, V>
+	fun get(key: K): List<V>
+
+	fun get(index: Int): Pair<K, V>?
+
+	fun clear()
 
 }
