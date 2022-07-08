@@ -6,6 +6,7 @@ import forpleuvoir.mc.library.config.ConfigType
 import forpleuvoir.mc.library.config.ConfigTypes
 import forpleuvoir.mc.library.config.options.ConfigBase
 import forpleuvoir.mc.library.config.options.IConfigMap
+import forpleuvoir.mc.library.utils.ifc
 import forpleuvoir.mc.library.utils.toJsonObject
 import net.minecraft.network.chat.MutableComponent
 
@@ -95,6 +96,11 @@ class ConfigStringMap(
 
 	override fun clear() {
 		(this.configValue as LinkedHashMap).clear()
+	}
+
+	override fun matched(regex: Regex): Boolean {
+		getValue().forEach { (k, v) -> (regex.containsMatchIn(k) || regex.containsMatchIn(v)).ifc { return true } }
+		return super.matched(regex)
 	}
 
 	override fun setFromJson(jsonElement: JsonElement): Boolean {

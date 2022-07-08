@@ -6,6 +6,7 @@ import forpleuvoir.mc.library.config.ConfigType
 import forpleuvoir.mc.library.config.ConfigTypes
 import forpleuvoir.mc.library.config.options.ConfigBase
 import forpleuvoir.mc.library.config.options.IConfigStringList
+import forpleuvoir.mc.library.utils.ifc
 import forpleuvoir.mc.library.utils.jsonArray
 import net.minecraft.network.chat.MutableComponent
 
@@ -94,6 +95,11 @@ open class ConfigStringList(
 
 	override fun clear() {
 		valueAsMutable { clear() }
+	}
+
+	override fun matched(regex: Regex): Boolean {
+		getValue().forEach { regex.containsMatchIn(it).ifc { return true } }
+		return super.matched(regex)
 	}
 
 	override fun setFromJson(jsonElement: JsonElement): Boolean {

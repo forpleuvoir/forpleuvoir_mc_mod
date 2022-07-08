@@ -6,6 +6,7 @@ import forpleuvoir.mc.library.config.ConfigType
 import forpleuvoir.mc.library.config.ConfigTypes
 import forpleuvoir.mc.library.config.options.ConfigBase
 import forpleuvoir.mc.library.config.options.IConfigPairs
+import forpleuvoir.mc.library.utils.ifc
 import forpleuvoir.mc.library.utils.jsonArray
 import forpleuvoir.mc.library.utils.jsonObject
 import kotlinx.serialization.json.Json
@@ -80,6 +81,11 @@ class ConfigStringPairs(
 
 	override fun clear() {
 		valueAsMutable { clear() }
+	}
+
+	override fun matched(regex: Regex): Boolean {
+		getValue().forEach { (regex.containsMatchIn(it.first) || regex.containsMatchIn(it.second)).ifc { return true } }
+		return super.matched(regex)
 	}
 
 	override fun setFromJson(jsonElement: JsonElement): Boolean {

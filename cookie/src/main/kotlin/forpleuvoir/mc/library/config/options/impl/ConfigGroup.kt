@@ -7,6 +7,7 @@ import forpleuvoir.mc.library.config.ConfigType
 import forpleuvoir.mc.library.config.ConfigTypes
 import forpleuvoir.mc.library.config.options.ConfigBase
 import forpleuvoir.mc.library.config.options.IConfigGroup
+import forpleuvoir.mc.library.utils.ifc
 import forpleuvoir.mc.library.utils.jsonObject
 import net.minecraft.network.chat.MutableComponent
 
@@ -46,6 +47,11 @@ open class ConfigGroup(
 
 	override fun getKeys(): Set<String> {
 		return ImmutableSet.Builder<String>().apply { getValue().forEach { add(it.key) } }.build()
+	}
+
+	override fun matched(regex: Regex): Boolean {
+		getValue().forEach { it.matched(regex).ifc { return true } }
+		return super.matched(regex)
 	}
 
 	override fun setFromJson(jsonElement: JsonElement): Boolean {

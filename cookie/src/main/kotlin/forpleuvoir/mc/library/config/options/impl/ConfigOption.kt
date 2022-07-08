@@ -7,6 +7,7 @@ import forpleuvoir.mc.library.config.ConfigType
 import forpleuvoir.mc.library.config.ConfigTypes
 import forpleuvoir.mc.library.config.options.ConfigBase
 import forpleuvoir.mc.library.config.options.IConfigOption
+import forpleuvoir.mc.library.utils.ifc
 import net.minecraft.network.chat.MutableComponent
 
 /**
@@ -42,6 +43,13 @@ open class ConfigOption(
 	}
 
 	override fun getOptions(): Set<Option> = options
+
+	override fun matched(regex: Regex): Boolean {
+		options.forEach {
+			(regex.containsMatchIn(it.key) || regex.containsMatchIn(it.description.string) || regex.containsMatchIn(it.displayName.string)).ifc { return true }
+		}
+		return super.matched(regex)
+	}
 
 	override fun setFromJson(jsonElement: JsonElement): Boolean {
 		if (!jsonElement.isJsonPrimitive) return false
