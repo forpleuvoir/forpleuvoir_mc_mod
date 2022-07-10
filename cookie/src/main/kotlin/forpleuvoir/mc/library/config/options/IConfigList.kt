@@ -3,7 +3,7 @@ package forpleuvoir.mc.library.config.options
 import forpleuvoir.mc.library.config.ConfigValue
 
 /**
- * 字符串组配置
+ * 列表集合配置
 
  * 项目名 forpleuvoir_mc_mod
 
@@ -16,17 +16,17 @@ import forpleuvoir.mc.library.config.ConfigValue
  * @author forpleuvoir
 
  */
-interface IConfigStringList : ConfigValue<List<String>> {
+interface IConfigList<T> : ConfigValue<List<T>> {
 
-	fun add(element: String): String?
+	fun add(element: T): T?
 
-	operator fun get(index: Int): String?
+	operator fun get(index: Int): T?
 
-	operator fun set(index: Int, element: String)
+	operator fun set(index: Int, element: T)
 
-	fun remove(index: Int): String?
+	fun remove(index: Int): T?
 
-	fun remove(element: String): String?
+	fun remove(element: T): T?
 
 	fun clear()
 

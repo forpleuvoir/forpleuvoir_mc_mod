@@ -1,11 +1,10 @@
 package forpleuvoir.mc.library.config.options.impl
 
-import com.google.gson.JsonArray
 import com.google.gson.JsonElement
 import forpleuvoir.mc.library.config.ConfigType
 import forpleuvoir.mc.library.config.ConfigTypes
 import forpleuvoir.mc.library.config.options.ConfigBase
-import forpleuvoir.mc.library.config.options.IConfigStringList
+import forpleuvoir.mc.library.config.options.IConfigList
 import forpleuvoir.mc.library.utils.ifc
 import forpleuvoir.mc.library.utils.jsonArray
 import net.minecraft.network.chat.MutableComponent
@@ -29,7 +28,7 @@ open class ConfigStringList(
 	override val displayName: MutableComponent,
 	override val description: MutableComponent,
 	final override val defaultValue: List<String>,
-) : ConfigBase<List<String>>(), IConfigStringList {
+) : ConfigBase<List<String>>(), IConfigList<String> {
 
 	override val type: ConfigType
 		get() = ConfigTypes.STRING_LIST

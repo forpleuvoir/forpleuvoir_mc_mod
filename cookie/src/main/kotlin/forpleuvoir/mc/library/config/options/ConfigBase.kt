@@ -1,7 +1,7 @@
 package forpleuvoir.mc.library.config.options
 
 import com.google.gson.JsonElement
-import forpleuvoir.mc.library.api.serialization.JsonSerializer
+import forpleuvoir.mc.cookie.util.logger
 import forpleuvoir.mc.library.config.Config
 import java.util.concurrent.ConcurrentHashMap
 
@@ -20,6 +20,8 @@ import java.util.concurrent.ConcurrentHashMap
 
  */
 abstract class ConfigBase<T> : Config<T> {
+
+	private val log = logger()
 
 	protected abstract var configValue: T
 
@@ -60,10 +62,11 @@ abstract class ConfigBase<T> : Config<T> {
 	override fun JsonElement.deserialize() {
 		try {
 			if (!setFromJson(this)) {
-				// TODO: 2022/7/4  打印异常信息
+				log.error("Failed to set config value '$key' from the JSON element ${this.asString}")
 			}
 		} catch (e: Exception) {
-			// TODO: 2022/7/4 打印异常信息
+			log.error("Failed to set config value '$key' from the JSON element ${this.asString}")
+			log.error(e)
 		}
 	}
 
