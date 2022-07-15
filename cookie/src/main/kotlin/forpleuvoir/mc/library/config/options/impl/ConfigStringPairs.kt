@@ -9,7 +9,6 @@ import forpleuvoir.mc.library.config.options.IConfigPairs
 import forpleuvoir.mc.library.utils.ifc
 import forpleuvoir.mc.library.utils.jsonArray
 import forpleuvoir.mc.library.utils.jsonObject
-import kotlinx.serialization.json.Json
 import net.minecraft.network.chat.MutableComponent
 
 /**

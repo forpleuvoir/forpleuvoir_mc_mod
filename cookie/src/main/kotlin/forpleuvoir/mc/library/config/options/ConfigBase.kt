@@ -75,7 +75,7 @@ abstract class ConfigBase<T> : Config<T> {
 	}
 
 	override fun onChanged() {
-		onChangedCallbacks.forEach { (k, v) ->
+		onChangedCallbacks.forEach { (_, v) ->
 			v.invoke(getValue())
 		}
 	}

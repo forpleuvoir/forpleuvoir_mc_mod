@@ -31,11 +31,14 @@ class HttpHelper<T>(
 ) {
 
 	companion object {
-		private val HTTP_CLIENT: HttpClient = HttpClient.newHttpClient()
+
 		private fun JsonObject.toPairs(): List<Pair<String, String>> {
 			return LinkedList<Pair<String, String>>().apply { this@toPairs.entrySet().forEach { add(it.key to it.value.toString()) } }
 		}
+
 	}
+
+	internal val client = HttpClient.newHttpClient()
 
 	internal val requestBuilder: Builder = newBuilder().uri(URI.create(uri)).timeout(Duration.ofSeconds(10))
 
@@ -184,7 +187,7 @@ class HttpHelper<T>(
 	 * @return HttpResponse<T>
 	 */
 	fun send(): HttpResponse<T> {
-		return HTTP_CLIENT.send(requestBuilder.build(), bodyHandler)
+		return client.send(requestBuilder.build(), bodyHandler)
 	}
 
 	/**
@@ -192,7 +195,7 @@ class HttpHelper<T>(
 	 * @return T
 	 */
 	fun sendGetBody(): T {
-		return HTTP_CLIENT.send(requestBuilder.build(), bodyHandler).body()
+		return client.send(requestBuilder.build(), bodyHandler).body()
 	}
 
 	/**
@@ -200,7 +203,7 @@ class HttpHelper<T>(
 	 * @param action Function1<HttpResponse<T>, Unit>
 	 */
 	fun sendAsync(action: (HttpResponse<T>) -> Unit) {
-		HTTP_CLIENT.sendAsync(requestBuilder.build(), bodyHandler)
+		client.sendAsync(requestBuilder.build(), bodyHandler)
 			.thenAcceptAsync(action)
 	}
 
@@ -209,7 +212,7 @@ class HttpHelper<T>(
 	 * @param action Function1<T, Unit> T ：body
 	 */
 	fun sendAsyncGetBody(action: (T) -> Unit) {
-		HTTP_CLIENT.sendAsync(requestBuilder.build(), bodyHandler)
+		client.sendAsync(requestBuilder.build(), bodyHandler)
 			.thenAcceptAsync { action(it.body()) }
 	}
 }
