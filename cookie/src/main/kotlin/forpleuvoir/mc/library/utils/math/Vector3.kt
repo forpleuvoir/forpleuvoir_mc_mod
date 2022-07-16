@@ -26,14 +26,14 @@ interface Vector3<T : Number> : JsonSerializer {
 	var y: T
 	var z: T
 
-	override fun JsonElement.deserialize() {
-		if (!this.isJsonObject) throw Exception("json${this.toJsonStr()} is not JsonObject")
-		this.asJsonObject.apply {
+	override fun deserialize(serializedObject: JsonElement) {
+		if (!serializedObject.isJsonObject) throw Exception("json${this.toJsonStr()} is not JsonObject")
+		serializedObject.asJsonObject.apply {
 			has("x").notc { throw Exception("json${this.toJsonStr()} is not have x") }
 			has("y").notc { throw Exception("json${this.toJsonStr()} is not have y") }
 			has("z").notc { throw Exception("json${this.toJsonStr()} is not have z") }
 		}
-		setFromJson(this.asJsonObject)
+		setFromJson(serializedObject.asJsonObject)
 	}
 
 	fun setFromJson(jsonObject: JsonObject)

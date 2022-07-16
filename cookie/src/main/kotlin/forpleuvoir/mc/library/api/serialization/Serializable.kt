@@ -19,5 +19,5 @@ interface Serializable<T> {
 
 	val serialize: T
 
-	fun T.deserialize()
+	fun deserialize(serializedObject: T)
 }

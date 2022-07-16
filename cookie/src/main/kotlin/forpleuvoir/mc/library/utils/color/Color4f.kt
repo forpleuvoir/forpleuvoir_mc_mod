@@ -69,9 +69,9 @@ class Color4f(
 	}
 
 
-	override fun JsonElement.deserialize() {
-		if (this.isJsonObject) {
-			val jsonObject = this.asJsonObject
+	override fun deserialize(serializedObject: JsonElement) {
+		if (serializedObject.isJsonObject) {
+			val jsonObject = serializedObject.asJsonObject
 			red = jsonObject["red"].asFloat
 			green = jsonObject["green"].asFloat
 			blue = jsonObject["blue"].asFloat

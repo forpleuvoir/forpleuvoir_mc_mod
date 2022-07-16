@@ -75,7 +75,9 @@ class ConfigStringPairs(
 	}
 
 	override fun get(index: Int): Pair<String, String>? {
-		return configValue[index]
+		return if (configValue.size > index)
+			configValue[index]
+		else null
 	}
 
 	override fun clear() {

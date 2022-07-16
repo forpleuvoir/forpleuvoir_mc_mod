@@ -43,7 +43,7 @@ open class ConfigColor(
 	override fun getValue(): Color<out Number> = Color.copy(configValue)
 
 	override fun setFromJson(jsonElement: JsonElement): Boolean {
-		configValue.apply { jsonElement.deserialize() }
+		configValue.deserialize(jsonElement)
 		return true
 	}
 

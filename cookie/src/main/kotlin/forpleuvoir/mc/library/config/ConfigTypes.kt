@@ -23,7 +23,7 @@ enum class ConfigTypes : ConfigType {
 	STRING_LIST,
 	STRING_PAIRS,
 	OPTIONS,
-	HOTKEY,
+	KEY_BIND,
 	GROUP,
 	PAIRS,
 	STRING_MAP,

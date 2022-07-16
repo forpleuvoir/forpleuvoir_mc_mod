@@ -54,9 +54,9 @@ class Color4i(
 	}
 
 	@Throws(Exception::class)
-	override fun JsonElement.deserialize() {
-		if (this.isJsonObject) {
-			this.asJsonObject.apply {
+	override fun deserialize(serializedObject: JsonElement) {
+		if (serializedObject.isJsonObject) {
+			serializedObject.asJsonObject.apply {
 				red = this["red"].asInt
 				green = this["green"].asInt
 				blue = this["blue"].asInt

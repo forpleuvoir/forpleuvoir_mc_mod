@@ -1,5 +1,7 @@
 package forpleuvoir.mc.library.config.options
 
+import forpleuvoir.mc.library.input.IKeyBindValue
+
 /**
  * 带热键的布尔配置
 
@@ -14,5 +16,5 @@ package forpleuvoir.mc.library.config.options
  * @author forpleuvoir
 
  */
-interface IConfigBooleanWithKeyBind {
+interface IConfigBooleanWithKeyBind : IConfigBoolean, IKeyBindValue {
 }

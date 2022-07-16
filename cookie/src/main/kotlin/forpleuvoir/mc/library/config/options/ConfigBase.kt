@@ -59,19 +59,19 @@ abstract class ConfigBase<T> : Config<T> {
 
 	protected abstract fun setFromJson(jsonElement: JsonElement): Boolean
 
-	override fun JsonElement.deserialize() {
+	override fun deserialize(serializedObject: JsonElement) {
 		try {
-			if (!setFromJson(this)) {
-				log.error("Failed to set config value '$key' from the JSON element ${this.asString}")
+			if (!setFromJson(serializedObject)) {
+				log.error("Failed to set config value '$key' from the JSON element ${serializedObject.asString}")
 			}
 		} catch (e: Exception) {
-			log.error("Failed to set config value '$key' from the JSON element ${this.asString}")
+			log.error("Failed to set config value '$key' from the JSON element ${serializedObject.asString}")
 			log.error(e)
 		}
 	}
 
-	override fun Any.subscribeChange(callback: T.() -> Unit) {
-		onChangedCallbacks[this] = callback
+	override fun subscribeChange(obj: Any, callback: T.() -> Unit) {
+		onChangedCallbacks[obj] = callback
 	}
 
 	override fun onChanged() {

@@ -58,7 +58,7 @@ open class ConfigGroup(
 		if (!jsonElement.isJsonObject) return false
 		val jsonObject = jsonElement.asJsonObject
 		this.configValue.forEach {
-			it.apply { jsonObject[it.key].deserialize() }
+			it.deserialize(jsonObject[it.key])
 		}
 		return true
 	}
