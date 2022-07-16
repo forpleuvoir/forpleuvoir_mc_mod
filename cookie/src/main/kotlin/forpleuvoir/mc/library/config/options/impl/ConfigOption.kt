@@ -28,7 +28,7 @@ open class ConfigOption(
 	override val key: String,
 	override val displayName: MutableComponent,
 	override val description: MutableComponent,
-	private val options: Set<Option>,
+	private val options: LinkedHashSet<Option>,
 	final override val defaultValue: Option = options.first(),
 ) : ConfigBase<Option>(), IConfigOption {
 
@@ -42,7 +42,17 @@ open class ConfigOption(
 			super.setValue(value)
 	}
 
-	override fun getOptions(): Set<Option> = options
+	override fun getOptions(): LinkedHashSet<Option> = options
+
+	override fun switch() {
+		val index = options.indexOf(configValue)
+		val size = options.size
+		if (index < size - 1) {
+			setValue(options.toTypedArray()[index + 1])
+		} else {
+			setValue(options.toTypedArray()[0])
+		}
+	}
 
 	override fun matched(regex: Regex): Boolean {
 		options.forEach {

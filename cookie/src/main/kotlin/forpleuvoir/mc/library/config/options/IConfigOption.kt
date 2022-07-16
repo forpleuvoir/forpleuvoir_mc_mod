@@ -1,6 +1,7 @@
 package forpleuvoir.mc.library.config.options
 
 import forpleuvoir.mc.library.api.Option
+import forpleuvoir.mc.library.api.Switchable
 import forpleuvoir.mc.library.config.ConfigValue
 import java.util.OptionalDouble
 
@@ -18,8 +19,8 @@ import java.util.OptionalDouble
  * @author forpleuvoir
 
  */
-interface IConfigOption : ConfigValue<Option> {
+interface IConfigOption : ConfigValue<Option>, Switchable {
 
-	fun getOptions(): Set<Option>
+	fun getOptions(): LinkedHashSet<Option>
 
 }
