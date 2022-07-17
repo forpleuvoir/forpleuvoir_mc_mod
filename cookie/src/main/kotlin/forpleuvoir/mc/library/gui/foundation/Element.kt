@@ -1,6 +1,8 @@
 package forpleuvoir.mc.library.gui.foundation
 
 import com.mojang.blaze3d.vertex.PoseStack
+import forpleuvoir.mc.library.api.Initializable
+import forpleuvoir.mc.library.gui.foundation.HandleStatus.Interrupt
 import forpleuvoir.mc.library.utils.Direction
 import forpleuvoir.mc.library.utils.d
 import forpleuvoir.mc.library.utils.i
@@ -22,7 +24,7 @@ import net.minecraft.network.chat.Component
  * @author forpleuvoir
 
  */
-interface Element : Drawable, Tickable {
+interface Element : Drawable, Tickable, Initializable {
 
 	/**
 	 * 位置
@@ -73,49 +75,58 @@ interface Element : Drawable, Tickable {
 		}
 
 	/**
-	 * 处理优先级，越底越先被处理
+	 * 处理优先级，越低越先被处理
 	 */
 	var handlePriority: Int
 
 	/**
 	 * 宽
 	 */
-	var width: Int
+	var width: Double
 
 	/**
 	 * 高
 	 */
-	var height: Int
+	var height: Double
 
 	/**
 	 * 提示
 	 */
-	var tip: () -> Component?
+	var tip: (() -> Component)?
+
+	/**
+	 * 是否为空tip
+	 * @return Boolean
+	 */
+	fun isEmptyTip(): Boolean {
+		tip?.invoke()?.let { return it.string.isEmpty() }
+		return true
+	}
 
 	/**
 	 * 提示出现的位置 为空则自动选择合适的位置 优先级 up->right->down->left
 	 */
-	var tipDirection: () -> Direction?
+	var tipDirection: (() -> Direction)?
 
 	/**
 	 * 左侧的位置
 	 */
-	val left: Number get() = position.x
+	val left: Double get() = position.x
 
 	/**
 	 * 右侧位置
 	 */
-	val right: Number get() = position.x.d + width.d
+	val right: Double get() = position.x.d + width.d
 
 	/**
 	 * 顶部位置
 	 */
-	val top: Number get() = position.y
+	val top: Double get() = position.y
 
 	/**
 	 * 底部位置
 	 */
-	val bottom: Number get() = position.y.d + height.d
+	val bottom: Double get() = position.y.d + height.d
 
 	/**
 	 * 外边距
@@ -158,6 +169,8 @@ interface Element : Drawable, Tickable {
 	 *
 	 * 如果在DSL场景需要给对应方法添加代码，只需要给对应的高阶函数重新赋值
 	 *
+	 * 子类重写方法,调用者调用高阶函数
+	 *
 	 * 例:
 	 *
 	 * render={poseStack,delta ->
@@ -169,9 +182,7 @@ interface Element : Drawable, Tickable {
 	 */
 	var tick: () -> Unit
 
-	override fun tick() {
-		if (!active) return
-	}
+	override fun tick() {}
 
 	/**
 	 * 渲染元素
@@ -185,7 +196,7 @@ interface Element : Drawable, Tickable {
 	 * @param poseStack PoseStack
 	 * @param delta Double 距离上一帧数渲染时间
 	 */
-	fun render(poseStack: PoseStack, delta: Double)
+	override fun onRender(poseStack: PoseStack, delta: Double)
 
 	/**
 	 * 鼠标移动
@@ -199,43 +210,43 @@ interface Element : Drawable, Tickable {
 	 * @param mouseX Number
 	 * @param mouseY Number
 	 */
-	fun mouseMove(mouseX: Number, mouseY: Number) {}
+	fun onMouseMove(mouseX: Number, mouseY: Number) {}
 
 	/**
 	 * 鼠标点击
 	 * @param button Int
 	 * @param mouseX Number
 	 * @param mouseY Number
-	 * @return 是否处理之后的同类操作 true:继续进行之后的操作 false:取消之后的操作
+	 * @return 是否处理之后的同类操作
 	 */
-	var mouseClick: (mouseX: Number, mouseY: Number, button: Int) -> Boolean
+	var mouseClick: (mouseX: Number, mouseY: Number, button: Int) -> HandleStatus
 
 	/**
 	 * 鼠标点击
 	 * @param button Int
 	 * @param mouseX Number
 	 * @param mouseY Number
-	 * @return 是否处理之后的同类操作 true:继续进行之后的操作 false:取消之后的操作
+	 * @return 是否处理之后的同类操作
 	 */
-	fun mouseClick(mouseX: Number, mouseY: Number, button: Int): Boolean = false
+	fun onMouseClick(mouseX: Number, mouseY: Number, button: Int): HandleStatus = Interrupt
 
 	/**
 	 * 鼠标释放
 	 * @param button Int
 	 * @param mouseX Number
 	 * @param mouseY Number
-	 * @return 是否处理之后的同类操作 true:继续进行之后的操作 false:取消之后的操作
+	 * @return 是否处理之后的同类操作
 	 */
-	var mouseRelease: (mouseX: Number, mouseY: Number, button: Int) -> Boolean
+	var mouseRelease: (mouseX: Number, mouseY: Number, button: Int) -> HandleStatus
 
 	/**
 	 * 鼠标释放
 	 * @param button Int
 	 * @param mouseX Number
 	 * @param mouseY Number
-	 * @return 是否处理之后的同类操作 true:继续进行之后的操作 false:取消之后的操作
+	 * @return 是否处理之后的同类操作
 	 */
-	fun mouseRelease(mouseX: Number, mouseY: Number, button: Int): Boolean = false
+	fun onMouseRelease(mouseX: Number, mouseY: Number, button: Int): HandleStatus = Interrupt
 
 	/**
 	 * 鼠标拖动
@@ -244,9 +255,9 @@ interface Element : Drawable, Tickable {
 	 * @param button Int
 	 * @param deltaX Number
 	 * @param deltaY Number
-	 * @return 是否处理之后的同类操作 true:继续进行之后的操作 false:取消之后的操作
+	 * @return 是否处理之后的同类操作
 	 */
-	var mouseDragging: (mouseX: Number, mouseY: Number, button: Int, deltaX: Number, deltaY: Number) -> Boolean
+	var mouseDragging: (mouseX: Number, mouseY: Number, button: Int, deltaX: Number, deltaY: Number) -> HandleStatus
 
 	/**
 	 * 鼠标拖动
@@ -255,78 +266,74 @@ interface Element : Drawable, Tickable {
 	 * @param button Int
 	 * @param deltaX Number
 	 * @param deltaY Number
-	 * @return 是否处理之后的同类操作 true:继续进行之后的操作 false:取消之后的操作
+	 * @return 是否处理之后的同类操作
 	 */
-	fun mouseDragging(mouseX: Number, mouseY: Number, button: Int, deltaX: Number, deltaY: Number): Boolean = true
+	fun onMouseDragging(mouseX: Number, mouseY: Number, button: Int, deltaX: Number, deltaY: Number): HandleStatus = Interrupt
 
 	/**
 	 * 鼠标滚动
 	 * @param mouseX Number
 	 * @param mouseY Number
 	 * @param amount Number
-	 * @return 是否处理之后的同类操作 true:继续进行之后的操作 false:取消之后的操作
+	 * @return 是否处理之后的同类操作
 	 */
-	var mouseScrolling: (mouseX: Number, mouseY: Number, amount: Number) -> Boolean
+	var mouseScrolling: (mouseX: Number, mouseY: Number, amount: Number) -> HandleStatus
 
 	/**
 	 * 鼠标滚动
 	 * @param mouseX Number
 	 * @param mouseY Number
 	 * @param amount Number
-	 * @return 是否处理之后的同类操作 true:继续进行之后的操作 false:取消之后的操作
+	 * @return 是否处理之后的同类操作
 	 */
-	fun mouseScrolling(mouseX: Number, mouseY: Number, amount: Number): Boolean = true
+	fun onMouseScrolling(mouseX: Number, mouseY: Number, amount: Number): HandleStatus = Interrupt
 
 	/**
 	 * 按键按下
 	 * @param keyCode Int
 	 * @param modifiers Int
-	 * @return 是否处理之后的同类操作 true:继续进行之后的操作 false:取消之后的操作
+	 * @return 是否处理之后的同类操作
 	 */
-	var keyPress: (keyCode: Int, modifiers: Int) -> Boolean
+	var keyPress: (keyCode: Int, modifiers: Int) -> HandleStatus
 
 	/**
 	 * 按键按下
 	 * @param keyCode Int
 	 * @param modifiers Int
-	 * @return 是否处理之后的同类操作 true:继续进行之后的操作 false:取消之后的操作
+	 * @return 是否处理之后的同类操作
 	 */
-	fun keyPress(keyCode: Int, modifiers: Int): Boolean = true
+	fun onKeyPress(keyCode: Int, modifiers: Int): HandleStatus = Interrupt
 
 	/**
 	 * 按键释放
 	 * @param keyCode Int
 	 * @param modifiers Int
-	 * @return 是否处理之后的同类操作 true:继续进行之后的操作 false:取消之后的操作
+	 * @return 是否处理之后的同类操作
 	 */
-	var keyRelease: (keyCode: Int, modifiers: Int) -> Boolean
+	var keyRelease: (keyCode: Int, modifiers: Int) -> HandleStatus
 
 	/**
 	 * 按键释放
 	 * @param keyCode Int
 	 * @param modifiers Int
-	 * @return 是否处理之后的同类操作 true:继续进行之后的操作 false:取消之后的操作
+	 * @return 是否处理之后的同类操作
 	 */
-	fun keyRelease(keyCode: Int, modifiers: Int): Boolean = true
+	fun onKeyRelease(keyCode: Int, modifiers: Int): HandleStatus = Interrupt
 
 	/**
 	 * 字符输入
 	 * @param chr Char
 	 * @param modifiers Int
-	 * @return 是否处理之后的同类操作true:继续进行之后的操作 false:取消之后的操作
+	 * @return 是否处理之后的同类操作
 	 */
-	var charTyped: (chr: Char, modifiers: Int) -> Boolean
-	fun isEmptyTip(): Boolean {
-		tip()?.let { return it.string.isEmpty() }
-		return true
-	}
+	var charTyped: (chr: Char, modifiers: Int) -> HandleStatus
 
 	/**
 	 * 字符输入
 	 * @param chr Char
 	 * @param modifiers Int
-	 * @return 是否处理之后的同类操作true:继续进行之后的操作 false:取消之后的操作
+	 * @return 是否处理之后的同类操作
 	 */
-	fun charTyped(chr: Char, modifiers: Int): Boolean = true
+	fun onCharTyped(chr: Char, modifiers: Int): HandleStatus = Interrupt
 
 }

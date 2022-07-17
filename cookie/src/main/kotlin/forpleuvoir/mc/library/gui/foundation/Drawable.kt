@@ -33,4 +33,11 @@ interface Drawable {
 	 */
 	val render: (poseStack: PoseStack, delta: Double) -> Unit
 
+	/**
+	 * 渲染
+	 * @param poseStack PoseStack
+	 * @param delta Double
+	 */
+	fun onRender(poseStack: PoseStack, delta: Double)
+
 }

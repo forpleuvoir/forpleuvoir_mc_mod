@@ -1,5 +1,6 @@
 package forpleuvoir.mc.cookie.mixin.client;
 
+import forpleuvoir.mc.library.gui.screen.ScreenManager;
 import forpleuvoir.mc.library.input.InputHandler;
 import net.minecraft.client.KeyboardHandler;
 import net.minecraft.client.Minecraft;
@@ -36,16 +37,16 @@ public abstract class KeyboardHandlerMixin {
 		if (window == this.minecraft.getWindow().getWindow()) {
 			if (action == 1 || action == 2 && this.sendRepeatsToGui) {
 				if (InputHandler.keyPress(key)) ci.cancel();
-//				ScreenManager.hasScreen(screen -> {
-//					screen.keyPress(key, modifiers);
-//					ci.cancel();
-//				});
+				ScreenManager.hasScreen(screen -> {
+					screen.getKeyPress().invoke(key, modifiers);
+					ci.cancel();
+				});
 			} else {
 				if (InputHandler.keyRelease(key)) ci.cancel();
-//				ScreenManager.hasScreen(screen -> {
-//					ci.cancel();
-//					screen.keyRelease(key, modifiers);
-//				});
+				ScreenManager.hasScreen(screen -> {
+					screen.getKeyRelease().invoke(key, modifiers);
+					ci.cancel();
+				});
 			}
 		}
 	}
