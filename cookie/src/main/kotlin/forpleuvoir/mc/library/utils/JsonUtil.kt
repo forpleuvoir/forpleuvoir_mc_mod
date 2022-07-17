@@ -60,7 +60,7 @@ fun jsonArray(elements: Iterable<Any>): JsonArray {
 
 class JsonObjectScope {
 
-	val jsonObject: JsonObject = JsonObject()
+	internal val jsonObject: JsonObject = JsonObject()
 
 	infix fun String.at(value: String) {
 		jsonObject.addProperty(this, value)

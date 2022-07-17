@@ -1,9 +1,9 @@
 package forpleuvoir.mc.library.utils.color
 
 import com.google.gson.JsonElement
-import com.google.gson.JsonObject
 import forpleuvoir.mc.library.api.serialization.JsonSerializer
 import forpleuvoir.mc.library.utils.clamp
+import forpleuvoir.mc.library.utils.jsonObject
 
 
 /**
@@ -49,13 +49,11 @@ interface Color<T : Number> : JsonSerializer {
 	}
 
 	override val serialize: JsonElement
-		get() {
-			val jsonObject = JsonObject()
-			jsonObject.addProperty("red", red)
-			jsonObject.addProperty("green", green)
-			jsonObject.addProperty("blue", blue)
-			jsonObject.addProperty("alpha", alpha)
-			return jsonObject
+		get() = jsonObject {
+			"red" at red
+			"green" at green
+			"blue" at blue
+			"alpha" at alpha
 		}
 
 	fun fixAllValue() {
