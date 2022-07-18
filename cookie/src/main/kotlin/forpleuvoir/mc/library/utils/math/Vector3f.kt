@@ -31,7 +31,7 @@ class Vector3f(
 		}
 	}
 
-	override val serialize: JsonElement
+	override val serialization: JsonElement
 		get() = JsonObject().apply {
 			addProperty("x", x)
 			addProperty("y", y)

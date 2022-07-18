@@ -114,7 +114,7 @@ class ConfigStringMap(
 		return true
 	}
 
-	override val serialize: JsonElement
+	override val serialization: JsonElement
 		get() = getValue().toJsonObject()
 
 }

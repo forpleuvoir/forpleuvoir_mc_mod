@@ -63,9 +63,9 @@ open class ConfigGroup(
 		return true
 	}
 
-	override val serialize: JsonElement
+	override val serialization: JsonElement
 		get() = jsonObject {
-			getValue().forEach { it.key at it.serialize }
+			getValue().forEach { it.key at it.serialization }
 		}
 
 

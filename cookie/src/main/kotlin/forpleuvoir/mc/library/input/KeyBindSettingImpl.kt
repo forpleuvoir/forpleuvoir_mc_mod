@@ -36,7 +36,7 @@ class KeyBindSettingImpl(
 			field = value.coerceAtLeast(0)
 		}
 
-	override val serialize: JsonElement
+	override val serialization: JsonElement
 		get() = jsonObject {
 			"key_environment" at environment.key
 			"cancel_further_process" at cancelFurtherProcess
@@ -60,7 +60,7 @@ class KeyBindSettingImpl(
 
 	override fun matched(regex: Regex): Boolean {
 		return regex.run {
-			containsMatchIn(serialize.toJsonStr())
+			containsMatchIn(serialization.toJsonStr())
 		}
 	}
 

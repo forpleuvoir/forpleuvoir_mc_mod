@@ -196,10 +196,10 @@ class KeyBind(
 		}
 	}
 
-	override val serialize: JsonElement
+	override val serialization: JsonElement
 		get() = jsonObject {
 			"keys" at jsonArray(asTranslatableKey)
-			"setting" at setting.serialize
+			"setting" at setting.serialization
 		}
 
 	override fun deserialize(serializedObject: JsonElement) {

@@ -58,8 +58,8 @@ class ConfigKeyBind(
 		return true
 	}
 
-	override val serialize: JsonElement
-		get() = configValue.serialize
+	override val serialization: JsonElement
+		get() = configValue.serialization
 
 
 }

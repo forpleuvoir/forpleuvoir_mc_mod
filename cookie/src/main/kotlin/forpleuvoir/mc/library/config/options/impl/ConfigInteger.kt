@@ -46,7 +46,7 @@ open class ConfigInteger(
 		return true
 	}
 
-	override val serialize: JsonElement
+	override val serialization: JsonElement
 		get() = JsonPrimitive(getValue())
 
 }

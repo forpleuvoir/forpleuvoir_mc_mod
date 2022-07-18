@@ -111,6 +111,6 @@ open class ConfigStringList(
 		return true
 	}
 
-	override val serialize: JsonElement
+	override val serialization: JsonElement
 		get() = jsonArray(getValue())
 }

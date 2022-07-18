@@ -47,6 +47,6 @@ open class ConfigColor(
 		return true
 	}
 
-	override val serialize: JsonElement
-		get() = getValue().serialize
+	override val serialization: JsonElement
+		get() = getValue().serialization
 }

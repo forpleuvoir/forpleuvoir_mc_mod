@@ -90,9 +90,9 @@ class ConfigBooleanWithKeyBind(
 		return true
 	}
 
-	override val serialize: JsonElement
+	override val serialization: JsonElement
 		get() = jsonObject {
 			"value" at configValue
-			"key_bind" at keyBind.serialize
+			"key_bind" at keyBind.serialization
 		}
 }

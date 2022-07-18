@@ -40,7 +40,7 @@ open class ConfigBoolean(
 		return true
 	}
 
-	override val serialize: JsonElement
+	override val serialization: JsonElement
 		get() = JsonPrimitive(getValue())
 
 

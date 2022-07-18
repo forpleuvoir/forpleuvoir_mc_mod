@@ -48,7 +48,7 @@ interface Color<T : Number> : JsonSerializer {
 		return (if (str == "0") "00" else if (str.length == 1) "0$str" else str).uppercase()
 	}
 
-	override val serialize: JsonElement
+	override val serialization: JsonElement
 		get() = jsonObject {
 			"red" at red
 			"green" at green

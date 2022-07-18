@@ -72,7 +72,7 @@ open class ConfigOption(
 		return false
 	}
 
-	override val serialize: JsonElement
+	override val serialization: JsonElement
 		get() = JsonPrimitive(configValue.key)
 
 

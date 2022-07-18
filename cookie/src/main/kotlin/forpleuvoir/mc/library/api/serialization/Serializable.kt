@@ -17,7 +17,7 @@ package forpleuvoir.mc.library.api.serialization
  */
 interface Serializable<T> {
 
-	val serialize: T
+	val serialization: T
 
 	fun deserialize(serializedObject: T)
 }
