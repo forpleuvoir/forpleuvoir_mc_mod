@@ -23,7 +23,7 @@ import java.util.*
  */
 
 
-fun literal(text: String): MutableComponent = MutableComponent.create(LiteralContents(text))
+fun literal(text: String = ""): MutableComponent = MutableComponent.create(LiteralContents(text))
 
 val String.literal: MutableComponent get() = MutableComponent.create(LiteralContents(this))
 

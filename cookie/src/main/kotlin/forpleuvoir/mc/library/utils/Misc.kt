@@ -1,9 +1,11 @@
 package forpleuvoir.mc.library.utils
 
+import forpleuvoir.mc.cookie.Cookie
 import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.Font
 import net.minecraft.client.renderer.texture.TextureManager
 import net.minecraft.client.sounds.SoundManager
+import net.minecraft.resources.ResourceLocation
 import net.minecraft.server.packs.resources.ReloadableResourceManager
 
 
@@ -31,6 +33,8 @@ val soundManager: SoundManager by lazy { mc.soundManager }
 val textureManager: TextureManager by lazy { mc.textureManager }
 
 val resourceManager: ReloadableResourceManager by lazy { mc.resourceManager as ReloadableResourceManager }
+
+fun resources(path: String): ResourceLocation = ResourceLocation(Cookie.id, path)
 
 /**
  * 是否为开发环境

@@ -15,6 +15,6 @@ package forpleuvoir.mc.cookie
 
  */
 object Cookie {
-	val name: String = "Cookie"
-	val id: String = "cookie"
+	const val name: String = "Cookie"
+	const val id: String = "cookie"
 }
