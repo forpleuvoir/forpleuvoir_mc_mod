@@ -18,6 +18,7 @@ import forpleuvoir.mc.library.utils.resources
 
  */
 val COOKIE_TEXTURE = resources("texture/gui/cookie_widget.png")
+val COOKIE_ICON_TEXTURE = resources("texture/gui/cookie_icon.png")
 
 private fun texture(corner: Corner, u: Int, v: Int, regionWidth: Int, regionHeight: Int): GuiTexture {
 	return GuiTexture(COOKIE_TEXTURE, corner, u, v, regionWidth, regionHeight, 256, 256)
