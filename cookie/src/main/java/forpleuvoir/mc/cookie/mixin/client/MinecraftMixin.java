@@ -1,7 +1,7 @@
 package forpleuvoir.mc.cookie.mixin.client;
 
 import com.mojang.blaze3d.platform.Window;
-import forpleuvoir.mc.library.gui.screen.ScreenManager;
+import forpleuvoir.mc.library.gui.screen.ScreenHandler;
 import forpleuvoir.mc.library.input.InputHandler;
 import net.minecraft.client.Minecraft;
 import org.spongepowered.asm.mixin.Final;
@@ -39,29 +39,30 @@ public abstract class MinecraftMixin {
 
 	@Inject(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/sounds/SoundManager;tick(Z)V", shift = At.Shift.BEFORE))
 	public void screenTick(CallbackInfo ci) {
-		ScreenManager.INSTANCE.tick();
+		ScreenHandler.INSTANCE.tick();
 	}
 
 	@Inject(method = "resizeDisplay", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/platform/Window;setGuiScale(D)V", shift = At.Shift.AFTER))
 	public void screenResize(CallbackInfo ci) {
-		ScreenManager.hasScreen(screen -> {
+		ScreenHandler.hasScreen(screen -> {
 			screen.setHeight(this.window.getGuiScaledHeight());
 			screen.setWidth(this.window.getGuiScaledWidth());
+			screen.getResize().invoke(this.window.getGuiScaledWidth(), this.window.getGuiScaledHeight());
 		});
 	}
 
 	@Inject(method = "pauseGame", at = @At(value = "HEAD"), cancellable = true)
 	public void openPauseMenu(CallbackInfo ci) {
-		if (ScreenManager.hasScreen()) ci.cancel();
+		if (ScreenHandler.hasScreen()) ci.cancel();
 	}
 
 	@Inject(method = "setScreen", at = @At(value = "HEAD"), cancellable = true)
 	public void setScreen(CallbackInfo ci) {
-		if (ScreenManager.hasScreen()) ci.cancel();
+		if (ScreenHandler.hasScreen()) ci.cancel();
 	}
 
 	@Inject(method = "runTick", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/platform/Window;setErrorSection(Ljava/lang/String;)V", shift = At.Shift.AFTER))
 	public void paused(boolean tick, CallbackInfo ci) {
-		pause = ScreenManager.hasScreen() && ScreenManager.INSTANCE.getCurrent().getPauseScreen();
+		pause = ScreenHandler.hasScreen() && ScreenHandler.INSTANCE.getCurrent().getPauseScreen();
 	}
 }

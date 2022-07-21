@@ -1,7 +1,7 @@
 package forpleuvoir.mc.cookie.mixin.client;
 
 import forpleuvoir.mc.library.gui.foundation.ElementExtensionKt;
-import forpleuvoir.mc.library.gui.screen.ScreenManager;
+import forpleuvoir.mc.library.gui.screen.ScreenHandler;
 import forpleuvoir.mc.library.input.InputHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.MouseHandler;
@@ -48,16 +48,20 @@ public abstract class MouseHandlerMixin {
 			if (action == 1) {
 				this.activeButton = button;
 				if (InputHandler.keyPress(button)) ci.cancel();
-				ScreenManager.hasScreen(screen -> {
-					screen.getMouseClick().invoke(ElementExtensionKt.getMouseX(), ElementExtensionKt.getMouseY(), button);
-					ci.cancel();
+				ScreenHandler.hasScreen(screen -> {
+					if (screen.getActive()) {
+						screen.getMouseClick().invoke(ElementExtensionKt.getMouseX(), ElementExtensionKt.getMouseY(), button);
+						ci.cancel();
+					}
 				});
 			} else {
 				this.activeButton = -1;
 				if (InputHandler.keyRelease(button)) ci.cancel();
-				ScreenManager.hasScreen(screen -> {
-					screen.getMouseRelease().invoke(ElementExtensionKt.getMouseX(), ElementExtensionKt.getMouseY(), button);
-					ci.cancel();
+				ScreenHandler.hasScreen(screen -> {
+					if (screen.getActive()) {
+						screen.getMouseRelease().invoke(ElementExtensionKt.getMouseX(), ElementExtensionKt.getMouseY(), button);
+						ci.cancel();
+					}
 				});
 			}
 		}
@@ -66,10 +70,12 @@ public abstract class MouseHandlerMixin {
 	@Inject(method = "onScroll", at = @At("HEAD"), cancellable = true)
 	public void onMouseScroll(long window, double horizontal, double vertical, CallbackInfo ci) {
 		if (window == this.minecraft.getWindow().getWindow()) {
-			ScreenManager.hasScreen(screen -> {
-				double amount = (this.minecraft.options.discreteMouseScroll().get() ? Math.signum(vertical) : vertical) * this.minecraft.options.mouseWheelSensitivity().get();
-				screen.getMouseScrolling().invoke(ElementExtensionKt.getMouseX(), ElementExtensionKt.getMouseY(), amount);
-				ci.cancel();
+			ScreenHandler.hasScreen(screen -> {
+				if (screen.getActive()) {
+					double amount = (this.minecraft.options.discreteMouseScroll().get() ? Math.signum(vertical) : vertical) * this.minecraft.options.mouseWheelSensitivity().get();
+					screen.getMouseScrolling().invoke(ElementExtensionKt.getMouseX(), ElementExtensionKt.getMouseY(), amount);
+					ci.cancel();
+				}
 			});
 		}
 	}
@@ -77,18 +83,21 @@ public abstract class MouseHandlerMixin {
 	@Inject(method = "onMove", at = @At("HEAD"))
 	public void onCursorPos(long window, double x, double y, CallbackInfo ci) {
 		if (window == this.minecraft.getWindow().getWindow()) {
-			ScreenManager.hasScreen(screen -> screen.getMouseMove().invoke(ElementExtensionKt.getMouseX(), ElementExtensionKt.getMouseY()));
+			ScreenHandler.hasScreen(screen -> screen.getMouseMove().invoke(ElementExtensionKt.getMouseX(), ElementExtensionKt.getMouseY()));
 			if (this.activeButton != -1 && this.mousePressedTime > 0.0) {
 				double deltaX = (x - this.xpos) * (double) this.minecraft.getWindow().getGuiScaledWidth() / (double) this.minecraft.getWindow().getWidth();
 				double deltaY = (y - this.ypos) * (double) this.minecraft.getWindow().getGuiScaledHeight() / (double) this.minecraft.getWindow().getHeight();
-				ScreenManager.hasScreen(screen ->
-						screen.getMouseDragging().invoke(
-								ElementExtensionKt.getMouseX(),
-								ElementExtensionKt.getMouseY(),
-								this.activeButton,
-								deltaX,
-								deltaY
-						)
+				ScreenHandler.hasScreen(screen -> {
+							if (screen.getActive()) {
+								screen.getMouseDragging().invoke(
+										ElementExtensionKt.getMouseX(),
+										ElementExtensionKt.getMouseY(),
+										this.activeButton,
+										deltaX,
+										deltaY
+								);
+							}
+						}
 				);
 			}
 		}

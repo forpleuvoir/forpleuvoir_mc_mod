@@ -9,6 +9,7 @@ import forpleuvoir.mc.library.gui.foundation.drawRect
 import forpleuvoir.mc.library.input.KEY_ESCAPE
 import forpleuvoir.mc.library.utils.color.Color
 import forpleuvoir.mc.library.utils.color.Color4f
+import forpleuvoir.mc.library.utils.d
 
 /**
  * 屏幕基础实现
@@ -43,6 +44,8 @@ abstract class AbstractScreen : AbstractParentElement(), Screen {
 	 */
 	var backgroundColor: Color<out Number> = Color4f.BLACK.alpha(0.5f)
 
+	internal val tipRenderer: TipRenderer = TipRenderer(this)
+
 	protected open fun renderBackground(poseStack: PoseStack, delta: Number) {
 		drawRect(poseStack, this.x, this.y, this.width, this.height, backgroundColor)
 	}
@@ -54,11 +57,15 @@ abstract class AbstractScreen : AbstractParentElement(), Screen {
 	}
 
 	override fun close() {
-		// TODO: 关闭屏幕 如果有父屏幕则打开父屏幕
+		ScreenHandler.setCurrent(parentScreen)
+	}
+
+	override fun tick() {
+		tipRenderer.tick()
 	}
 
 	override fun renderTip(poseStack: PoseStack, delta: Number) {
-		TODO("渲染tip")
+		tipRenderer.render(poseStack, delta.d)
 	}
 
 	override var resize: (width: Number, height: Number) -> Unit = { _: Number, _: Number -> }

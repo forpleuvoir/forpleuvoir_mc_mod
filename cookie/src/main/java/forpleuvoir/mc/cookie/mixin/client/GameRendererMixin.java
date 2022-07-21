@@ -1,7 +1,7 @@
 package forpleuvoir.mc.cookie.mixin.client;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import forpleuvoir.mc.library.gui.screen.ScreenManager;
+import forpleuvoir.mc.library.gui.screen.ScreenHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
 import org.spongepowered.asm.mixin.Final;
@@ -31,7 +31,10 @@ public abstract class GameRendererMixin {
 
 	@Inject(method = "render", at = @At("RETURN"))
 	public void renderScreen(float tickDelta, long startTime, boolean tick, CallbackInfo ci) {
-		ScreenManager.hasScreen(screen -> screen.getRender().invoke(new PoseStack(), (double) minecraft.getDeltaFrameTime()));
+		ScreenHandler.hasScreen(screen -> {
+			if (screen.getVisible())
+				screen.getRender().invoke(new PoseStack(), (double) minecraft.getDeltaFrameTime());
+		});
 	}
 
 }

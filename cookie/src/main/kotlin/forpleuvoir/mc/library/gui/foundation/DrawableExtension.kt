@@ -10,6 +10,7 @@ import forpleuvoir.mc.library.utils.d
 import forpleuvoir.mc.library.utils.f
 import forpleuvoir.mc.library.utils.textRenderer
 import net.minecraft.client.renderer.GameRenderer
+import net.minecraft.client.renderer.LightTexture.FULL_BRIGHT
 import net.minecraft.client.renderer.MultiBufferSource
 import net.minecraft.client.renderer.ShaderInstance
 import net.minecraft.network.chat.Component
@@ -216,7 +217,7 @@ fun Drawable.drawTexture(
 }
 
 /**
- * 渲染.9格式的材质
+ * 渲染.9 格式的材质
  * 只适用于边角为相同大小的正方形的材质
  * @receiver Drawable
  */
@@ -257,7 +258,7 @@ fun Drawable.draw9Texture(
 }
 
 /**
- * 渲染.9格式的材质
+ * 渲染.9 格式的材质
  * @receiver Drawable
  */
 fun Drawable.draw9Texture(
@@ -431,7 +432,7 @@ fun Drawable.drawCenteredText(
 		immediate,
 		false,
 		backgroundColor.rgba,
-		0xF000F0,
+		FULL_BRIGHT,
 		rightToLeft
 	)
 	immediate.endBatch()
@@ -456,7 +457,7 @@ fun Drawable.drawText(
 		MultiBufferSource.immediate(Tesselator.getInstance().builder),
 		false,
 		Color4f.WHITE.rgba,
-		0xF000F0,
+		FULL_BRIGHT,
 		false
 	)
 }
@@ -474,7 +475,7 @@ fun Drawable.drawStringLines(
 ) {
 	val drawText: (text: String, x: Float, y: Float) -> Unit = { text, x, y ->
 		val immediate = MultiBufferSource.immediate(Tesselator.getInstance().builder)
-		textRenderer.drawInBatch(text, x, y, color.rgba, shadow, poseStack.last().pose(), immediate, false, 0, 0xF000F0, rightToLeft)
+		textRenderer.drawInBatch(text, x, y, color.rgba, shadow, poseStack.last().pose(), immediate, false, 0, FULL_BRIGHT, rightToLeft)
 		immediate.endBatch()
 	}
 	var textY = y.f

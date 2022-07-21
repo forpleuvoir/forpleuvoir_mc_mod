@@ -21,7 +21,7 @@ import java.util.function.Consumer
  * @author forpleuvoir
 
  */
-object ScreenManager : Tickable {
+object ScreenHandler : Tickable {
 
 	var current: Screen? = null
 		private set
@@ -47,8 +47,8 @@ object ScreenManager : Tickable {
 	 * 打开一个Screen
 	 * @param scope [@kotlin.ExtensionFunctionType] Function1<ScreenManager, Screen>
 	 */
-	inline fun openScreen(scope: ScreenManager.() -> Screen) {
-		setCurrent(scope(this))
+	inline fun openScreen(scope: ScreenHandler.() -> Screen) {
+		setCurrent(scope(this).apply { parentScreen = current })
 	}
 
 	@JvmStatic
@@ -60,6 +60,8 @@ object ScreenManager : Tickable {
 	}
 
 	override fun tick() {
-		current?.tick()
+		current?.run {
+			if (active) tick.invoke()
+		}
 	}
 }
