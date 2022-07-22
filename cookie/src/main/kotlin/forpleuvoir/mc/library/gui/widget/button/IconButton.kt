@@ -34,6 +34,9 @@ open class IconButton(var icon: Icon) : Button() {
 		val iconY = status(this.y + (height - icon.size) / 2 - 1, this.y + (height - icon.size) / 2 - 1, this.y + (height - icon.size) / 2)
 		icon.position(this.x + (width - icon.size) / 2, iconY)
 		icon.size(icon.size)
+		icon.currentColor = {
+			status(icon.color, icon.hoveredColor, icon.pressedColor)
+		}
 		icon.render(poseStack, delta)
 	}
 

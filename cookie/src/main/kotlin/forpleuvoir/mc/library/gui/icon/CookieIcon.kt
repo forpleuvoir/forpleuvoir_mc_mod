@@ -30,13 +30,18 @@ class CookieIcon(
 	override val u: Int,
 	override val v: Int,
 	override val color: Color<out Number> = Color4f.WHITE,
-	override val hoverColor: Color<out Number> = Color4f.BLACK,
+	override val hoveredColor: Color<out Number> = Color4f.BLACK,
 	override val pressedColor: Color<out Number> = Color4f(0.8f, 0.8f, 0.8f),
 	override val texture: ResourceLocation = COOKIE_ICON_TEXTURE,
 	override var textureSize: Int = 16,
 	override val textureHeight: Int = 256,
 	override val textureWidth: Int = 256,
 ) : Icon {
+
+	override var currentColor: () -> Color<out Number> = {
+		if (mouseX.d >= x.d && mouseX.d <= x.d + size.d && mouseY.d >= y.d && mouseY.d <= y.d + size.d) hoveredColor
+		else color
+	}
 
 	override val render: (poseStack: PoseStack, delta: Double) -> Unit = { poseStack: PoseStack, delta: Double ->
 		onRender(poseStack, delta)
@@ -47,8 +52,7 @@ class CookieIcon(
 		enableBlend()
 		defaultBlendFunc()
 		enableDepthTest()
-		if (mouseX.d >= x.d && mouseX.d <= x.d + size.d && mouseY.d >= y.d && mouseY.d <= y.d + size.d) setShaderColor(hoverColor)
-		else setShaderColor(color)
+		setShaderColor(currentColor())
 		drawTexture(poseStack, x, y, size, size, u, v, this.textureSize.i, this.textureSize.i, textureWidth, textureHeight)
 		setShaderColor(Color4f.WHITE)
 		disableBlend()

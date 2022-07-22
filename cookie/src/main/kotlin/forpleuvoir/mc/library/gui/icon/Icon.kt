@@ -26,12 +26,13 @@ interface Icon : Drawable {
 	var y: Double
 	var size: Double
 	val color: Color<out Number> get() = Color4f.WHITE
-	val hoverColor: Color<out Number> get() = Color4f.BLACK
+	val hoveredColor: Color<out Number> get() = Color4f.BLACK
 	val pressedColor: Color<out Number> get() = Color4f(0.8f, 0.8f, 0.8f)
+	var currentColor: () -> Color<out Number>
 	val u: Int
 	val v: Int
-	val texture:ResourceLocation
-	var textureSize: Int
+	val texture: ResourceLocation
+	val textureSize: Int
 	val textureWidth: Int get() = 256
 	val textureHeight: Int get() = 256
 
