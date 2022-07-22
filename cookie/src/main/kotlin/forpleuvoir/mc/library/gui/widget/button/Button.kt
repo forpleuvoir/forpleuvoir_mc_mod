@@ -12,6 +12,7 @@ import forpleuvoir.mc.library.utils.color.Color4f
 import forpleuvoir.mc.library.utils.text.literal
 import forpleuvoir.mc.library.utils.textRenderer
 import net.minecraft.network.chat.MutableComponent
+import java.util.function.Supplier
 
 /**
  * 按钮
@@ -32,6 +33,11 @@ open class Button() : ClickableElement() {
 	constructor(text: () -> String) : this() {
 		this.text = { literal(text()) }
 	}
+
+	constructor(text: Supplier<MutableComponent>) : this() {
+		this.text = { text.get() }
+	}
+
 
 	var text: () -> MutableComponent = { literal() }
 

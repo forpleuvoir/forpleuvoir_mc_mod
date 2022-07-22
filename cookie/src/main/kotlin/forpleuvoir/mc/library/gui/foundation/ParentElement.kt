@@ -49,7 +49,7 @@ interface ParentElement : Element, Initializable {
 	 * @param element Element
 	 * @return Element
 	 */
-	fun addElement(element: Element): Element
+	fun <E : Element> addElement(element: E): E
 
 	/**
 	 * 所选元素的上一个元素

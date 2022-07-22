@@ -8,7 +8,7 @@ import forpleuvoir.mc.library.utils.d
 import forpleuvoir.mc.library.utils.i
 import forpleuvoir.mc.library.utils.math.Vector3
 import net.minecraft.client.renderer.texture.Tickable
-import net.minecraft.network.chat.Component
+import net.minecraft.network.chat.MutableComponent
 
 /**
  * 元素
@@ -92,7 +92,7 @@ interface Element : Drawable, Tickable, Initializable {
 	/**
 	 * 提示
 	 */
-	var tip: (() -> Component)?
+	var tip: (() -> MutableComponent)?
 
 	/**
 	 * 是否为空tip

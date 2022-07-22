@@ -55,7 +55,7 @@ abstract class AbstractParentElement : AbstractElement(), ParentElement {
 		return children
 	}
 
-	override fun addElement(element: Element): Element {
+	override fun <E : Element> addElement(element: E): E {
 		children.addLast(element)
 		return element
 	}

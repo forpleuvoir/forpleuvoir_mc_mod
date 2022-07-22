@@ -4,7 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack
 import forpleuvoir.mc.library.utils.Direction
 import forpleuvoir.mc.library.utils.math.Vector3
 import forpleuvoir.mc.library.utils.math.Vector3d
-import net.minecraft.network.chat.Component
+import net.minecraft.network.chat.MutableComponent
 
 /**
  * 元素基础实现
@@ -38,13 +38,13 @@ abstract class AbstractElement : Element {
 
 	override var height: Double = 0.0
 
-	override var tip: (() -> Component)? = null
+	override var tip: (() -> MutableComponent)? = null
 
 	override var tipDirection: (() -> Direction)? = null
 
-	override val margin: Margin = Margin()
+	override var margin: Margin = Margin()
 
-	override val padding: Margin = Margin()
+	override var padding: Margin = Margin()
 
 	override fun init() {}
 
