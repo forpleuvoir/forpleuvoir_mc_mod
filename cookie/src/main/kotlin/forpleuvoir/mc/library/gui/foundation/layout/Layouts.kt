@@ -24,8 +24,8 @@ inline fun ParentElement.column(
 	scope: ColumnLayout.() -> Unit,
 ): ColumnLayout {
 	val column = ColumnLayout().apply {
-		this.padding = padding
-		this.margin = margin
+		padding(padding)
+		margin(margin)
 		scope()
 	}
 	this.addElement(column)
@@ -38,8 +38,8 @@ inline fun ParentElement.row(
 	scope: RowLayout.() -> Unit,
 ): RowLayout {
 	val row = RowLayout().apply {
-		this.padding = padding
-		this.margin = margin
+		padding(padding)
+		margin(margin)
 		scope()
 	}
 	this.addElement(row)
@@ -60,8 +60,8 @@ inline fun ParentElement.list(
 	).apply {
 		scrollerBar.apply(scrollerBarScope)
 		this.horizontal = horizontal
-		this.padding = padding
-		this.margin = margin
+		padding(padding)
+		margin(margin)
 		scope()
 	})
 }

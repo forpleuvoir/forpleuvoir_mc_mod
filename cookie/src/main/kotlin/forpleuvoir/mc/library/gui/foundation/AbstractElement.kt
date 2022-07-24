@@ -1,6 +1,7 @@
 package forpleuvoir.mc.library.gui.foundation
 
 import com.mojang.blaze3d.vertex.PoseStack
+import forpleuvoir.mc.library.gui.screen.ScreenHandler
 import forpleuvoir.mc.library.utils.Direction
 import forpleuvoir.mc.library.utils.math.Vector3
 import forpleuvoir.mc.library.utils.math.Vector3d
@@ -28,7 +29,7 @@ abstract class AbstractElement : Element {
 
 	override var active: Boolean = true
 
-	override var parent: ParentElement? = object : AbstractParentElement() {}
+	override var parent: ParentElement? = ScreenHandler.current
 
 	override var fixed: Boolean = false
 
@@ -42,9 +43,13 @@ abstract class AbstractElement : Element {
 
 	override var tipDirection: (() -> Direction)? = null
 
-	override var margin: Margin = Margin()
+	override val margin: Margin = Margin()
 
-	override var padding: Margin = Margin()
+	fun margin(margin: Margin) = this.margin.set(margin)
+
+	override val padding: Margin = Margin()
+
+	fun padding(padding: Margin) = this.margin.set(padding)
 
 	override fun init() {}
 
