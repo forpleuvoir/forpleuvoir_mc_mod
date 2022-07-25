@@ -1,6 +1,7 @@
 plugins {
 	id 'java'
 	id 'fabric-loom' version '0.12-SNAPSHOT'
+	id 'signing'
 	id 'maven-publish'
 	id 'org.jetbrains.kotlin.jvm' version '1.7.0'
 }
@@ -18,14 +19,20 @@ dependencies {
 subprojects {
 	apply plugin: 'java'
 	apply plugin: 'fabric-loom'
+	apply plugin: 'signing'
 	apply plugin: 'maven-publish'
 	apply plugin: 'org.jetbrains.kotlin.jvm'
 
 	repositories {
 		maven { url "https://maven.terraformersmc.com/" }
+		maven { url "https://maven.forpleuvoir.com/snapshots" }
+		maven { url "https://maven.forpleuvoir.com/releases" }
 		mavenCentral()
 		mavenLocal()
 	}
+
+	group = rootProject.mod_group
+	version = rootProject.mod_version
 
 	dependencies {
 		minecraft "com.mojang:minecraft:${rootProject.minecraft_version}"
@@ -42,6 +49,51 @@ subprojects {
 
 		filesMatching("fabric.mod.json") {
 			expand "version": rootProject.mod_version
+		}
+	}
+
+	java {
+		withSourcesJar()
+	}
+
+	jar {
+		from("LICENSE") {
+			rename { "${it}_${project.archivesBaseName}" }
+		}
+	}
+
+	publishing {
+		//see ↓
+		//https://reposilite.com/guide/deployment#gradle
+		publishing {
+			publications {
+				mavenJava(MavenPublication) {
+					artifact(remapJar) {
+						builtBy remapJar
+					}
+					artifact(sourcesJar) {
+						builtBy remapSourcesJar
+					}
+				}
+			}
+		}
+		repositories {
+			maven {
+				name = "releases"
+				url = "https://maven.forpleuvoir.com/releases"
+				credentials(PasswordCredentials)
+				authentication {
+					basic(BasicAuthentication)
+				}
+			}
+			maven {
+				name = "snapshots"
+				url = uri("https://maven.forpleuvoir.com/snapshots")
+				credentials(PasswordCredentials)
+				authentication {
+					basic(BasicAuthentication)
+				}
+			}
 		}
 	}
 
