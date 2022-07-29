@@ -473,9 +473,9 @@ fun Drawable.drawStringLines(
 	align: HorizontalAlign = Left,
 	rightToLeft: Boolean = false,
 ) {
-	val drawText: (text: String, x: Float, y: Float) -> Unit = { text, x, y ->
+	val drawText: (text: String, posX: Float, posY: Float) -> Unit = { text, posX, posY ->
 		val immediate = MultiBufferSource.immediate(Tesselator.getInstance().builder)
-		textRenderer.drawInBatch(text, x, y, color.rgba, shadow, poseStack.last().pose(), immediate, false, 0, FULL_BRIGHT, rightToLeft)
+		textRenderer.drawInBatch(text, posX, posY, color.rgba, shadow, poseStack.last().pose(), immediate, false, 0, FULL_BRIGHT, rightToLeft)
 		immediate.endBatch()
 	}
 	var textY = y.f

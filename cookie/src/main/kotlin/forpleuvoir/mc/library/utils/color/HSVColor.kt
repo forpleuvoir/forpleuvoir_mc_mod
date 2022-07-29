@@ -6,7 +6,7 @@ import forpleuvoir.mc.library.utils.i
 /**
  *
 
- * 项目名 cookie
+ * 项目名 forpleuvoir_mc_mod
 
  * 包名 forpleuvoir.mc.library.utils.color
 

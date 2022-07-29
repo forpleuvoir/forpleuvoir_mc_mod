@@ -40,7 +40,7 @@ class TipRenderer(
 
 	override fun onRender(poseStack: PoseStack, delta: Double) {
 		if (tipColdDownCounter < tipColdDown) return
-		screen.hovered?.let { it ->
+		screen.hovered?.let {
 			it.tip?.invoke()?.let { tips ->
 				it.isEmptyTip().ifc { return }
 				val bgCornerSize = 2

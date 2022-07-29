@@ -2,7 +2,6 @@ package forpleuvoir.mc.library.config
 
 import forpleuvoir.mc.library.api.*
 import forpleuvoir.mc.library.api.serialization.JsonSerializer
-import forpleuvoir.mc.library.api.serialization.Serializable
 
 /**
  * 单个配置

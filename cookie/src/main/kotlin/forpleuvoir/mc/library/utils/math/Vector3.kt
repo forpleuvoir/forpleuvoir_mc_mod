@@ -9,9 +9,9 @@ import forpleuvoir.mc.library.utils.toJsonStr
 /**
  * 3维向量
 
- * 项目名 cookie
+ * 项目名 forpleuvoir_mc_mod
 
- * 包名 org.hiirosakura.cookie.util.math
+ * 包名 forpleuvoir.mc.library.utils.math
 
  * 文件名 Vector3
 

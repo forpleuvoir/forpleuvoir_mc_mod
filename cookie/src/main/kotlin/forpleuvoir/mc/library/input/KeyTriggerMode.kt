@@ -7,7 +7,7 @@ import net.minecraft.network.chat.MutableComponent
 /**
  * 按键触发模式
 
- * 项目名 cookie
+ * 项目名 forpleuvoir_mc_mod
 
  * 包名 forpleuvoir.mc.library.input
 

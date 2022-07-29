@@ -16,5 +16,4 @@ import forpleuvoir.mc.library.input.IKeyBindValue
  * @author forpleuvoir
 
  */
-interface IConfigBooleanWithKeyBind : IConfigBoolean, IKeyBindValue {
-}
+interface IConfigBooleanWithKeyBind : IConfigBoolean, IKeyBindValue

@@ -9,7 +9,7 @@ import forpleuvoir.mc.library.utils.jsonObject
 /**
  *
 
- * 项目名 ibuki_gourd
+ * 项目名 forpleuvoir_mc_mod
 
  * 包名 forpleuvoir.mc.library.utils.color
 

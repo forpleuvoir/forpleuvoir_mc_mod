@@ -3,7 +3,6 @@ package forpleuvoir.mc.library.config.options
 import forpleuvoir.mc.library.api.Option
 import forpleuvoir.mc.library.api.Switchable
 import forpleuvoir.mc.library.config.ConfigValue
-import java.util.OptionalDouble
 
 /**
  * 选项配置

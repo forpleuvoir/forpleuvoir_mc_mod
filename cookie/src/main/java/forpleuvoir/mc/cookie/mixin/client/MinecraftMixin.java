@@ -11,6 +11,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.util.Objects;
+
 /**
  * 项目名 forpleuvoir_mc_mod
  * <p>
@@ -63,6 +65,6 @@ public abstract class MinecraftMixin {
 
 	@Inject(method = "runTick", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/platform/Window;setErrorSection(Ljava/lang/String;)V", shift = At.Shift.AFTER))
 	public void paused(boolean tick, CallbackInfo ci) {
-		pause = ScreenHandler.hasScreen() && ScreenHandler.INSTANCE.getCurrent().getPauseScreen();
+		pause = ScreenHandler.hasScreen() && Objects.requireNonNull(ScreenHandler.INSTANCE.getCurrent()).getPauseScreen();
 	}
 }

@@ -2,7 +2,6 @@ package forpleuvoir.mc.library.gui.foundation.layout
 
 import forpleuvoir.mc.library.gui.foundation.ParentElement
 import forpleuvoir.mc.library.utils.d
-import forpleuvoir.mc.library.utils.i
 import forpleuvoir.mc.library.utils.math.Vector3d
 
 /**
