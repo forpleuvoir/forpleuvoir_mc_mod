@@ -7,7 +7,7 @@ import forpleuvoir.mc.library.config.options.ConfigBase
 import forpleuvoir.mc.library.config.options.IConfigList
 import forpleuvoir.mc.library.utils.ifc
 import forpleuvoir.mc.library.utils.jsonArray
-import net.minecraft.network.chat.MutableComponent
+import forpleuvoir.mc.library.utils.text.Text
 
 /**
  * 字符串列表
@@ -25,8 +25,8 @@ import net.minecraft.network.chat.MutableComponent
  */
 open class ConfigStringList(
 	override val key: String,
-	override val displayName: MutableComponent,
-	override val description: MutableComponent,
+	override val displayName: Text,
+	override val description: Text,
 	final override val defaultValue: List<String>,
 ) : ConfigBase<List<String>>(), IConfigList<String> {
 

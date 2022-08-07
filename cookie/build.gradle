@@ -1,0 +1,10 @@
+loom {
+	accessWidenerPath = file("src/main/resources/cookie.accesswidener")
+}
+
+def nashorn = "org.openjdk.nashorn:nashorn-core:${project.nashorn_version}"
+
+dependencies {
+	implementation nashorn
+	include nashorn
+}

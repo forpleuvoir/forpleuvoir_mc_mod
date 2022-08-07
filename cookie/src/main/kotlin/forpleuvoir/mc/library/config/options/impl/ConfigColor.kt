@@ -6,7 +6,7 @@ import forpleuvoir.mc.library.config.ConfigTypes
 import forpleuvoir.mc.library.config.options.ConfigBase
 import forpleuvoir.mc.library.config.options.IConfigColor
 import forpleuvoir.mc.library.utils.color.Color
-import net.minecraft.network.chat.MutableComponent
+import forpleuvoir.mc.library.utils.text.Text
 
 /**
  * 颜色配置实现
@@ -24,8 +24,8 @@ import net.minecraft.network.chat.MutableComponent
  */
 open class ConfigColor(
 	override val key: String,
-	override val displayName: MutableComponent,
-	override val description: MutableComponent,
+	override val displayName: Text,
+	override val description: Text,
 	final override val defaultValue: Color<out Number>,
 ) : ConfigBase<Color<out Number>>(), IConfigColor {
 

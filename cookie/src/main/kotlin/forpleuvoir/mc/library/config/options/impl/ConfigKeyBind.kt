@@ -6,7 +6,7 @@ import forpleuvoir.mc.library.config.ConfigTypes
 import forpleuvoir.mc.library.config.options.ConfigBase
 import forpleuvoir.mc.library.config.options.IConfigKeyBind
 import forpleuvoir.mc.library.input.KeyBind
-import net.minecraft.network.chat.MutableComponent
+import forpleuvoir.mc.library.utils.text.Text
 
 /**
  * 热键配置实现
@@ -24,8 +24,8 @@ import net.minecraft.network.chat.MutableComponent
  */
 class ConfigKeyBind(
 	override val key: String,
-	override val displayName: MutableComponent,
-	override val description: MutableComponent,
+	override val displayName: Text,
+	override val description: Text,
 	override val defaultValue: KeyBind,
 ) : ConfigBase<KeyBind>(), IConfigKeyBind {
 

@@ -21,6 +21,6 @@ import net.fabricmc.api.Environment
 @Environment(SERVER)
 object CookieServer : DedicatedServerModInitializer {
 	override fun onInitializeServer() {
-		TODO("Not yet implemented")
+
 	}
 }

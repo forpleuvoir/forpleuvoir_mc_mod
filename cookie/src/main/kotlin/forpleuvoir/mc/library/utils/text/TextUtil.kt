@@ -2,7 +2,7 @@ package forpleuvoir.mc.library.utils.text
 
 import forpleuvoir.mc.library.utils.textRenderer
 import net.minecraft.network.chat.Component
-import net.minecraft.network.chat.MutableComponent
+import net.minecraft.network.chat.ComponentContents
 import net.minecraft.network.chat.contents.LiteralContents
 import net.minecraft.network.chat.contents.TranslatableContents
 import java.util.*
@@ -21,18 +21,20 @@ import java.util.*
  * @author forpleuvoir
 
  */
+fun literal(text: String = ""): Text = Text.create(LiteralContents(text))
 
+inline fun text(text: String = "", scope: Text.() -> Unit = {}): Text = Text.create(LiteralContents(text)).apply { scope() }
 
-fun literal(text: String = ""): MutableComponent = MutableComponent.create(LiteralContents(text))
+inline fun text(text: ComponentContents, scope: Text.() -> Unit = {}): Text = Text.create(text).apply { scope() }
 
-val String.literal: MutableComponent get() = MutableComponent.create(LiteralContents(this))
+val String.literal: Text get() = Text.create(LiteralContents(this))
 
 @JvmName("translatable1")
-fun translatable(text: String, vararg params: Any): MutableComponent = MutableComponent.create(TranslatableContents(text, params))
+fun translatable(text: String, vararg params: Any): Text = Text.create(TranslatableContents(text, params))
 
-fun String.translatable(vararg params: Any): MutableComponent = MutableComponent.create(TranslatableContents(this, params))
+fun String.translatable(vararg params: Any): Text = Text.create(TranslatableContents(this, params))
 
-val String.translatable: MutableComponent get() = MutableComponent.create(TranslatableContents(this))
+val String.translatable: Text get() = Text.create(TranslatableContents(this))
 
 fun Collection<String>.maxWidth(): Int {
 	var temp = 0

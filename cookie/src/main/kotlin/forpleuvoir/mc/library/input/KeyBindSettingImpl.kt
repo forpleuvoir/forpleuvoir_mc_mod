@@ -2,6 +2,8 @@ package forpleuvoir.mc.library.input
 
 import com.google.gson.JsonElement
 import forpleuvoir.mc.cookie.util.logger
+import forpleuvoir.mc.library.gui.foundation.HandleStatus
+import forpleuvoir.mc.library.gui.foundation.HandleStatus.Interrupt
 import forpleuvoir.mc.library.input.KeyEnvironment.InGame
 import forpleuvoir.mc.library.input.KeyTriggerMode.OnRelease
 import forpleuvoir.mc.library.utils.jsonObject
@@ -23,7 +25,7 @@ import forpleuvoir.mc.library.utils.toJsonStr
  */
 class KeyBindSettingImpl(
 	override var environment: KeyEnvironment = InGame,
-	override var cancelFurtherProcess: Boolean = true,
+	override var cancelFurtherProcess: HandleStatus = Interrupt,
 	override var ordered: Boolean = true,
 	override var triggerMode: KeyTriggerMode = OnRelease,
 	longPressTime: Long = 20,
@@ -39,7 +41,7 @@ class KeyBindSettingImpl(
 	override val serialization: JsonElement
 		get() = jsonObject {
 			"key_environment" at environment.key
-			"cancel_further_process" at cancelFurtherProcess
+			"cancel_further_process" at cancelFurtherProcess.name
 			"ordered" at ordered
 			"trigger_mode" at triggerMode.key
 			"long_press_time" at longPressTime
@@ -49,7 +51,7 @@ class KeyBindSettingImpl(
 		try {
 			val jsonObject = serializedObject.asJsonObject
 			environment = environment.fromKey(jsonObject["key_environment"].asString)
-			cancelFurtherProcess = jsonObject["cancel_further_process"].asBoolean
+			cancelFurtherProcess = HandleStatus.valueOf(jsonObject["cancel_further_process"].asString)
 			ordered = jsonObject["ordered"].asBoolean
 			triggerMode = triggerMode.fromKey(jsonObject["trigger_mode"].asString)
 			longPressTime = jsonObject["long_press_time"].asLong

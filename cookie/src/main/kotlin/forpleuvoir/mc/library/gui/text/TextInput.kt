@@ -40,11 +40,18 @@ open class TextInput(text: String = "") : AbstractElement() {
 
 	var textColor: Color<out Number> = Color4f.WHITE
 
+	/**
+	 * 输入限制
+	 */
+	var predicate: String.() -> Boolean = { true }
+
 	var text: String = text.substring(0, text.length.coerceAtMost(maxLength))
 		set(value) {
+			if (!predicate(value)) return
 			val old = field
-			if (old != value) {
-				field = value
+			val newValue = value.substring(0, text.length.coerceAtMost(maxLength))
+			if (old != newValue) {
+				field = newValue
 				textChange(field)
 			}
 		}
@@ -118,7 +125,30 @@ open class TextInput(text: String = "") : AbstractElement() {
 	/**
 	 * 撤回
 	 */
-	protected open fun undo() {}
+	protected open fun undo() {
+		TODO("撤回")
+	}
+
+	/**
+	 * 重做
+	 */
+	protected open fun redo() {
+		TODO("重做")
+	}
+
+	/**
+	 * 左移动
+	 */
+	protected open fun leftShift() {
+		TODO("光标移动到单词头部")
+	}
+
+	/**
+	 * 右移动
+	 */
+	protected open fun rightShift() {
+		TODO("光标移动到单词结尾")
+	}
 
 	override fun onKeyPress(keyCode: Int, modifiers: Int): HandleStatus {
 		if (InputHandler.hasKey(KEY_LEFT_CONTROL)) {
@@ -128,9 +158,9 @@ open class TextInput(text: String = "") : AbstractElement() {
 				KEY_X         -> cut()
 				KEY_BACKSPACE -> deleteWord()
 				KEY_Z         -> undo()
-				KEY_Y         -> TODO("取消撤回")
-				KEY_LEFT      -> TODO("光标移动到单词结尾")
-				KEY_RIGHT     -> TODO("光标移动到单词头部")
+				KEY_Y         -> redo()
+				KEY_LEFT      -> leftShift()
+				KEY_RIGHT     -> rightShift()
 			}
 		} else if (InputHandler.hasKey(KEY_LEFT_SHIFT)) {
 			when (keyCode) {

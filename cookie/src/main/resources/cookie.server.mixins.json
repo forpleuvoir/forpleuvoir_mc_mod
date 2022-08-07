@@ -3,6 +3,9 @@
   "minVersion": "0.8",
   "package": "forpleuvoir.mc.cookie.mixin.server",
   "compatibilityLevel": "JAVA_17",
+  "mixins": [
+	"MinecraftServerMixin"
+  ],
   "server": [
 	"MainMixin"
   ],

@@ -6,7 +6,7 @@ import forpleuvoir.mc.library.config.ConfigType
 import forpleuvoir.mc.library.config.ConfigTypes
 import forpleuvoir.mc.library.config.options.ConfigBase
 import forpleuvoir.mc.library.config.options.IConfigDouble
-import net.minecraft.network.chat.MutableComponent
+import forpleuvoir.mc.library.utils.text.Text
 
 /**
  * 浮点配置实现
@@ -24,11 +24,11 @@ import net.minecraft.network.chat.MutableComponent
  */
 open class ConfigDouble(
 	override val key: String,
-	override val displayName: MutableComponent,
-	override val description: MutableComponent,
+	override val displayName: Text,
+	override val description: Text,
 	final override val defaultValue: Double,
-	override val minValue: Double=Double.MIN_VALUE,
-	override val maxValue: Double=Double.MAX_VALUE,
+	override val minValue: Double = Double.MIN_VALUE,
+	override val maxValue: Double = Double.MAX_VALUE,
 ) : ConfigBase<Double>(), IConfigDouble {
 
 	override val type: ConfigType

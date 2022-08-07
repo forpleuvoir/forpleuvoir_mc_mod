@@ -13,10 +13,10 @@ import forpleuvoir.mc.library.gui.widget.button.IconButton
 import forpleuvoir.mc.library.utils.Direction
 import forpleuvoir.mc.library.utils.color.Color4f
 import forpleuvoir.mc.library.utils.d
+import forpleuvoir.mc.library.utils.text.Text
 import forpleuvoir.mc.library.utils.text.literal
 import forpleuvoir.mc.library.utils.text.maxWidth
 import forpleuvoir.mc.library.utils.textRenderer
-import net.minecraft.network.chat.MutableComponent
 import java.util.function.Supplier
 
 /**
@@ -72,7 +72,7 @@ class DropMenu(
 			dropButton.icon = if (field) Down else Left
 		}
 
-	var itemTip: ((item: String) -> MutableComponent)? = null
+	var itemTip: ((item: String) -> Text)? = null
 	var itemTipDirection: ((item: String) -> Direction)? = null
 
 	var onToggle: DropMenu.(origin: String, current: String) -> Unit = { _, _ -> }

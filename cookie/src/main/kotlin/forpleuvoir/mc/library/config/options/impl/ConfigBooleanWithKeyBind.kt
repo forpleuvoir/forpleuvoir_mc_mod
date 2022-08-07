@@ -7,7 +7,7 @@ import forpleuvoir.mc.library.config.options.ConfigBase
 import forpleuvoir.mc.library.config.options.IConfigBooleanWithKeyBind
 import forpleuvoir.mc.library.input.KeyBind
 import forpleuvoir.mc.library.utils.jsonObject
-import net.minecraft.network.chat.MutableComponent
+import forpleuvoir.mc.library.utils.text.Text
 
 /**
  * 带热荐的布尔配置
@@ -25,8 +25,8 @@ import net.minecraft.network.chat.MutableComponent
  */
 class ConfigBooleanWithKeyBind(
 	override val key: String,
-	override val displayName: MutableComponent,
-	override val description: MutableComponent,
+	override val displayName: Text,
+	override val description: Text,
 	override val defaultValue: Boolean,
 	val defaultKeyBind: KeyBind,
 ) : ConfigBase<Boolean>(), IConfigBooleanWithKeyBind {

@@ -1,9 +1,15 @@
 package forpleuvoir.mc.cookie.mixin.client;
 
 import com.mojang.blaze3d.platform.Window;
+import forpleuvoir.mc.library.event.EventBus;
+import forpleuvoir.mc.library.event.events.client.ClientStartedEvent;
+import forpleuvoir.mc.library.event.events.client.ClientStartingEvent;
+import forpleuvoir.mc.library.event.events.client.ClientTickEndEvent;
+import forpleuvoir.mc.library.event.events.client.ClientTickStartEvent;
 import forpleuvoir.mc.library.gui.screen.ScreenHandler;
 import forpleuvoir.mc.library.input.InputHandler;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.main.GameConfig;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -24,6 +30,7 @@ import java.util.Objects;
  *
  * @author forpleuvoir
  */
+@SuppressWarnings("ALL")
 @Mixin(Minecraft.class)
 public abstract class MinecraftMixin {
 
@@ -34,9 +41,28 @@ public abstract class MinecraftMixin {
 	@Shadow
 	private volatile boolean pause;
 
+	@Inject(method = "<init>", at = @At("RETURN"))
+	public void init(GameConfig gameConfig, CallbackInfo ci) {}
+
+	@Inject(method = "run", at = @At("HEAD"))
+	public void runStarting(CallbackInfo ci) {
+		EventBus.getINSTANCE().broadcast(new ClientStartingEvent((Minecraft) (Object) this));
+	}
+
+	@Inject(method = "run", at = @At("RETURN"))
+	public void runStarted(CallbackInfo ci) {
+		EventBus.getINSTANCE().broadcast(new ClientStartedEvent((Minecraft) (Object) this));
+	}
+
+	@Inject(method = "tick", at = @At("HEAD"))
+	public void tickStart(CallbackInfo ci) {
+		EventBus.getINSTANCE().broadcast(new ClientTickStartEvent((Minecraft) (Object) this));
+	}
+
 	@Inject(method = "tick", at = @At("RETURN"))
 	public void tickEnd(CallbackInfo ci) {
 		InputHandler.INSTANCE.tick();
+		EventBus.getINSTANCE().broadcast(new ClientTickEndEvent((Minecraft) (Object) this));
 	}
 
 	@Inject(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/sounds/SoundManager;tick(Z)V", shift = At.Shift.BEFORE))

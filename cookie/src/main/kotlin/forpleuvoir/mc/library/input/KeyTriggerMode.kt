@@ -1,8 +1,8 @@
 package forpleuvoir.mc.library.input
 
 import forpleuvoir.mc.library.api.Option
+import forpleuvoir.mc.library.utils.text.Text
 import forpleuvoir.mc.library.utils.text.translatable
-import net.minecraft.network.chat.MutableComponent
 
 /**
  * 按键触发模式
@@ -27,10 +27,10 @@ enum class KeyTriggerMode(override val key: String) : Option {
 	Pressed("press"),
 	BOTH("both");
 
-	override val displayName: MutableComponent
+	override val displayName: Text
 		get() = "cookie.key_bind.trigger_mode.${key}".translatable
 
-	override val description: MutableComponent
+	override val description: Text
 		get() = "cookie.key_bind.trigger_mode.${key}.description".translatable
 
 	val allOption: List<KeyTriggerMode>

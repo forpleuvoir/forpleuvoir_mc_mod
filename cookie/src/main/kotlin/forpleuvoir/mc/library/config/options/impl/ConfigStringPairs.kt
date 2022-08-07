@@ -9,7 +9,7 @@ import forpleuvoir.mc.library.config.options.IConfigPairs
 import forpleuvoir.mc.library.utils.ifc
 import forpleuvoir.mc.library.utils.jsonArray
 import forpleuvoir.mc.library.utils.jsonObject
-import net.minecraft.network.chat.MutableComponent
+import forpleuvoir.mc.library.utils.text.Text
 
 /**
  *
@@ -27,8 +27,8 @@ import net.minecraft.network.chat.MutableComponent
  */
 class ConfigStringPairs(
 	override val key: String,
-	override val displayName: MutableComponent,
-	override val description: MutableComponent,
+	override val displayName: Text,
+	override val description: Text,
 	override val defaultValue: List<Pair<String, String>>,
 ) : ConfigBase<List<Pair<String, String>>>(), IConfigPairs<String, String> {
 

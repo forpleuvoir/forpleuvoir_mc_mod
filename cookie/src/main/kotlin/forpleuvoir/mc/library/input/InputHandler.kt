@@ -1,5 +1,8 @@
 package forpleuvoir.mc.library.input
 
+import forpleuvoir.mc.library.gui.foundation.HandleStatus
+import forpleuvoir.mc.library.gui.foundation.HandleStatus.Continue
+import forpleuvoir.mc.library.gui.foundation.HandleStatus.Interrupt
 import net.minecraft.client.renderer.texture.Tickable
 import java.util.concurrent.ConcurrentLinkedQueue
 import java.util.concurrent.ConcurrentSkipListSet
@@ -50,11 +53,11 @@ object InputHandler : Tickable {
 	 * @return Boolean 是否取消之后的操作
 	 */
 	@JvmStatic
-	fun keyPress(keyCode: Int): Boolean {
+	fun keyPress(keyCode: Int): HandleStatus {
 		if (keyCode != KEY_UNKNOWN)
 			if (keys.add(keyCode))
-				keyBinds.forEach { if (it.update(LinkedHashSet(keys))) return true }
-		return false
+				keyBinds.forEach { if (it.update(LinkedHashSet(keys)) == Interrupt) return Interrupt }
+		return Continue
 	}
 
 	/**
@@ -63,11 +66,11 @@ object InputHandler : Tickable {
 	 * @return Boolean 是否取消之后的操作
 	 */
 	@JvmStatic
-	fun keyRelease(keyCode: Int): Boolean {
+	fun keyRelease(keyCode: Int): HandleStatus {
 		if (keyCode != KEY_UNKNOWN)
 			if (keys.remove(keyCode))
-				keyBinds.forEach { if (it.update(LinkedHashSet(keys))) return true }
-		return false
+				keyBinds.forEach { if (it.update(LinkedHashSet(keys)) == Interrupt) return Interrupt }
+		return Continue
 	}
 
 	override fun tick() {

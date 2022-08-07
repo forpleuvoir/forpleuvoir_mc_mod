@@ -1,7 +1,12 @@
 package forpleuvoir.mc.cookie.mixin.client;
 
+import forpleuvoir.mc.library.event.EventBus;
+import forpleuvoir.mc.library.event.events.client.input.KeyPressEvent;
+import forpleuvoir.mc.library.event.events.client.input.KeyReleaseEvent;
+import forpleuvoir.mc.library.gui.foundation.HandleStatus;
 import forpleuvoir.mc.library.gui.screen.ScreenHandler;
 import forpleuvoir.mc.library.input.InputHandler;
+import forpleuvoir.mc.library.input.KeyEnvironmentKt;
 import net.minecraft.client.KeyboardHandler;
 import net.minecraft.client.Minecraft;
 import org.spongepowered.asm.mixin.Final;
@@ -36,15 +41,21 @@ public abstract class KeyboardHandlerMixin {
 	public void onKey(long window, int key, int scancode, int action, int modifiers, CallbackInfo ci) {
 		if (window == this.minecraft.getWindow().getWindow()) {
 			if (action == 1 || action == 2 && this.sendRepeatsToGui) {
-				if (InputHandler.keyPress(key)) ci.cancel();
+				var keyPressEvent = new KeyPressEvent(key, scancode, modifiers, KeyEnvironmentKt.currentEnv());
+				EventBus.getINSTANCE().broadcast(keyPressEvent);
+				keyPressEvent.isCanceled(ci::cancel);
+				if (InputHandler.keyPress(key) == HandleStatus.Interrupt) ci.cancel();
 				ScreenHandler.hasScreen(screen -> {
 					if (screen.getActive()) {
-						screen.getKeyPress().invoke(key, modifiers);
-						ci.cancel();
+						HandleStatus status = screen.getKeyPress().invoke(key, modifiers);
+						if (status == HandleStatus.Interrupt) ci.cancel();
 					}
 				});
 			} else {
-				if (InputHandler.keyRelease(key)) ci.cancel();
+				var keyReleaseEvent = new KeyReleaseEvent(key, scancode, modifiers, KeyEnvironmentKt.currentEnv());
+				EventBus.getINSTANCE().broadcast(keyReleaseEvent);
+				keyReleaseEvent.isCanceled(ci::cancel);
+				if (InputHandler.keyRelease(key) == HandleStatus.Interrupt) ci.cancel();
 				ScreenHandler.hasScreen(screen -> {
 					if (screen.getActive()) {
 						screen.getKeyRelease().invoke(key, modifiers);

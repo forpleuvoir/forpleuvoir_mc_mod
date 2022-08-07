@@ -2,6 +2,8 @@ package forpleuvoir.mc.library.input
 
 import forpleuvoir.mc.library.api.Matchable
 import forpleuvoir.mc.library.api.serialization.JsonSerializer
+import forpleuvoir.mc.library.gui.foundation.HandleStatus
+import forpleuvoir.mc.library.gui.foundation.HandleStatus.Interrupt
 import forpleuvoir.mc.library.input.KeyEnvironment.InGame
 import forpleuvoir.mc.library.input.KeyTriggerMode.OnRelease
 
@@ -28,7 +30,7 @@ interface KeyBindSetting : JsonSerializer, Matchable {
 	/**
 	 * 是否取消之后的操作
 	 */
-	var cancelFurtherProcess: Boolean
+	var cancelFurtherProcess: HandleStatus
 
 	/**
 	 * 只有指定顺序的按键才会触发
@@ -56,7 +58,7 @@ interface KeyBindSetting : JsonSerializer, Matchable {
 
 fun keyBindSetting(
 	environment: KeyEnvironment = InGame,
-	cancelFurtherProcess: Boolean = true,
+	cancelFurtherProcess: HandleStatus = Interrupt,
 	ordered: Boolean = true,
 	triggerMode: KeyTriggerMode = OnRelease,
 	longPressTime: Long = 20,

@@ -9,12 +9,21 @@
   ],
   "contact": {
 	"email": "695801070@qq.com",
-	"website": "还没有",
-	"repo": "还没有"
+	"website": "https://github.com/forpleuvoir/forpleuvoir_mc_mod/tree/1.19.x/cookie",
+	"sources": "https://github.com/forpleuvoir/forpleuvoir_mc_mod/tree/1.19.x/cookie",
+	"issues": "https://github.com/forpleuvoir/forpleuvoir_mc_mod/issues",
+	"repo": "https://maven.forpleuvoir.com/#/releases/forpleuvoir/mc/cookie"
   },
   "license": "MIT",
+  "accessWidener": "cookie.accesswidener",
   "environment": "*",
   "entrypoints": {
+	"main": [
+	  {
+		"adapter": "kotlin",
+		"value": "forpleuvoir.mc.cookie.Cookie"
+	  }
+	],
 	"client": [
 	  {
 		"adapter": "kotlin",
@@ -35,7 +44,18 @@
   "depends": {
 	"fabricloader": ">=0.14.0",
 	"fabric": "*",
-	"minecraft": "1.19.x",
-	"fabric-language-kotlin": ">=1.8.0+kotlin.1.7.0"
+	"minecraft": "1.19.2",
+	"fabric-language-kotlin": ">=1.8.2+kotlin.1.7.10"
+  },
+  "custom": {
+	"cookie": {
+	  "events": [
+		"forpleuvoir.mc.library.event.events"
+	  ],
+	  "package": [
+		"forpleuvoir.mc.library",
+		"forpleuvoir.mc.cookie"
+	  ]
+	}
   }
 }

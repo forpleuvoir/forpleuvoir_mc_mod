@@ -4,8 +4,8 @@ import forpleuvoir.mc.library.gui.foundation.ParentElement
 import forpleuvoir.mc.library.gui.icon.Icon
 import forpleuvoir.mc.library.utils.color.Color
 import forpleuvoir.mc.library.utils.color.Color4f
+import forpleuvoir.mc.library.utils.text.Text
 import forpleuvoir.mc.library.utils.textRenderer
-import net.minecraft.network.chat.MutableComponent
 
 /**
  * 按钮
@@ -23,25 +23,42 @@ import net.minecraft.network.chat.MutableComponent
  */
 
 inline fun ParentElement.button(
-	noinline text: () -> MutableComponent,
+	noinline text: () -> Text,
 	width: Double = textRenderer.width(text()) + 8.0,
 	height: Double = 20.0,
 	color: Color<out Number> = Color4f.WHITE,
 	noinline onClick: Button.() -> Unit = { },
 	noinline onRelease: Button.() -> Unit = {},
 	scope: Button.() -> Unit = {},
-): Button {
-	val button = Button(text).apply {
+): Button =
+	this.addElement(Button(text).apply {
 		this.width = width
 		this.height = height
 		this.buttonColor = color
 		this.onClick = { onClick.invoke(this) }
 		this.onRelease = { onRelease.invoke(this) }
 		this.scope()
-	}
-	this.addElement(button)
-	return button
-}
+	})
+
+@JvmName("buttonString")
+inline fun ParentElement.button(
+	noinline text: () -> String,
+	width: Double = textRenderer.width(text()) + 8.0,
+	height: Double = 20.0,
+	color: Color<out Number> = Color4f.WHITE,
+	noinline onClick: Button.() -> Unit = { },
+	noinline onRelease: Button.() -> Unit = {},
+	scope: Button.() -> Unit = {},
+): Button =
+	this.addElement(Button(text).apply {
+		this.width = width
+		this.height = height
+		this.buttonColor = color
+		this.onClick = { onClick.invoke(this) }
+		this.onRelease = { onRelease.invoke(this) }
+		this.scope()
+	})
+
 
 inline fun ParentElement.iconButton(
 	icon: Icon,
@@ -51,15 +68,12 @@ inline fun ParentElement.iconButton(
 	noinline onClick: Button.() -> Unit = { },
 	noinline onRelease: Button.() -> Unit = {},
 	scope: Button.() -> Unit = {},
-): IconButton {
-	val button = IconButton(icon).apply {
+): IconButton =
+	this.addElement(IconButton(icon).apply {
 		this.width = width
 		this.height = height
 		this.buttonColor = color
 		this.onClick = { onClick.invoke(this) }
 		this.onRelease = { onRelease.invoke(this) }
 		this.scope()
-	}
-	this.addElement(button)
-	return button
-}
+	})

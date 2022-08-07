@@ -7,8 +7,8 @@ import forpleuvoir.mc.library.config.ConfigTypes
 import forpleuvoir.mc.library.config.options.ConfigBase
 import forpleuvoir.mc.library.config.options.IConfigMap
 import forpleuvoir.mc.library.utils.ifc
+import forpleuvoir.mc.library.utils.text.Text
 import forpleuvoir.mc.library.utils.toJsonObject
-import net.minecraft.network.chat.MutableComponent
 
 /**
  * 字符串映射
@@ -26,8 +26,8 @@ import net.minecraft.network.chat.MutableComponent
  */
 class ConfigStringMap(
 	override val key: String,
-	override val displayName: MutableComponent,
-	override val description: MutableComponent,
+	override val displayName: Text,
+	override val description: Text,
 	override val defaultValue: Map<String, String>,
 ) : ConfigBase<Map<String, String>>(), IConfigMap<String, String> {
 

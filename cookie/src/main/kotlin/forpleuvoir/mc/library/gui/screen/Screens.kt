@@ -14,12 +14,10 @@ package forpleuvoir.mc.library.gui.screen
  * @author forpleuvoir
 
  */
-fun ScreenHandler.screen(screenScope: AbstractScreen.() -> Unit): Screen {
-	val screen = object : AbstractScreen() {
+fun ScreenHandler.screen(screenScope: AbstractScreen.() -> Unit): Screen =
+	object : AbstractScreen() {
 		override fun init() {
 			children.clear()
 			screenScope()
 		}
 	}
-	return screen
-}

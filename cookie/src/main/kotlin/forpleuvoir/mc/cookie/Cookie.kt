@@ -1,5 +1,7 @@
 package forpleuvoir.mc.cookie
 
+import net.fabricmc.api.ModInitializer
+
 /**
  *
 
@@ -14,7 +16,11 @@ package forpleuvoir.mc.cookie
  * @author forpleuvoir
 
  */
-object Cookie {
+object Cookie : ModInitializer {
 	const val name: String = "Cookie"
 	const val id: String = "cookie"
+	override fun onInitialize() {
+
+	}
+
 }

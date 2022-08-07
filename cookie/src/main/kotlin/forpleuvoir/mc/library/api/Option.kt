@@ -1,6 +1,6 @@
 package forpleuvoir.mc.library.api
 
-import net.minecraft.network.chat.MutableComponent
+import forpleuvoir.mc.library.utils.text.Text
 
 /**
  *
@@ -19,7 +19,7 @@ import net.minecraft.network.chat.MutableComponent
 interface Option {
 	val key: String
 
-	val displayName: MutableComponent
+	val displayName: Text
 
-	val description: MutableComponent
+	val description: Text
 }

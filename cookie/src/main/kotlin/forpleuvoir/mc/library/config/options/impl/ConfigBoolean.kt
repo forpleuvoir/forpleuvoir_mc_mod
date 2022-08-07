@@ -6,7 +6,7 @@ import forpleuvoir.mc.library.config.ConfigType
 import forpleuvoir.mc.library.config.ConfigTypes
 import forpleuvoir.mc.library.config.options.ConfigBase
 import forpleuvoir.mc.library.config.options.IConfigBoolean
-import net.minecraft.network.chat.MutableComponent
+import forpleuvoir.mc.library.utils.text.Text
 
 /**
  * 布尔配置实现
@@ -24,8 +24,8 @@ import net.minecraft.network.chat.MutableComponent
  */
 open class ConfigBoolean(
 	override val key: String,
-	override val displayName: MutableComponent,
-	override val description: MutableComponent,
+	override val displayName: Text,
+	override val description: Text,
 	final override val defaultValue: Boolean,
 ) : ConfigBase<Boolean>(), IConfigBoolean {
 

@@ -1,8 +1,13 @@
 package forpleuvoir.mc.cookie.mixin.client;
 
+import forpleuvoir.mc.library.event.EventBus;
+import forpleuvoir.mc.library.event.events.client.input.MousePressEvent;
+import forpleuvoir.mc.library.event.events.client.input.MouseReleaseEvent;
 import forpleuvoir.mc.library.gui.foundation.ElementExtensionKt;
+import forpleuvoir.mc.library.gui.foundation.HandleStatus;
 import forpleuvoir.mc.library.gui.screen.ScreenHandler;
 import forpleuvoir.mc.library.input.InputHandler;
+import forpleuvoir.mc.library.input.KeyEnvironmentKt;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.MouseHandler;
 import org.spongepowered.asm.mixin.Final;
@@ -47,7 +52,10 @@ public abstract class MouseHandlerMixin {
 		if (window == this.minecraft.getWindow().getWindow()) {
 			if (action == 1) {
 				this.activeButton = button;
-				if (InputHandler.keyPress(button)) ci.cancel();
+				var mousePressedEvent = new MousePressEvent(button, mods, KeyEnvironmentKt.currentEnv());
+				EventBus.getINSTANCE().broadcast(mousePressedEvent);
+				mousePressedEvent.isCanceled(ci::cancel);
+				if (InputHandler.keyPress(button) == HandleStatus.Interrupt) ci.cancel();
 				ScreenHandler.hasScreen(screen -> {
 					if (screen.getActive()) {
 						screen.getMouseClick().invoke(ElementExtensionKt.getMouseX(), ElementExtensionKt.getMouseY(), button);
@@ -56,7 +64,10 @@ public abstract class MouseHandlerMixin {
 				});
 			} else {
 				this.activeButton = -1;
-				if (InputHandler.keyRelease(button)) ci.cancel();
+				var MouseReleaseEvent = new MouseReleaseEvent(button, mods, KeyEnvironmentKt.currentEnv());
+				EventBus.getINSTANCE().broadcast(MouseReleaseEvent);
+				MouseReleaseEvent.isCanceled(ci::cancel);
+				if (InputHandler.keyRelease(button) == HandleStatus.Interrupt) ci.cancel();
 				ScreenHandler.hasScreen(screen -> {
 					if (screen.getActive()) {
 						screen.getMouseRelease().invoke(ElementExtensionKt.getMouseX(), ElementExtensionKt.getMouseY(), button);

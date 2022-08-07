@@ -7,9 +7,9 @@ import forpleuvoir.mc.library.gui.foundation.ParentElement
 import forpleuvoir.mc.library.utils.color.Color
 import forpleuvoir.mc.library.utils.color.Color4i
 import forpleuvoir.mc.library.utils.d
+import forpleuvoir.mc.library.utils.text.Text
 import forpleuvoir.mc.library.utils.text.literal
 import forpleuvoir.mc.library.utils.textRenderer
-import net.minecraft.network.chat.MutableComponent
 import java.util.function.Supplier
 
 /**
@@ -28,7 +28,7 @@ import java.util.function.Supplier
  */
 
 inline fun ParentElement.textLabel(
-	noinline text: () -> MutableComponent,
+	noinline text: () -> Text,
 	width: Double = textRenderer.width(text()).d,
 	height: Double = textRenderer.lineHeight.d,
 	noinline onClick: TextLabel.(Int) -> Unit = { },
@@ -38,8 +38,8 @@ inline fun ParentElement.textLabel(
 	backgroundColor: Color<out Number> = Color4i.BLACK.apply { alpha = 0 },
 	bordColor: Color<out Number> = Color4i.BLACK.apply { alpha = 0 },
 	scope: (TextLabel.() -> Unit) = {},
-): TextLabel {
-	val textLabel = TextLabel(text, width, height).apply {
+): TextLabel =
+	this.addElement(TextLabel(text, width, height).apply {
 		this.align = align
 		this.mouseClick = { _, _, button ->
 			onClick.invoke(this, button)
@@ -51,10 +51,8 @@ inline fun ParentElement.textLabel(
 		this.bordColor = bordColor
 		this.parent = this@textLabel
 		scope()
-	}
-	this.addElement(textLabel)
-	return textLabel
-}
+	})
+
 
 inline fun ParentElement.textLabel(
 	text: Supplier<String>,

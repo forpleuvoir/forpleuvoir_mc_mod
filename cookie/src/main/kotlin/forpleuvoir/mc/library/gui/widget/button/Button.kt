@@ -9,9 +9,9 @@ import forpleuvoir.mc.library.gui.texture.BUTTON_1_PRESSED
 import forpleuvoir.mc.library.gui.widget.ClickableElement
 import forpleuvoir.mc.library.utils.color.Color
 import forpleuvoir.mc.library.utils.color.Color4f
+import forpleuvoir.mc.library.utils.text.Text
 import forpleuvoir.mc.library.utils.text.literal
 import forpleuvoir.mc.library.utils.textRenderer
-import net.minecraft.network.chat.MutableComponent
 import java.util.function.Supplier
 
 /**
@@ -34,12 +34,12 @@ open class Button() : ClickableElement() {
 		this.text = { literal(text()) }
 	}
 
-	constructor(text: Supplier<MutableComponent>) : this() {
+	constructor(text: Supplier<Text>) : this() {
 		this.text = { text.get() }
 	}
 
 
-	var text: () -> MutableComponent = { literal() }
+	var text: () -> Text = { literal() }
 
 	override var width: Double = textRenderer.width(text()) + 8.0
 		set(value) {

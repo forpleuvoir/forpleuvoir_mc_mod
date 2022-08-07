@@ -25,8 +25,8 @@ inline fun ParentElement.scrollerBar(
 	noinline amountConsumer: (Double) -> Unit = {},
 	noinline amountDelta: () -> Double = { 1.0 },
 	scope: ScrollerBar.() -> Unit = {},
-): ScrollerBar {
-	return this.addElement(ScrollerBar().apply {
+): ScrollerBar =
+	this.addElement(ScrollerBar().apply {
 		this.width = width
 		this.height = height
 		this.horizontal = horizontal
@@ -36,13 +36,12 @@ inline fun ParentElement.scrollerBar(
 		this.amountConsumer = amountConsumer
 		scope()
 	})
-}
+
 
 inline fun ParentElement.dropMenu(
 	noinline items: () -> List<String>,
 	currentItem: String,
 	noinline expandSize: () -> Int = { 10 },
 	scope: DropMenu.() -> Unit = {},
-): DropMenu {
-	return this.addElement(DropMenu(items, currentItem, expandSize).apply(scope))
-}
+): DropMenu =
+	this.addElement(DropMenu(items, currentItem, expandSize).apply(scope))

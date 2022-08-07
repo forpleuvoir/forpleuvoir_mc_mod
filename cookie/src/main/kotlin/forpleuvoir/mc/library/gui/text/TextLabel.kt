@@ -10,11 +10,11 @@ import forpleuvoir.mc.library.utils.color.Color
 import forpleuvoir.mc.library.utils.color.Color4i
 import forpleuvoir.mc.library.utils.d
 import forpleuvoir.mc.library.utils.f
+import forpleuvoir.mc.library.utils.text.Text
 import forpleuvoir.mc.library.utils.text.literal
 import forpleuvoir.mc.library.utils.textRenderer
 import net.minecraft.client.renderer.LightTexture.FULL_BRIGHT
 import net.minecraft.client.renderer.MultiBufferSource
-import net.minecraft.network.chat.MutableComponent
 import java.util.function.Supplier
 
 /**
@@ -33,7 +33,7 @@ import java.util.function.Supplier
  */
 class TextLabel() : AbstractElement() {
 
-	var text: () -> MutableComponent = { literal() }
+	var text: () -> Text = { literal() }
 	override var width: Double = textRenderer.width(text()).d
 	override var height: Double = textRenderer.lineHeight.d
 
@@ -58,7 +58,7 @@ class TextLabel() : AbstractElement() {
 	)
 
 	constructor(
-		text: Supplier<MutableComponent>,
+		text: Supplier<Text>,
 		width: Double = textRenderer.width(text.get()).d,
 		height: Double = textRenderer.lineHeight.d,
 	) : this() {

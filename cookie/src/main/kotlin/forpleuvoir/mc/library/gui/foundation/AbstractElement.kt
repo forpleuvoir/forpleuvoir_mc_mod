@@ -5,7 +5,7 @@ import forpleuvoir.mc.library.gui.screen.ScreenHandler
 import forpleuvoir.mc.library.utils.Direction
 import forpleuvoir.mc.library.utils.math.Vector3
 import forpleuvoir.mc.library.utils.math.Vector3d
-import net.minecraft.network.chat.MutableComponent
+import forpleuvoir.mc.library.utils.text.Text
 
 /**
  * 元素基础实现
@@ -39,7 +39,7 @@ abstract class AbstractElement : Element {
 
 	override var height: Double = 0.0
 
-	override var tip: (() -> MutableComponent)? = null
+	override var tip: (() -> Text)? = null
 
 	override var tipDirection: (() -> Direction)? = null
 

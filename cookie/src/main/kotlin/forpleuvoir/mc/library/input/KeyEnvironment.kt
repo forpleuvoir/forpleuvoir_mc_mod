@@ -1,9 +1,10 @@
 package forpleuvoir.mc.library.input
 
 import forpleuvoir.mc.library.api.Option
+import forpleuvoir.mc.library.gui.screen.ScreenHandler
 import forpleuvoir.mc.library.utils.mc
+import forpleuvoir.mc.library.utils.text.Text
 import forpleuvoir.mc.library.utils.text.translatable
-import net.minecraft.network.chat.MutableComponent
 
 /**
  * 按键环境
@@ -24,10 +25,10 @@ enum class KeyEnvironment(override val key: String) : Option {
 	InScreen("in_screen"),
 	Both("both");
 
-	override val displayName: MutableComponent
+	override val displayName: Text
 		get() = "cookie.key_bind.environment.${key}".translatable
 
-	override val description: MutableComponent
+	override val description: Text
 		get() = displayName
 
 	fun envMatch(): Boolean {
@@ -52,6 +53,5 @@ enum class KeyEnvironment(override val key: String) : Option {
 }
 
 fun currentEnv(): KeyEnvironment {
-	// TODO: 添加屏幕实现后要判断 屏幕
-	return if (mc.screen == null) KeyEnvironment.InGame else KeyEnvironment.InScreen
+	return if (mc.screen == null && !ScreenHandler.hasScreen()) KeyEnvironment.InGame else KeyEnvironment.InScreen
 }

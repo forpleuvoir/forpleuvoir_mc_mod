@@ -22,29 +22,24 @@ inline fun ParentElement.column(
 	padding: Margin = Margin(),
 	margin: Margin = Margin(),
 	scope: ColumnLayout.() -> Unit,
-): ColumnLayout {
-	val column = ColumnLayout().apply {
+): ColumnLayout =
+	this.addElement(ColumnLayout().apply {
 		padding(padding)
 		margin(margin)
 		scope()
-	}
-	this.addElement(column)
-	return column
-}
+	})
+
 
 inline fun ParentElement.row(
 	padding: Margin = Margin(),
 	margin: Margin = Margin(),
 	scope: RowLayout.() -> Unit,
-): RowLayout {
-	val row = RowLayout().apply {
+): RowLayout =
+	this.addElement(RowLayout().apply {
 		padding(padding)
 		margin(margin)
 		scope()
-	}
-	this.addElement(row)
-	return row
-}
+	})
 
 inline fun ParentElement.list(
 	width: Double = 0.0,
@@ -54,14 +49,11 @@ inline fun ParentElement.list(
 	padding: Margin = Margin(),
 	margin: Margin = Margin(),
 	scope: ListLayout.() -> Unit,
-): ListLayout {
-	return this.addElement(ListLayout(
-		width, height
-	).apply {
+): ListLayout =
+	this.addElement(ListLayout(width, height).apply {
 		scrollerBar.apply(scrollerBarScope)
 		this.horizontal = horizontal
 		padding(padding)
 		margin(margin)
 		scope()
 	})
-}

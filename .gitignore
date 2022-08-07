@@ -5,4 +5,5 @@
 # Ignore Gradle build output directory
 build
 /cookie/run/
+/cookie/src/test/
 /aseprite/cookie/test.aseprite

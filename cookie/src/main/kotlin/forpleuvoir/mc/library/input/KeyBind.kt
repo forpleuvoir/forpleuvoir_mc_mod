@@ -8,12 +8,14 @@ import forpleuvoir.mc.library.api.Matchable
 import forpleuvoir.mc.library.api.Notifiable
 import forpleuvoir.mc.library.api.Resettable
 import forpleuvoir.mc.library.api.serialization.JsonSerializer
+import forpleuvoir.mc.library.gui.foundation.HandleStatus
+import forpleuvoir.mc.library.gui.foundation.HandleStatus.Continue
 import forpleuvoir.mc.library.input.KeyTriggerMode.*
 import forpleuvoir.mc.library.utils.jsonArray
 import forpleuvoir.mc.library.utils.jsonObject
+import forpleuvoir.mc.library.utils.text.Text
 import forpleuvoir.mc.library.utils.text.literal
 import net.minecraft.client.renderer.texture.Tickable
-import net.minecraft.network.chat.MutableComponent
 import java.util.*
 
 /**
@@ -57,12 +59,12 @@ class KeyBind(
 	/**
 	 * 更新状态
 	 * @param key Set<Int>
-	 * @return Boolean 是否取之后的操作
+	 * @return [HandleStatus] 是否取之后的操作
 	 */
-	internal fun update(key: LinkedHashSet<Int>): Boolean {
+	internal fun update(key: LinkedHashSet<Int>): HandleStatus {
 		if (key.isEmpty()) {
 			isPressed = false
-			return false
+			return Continue
 		}
 		var isMatched = true
 		if (key.size == keys.size && keys.containsAll(key) && setting.ordered) {
@@ -77,7 +79,7 @@ class KeyBind(
 			return setting.cancelFurtherProcess
 		} else if (isPressed) return setting.cancelFurtherProcess
 		isPressed = false
-		return false
+		return Continue
 	}
 
 	override fun tick() {
@@ -154,9 +156,9 @@ class KeyBind(
 	}
 
 
-	val asTexts: List<MutableComponent>
+	val asTexts: List<Text>
 		get() {
-			val list = LinkedList<MutableComponent>()
+			val list = LinkedList<Text>()
 			keys.forEach {
 				if (it > 8)
 					list.addLast(literal("").append(InputConstants.getKey(it, 0).displayName))
