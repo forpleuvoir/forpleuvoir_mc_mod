@@ -5,7 +5,6 @@ import forpleuvoir.mc.library.gui.foundation.Align.Center
 import forpleuvoir.mc.library.gui.foundation.HandleStatus.Interrupt
 import forpleuvoir.mc.library.gui.foundation.ParentElement
 import forpleuvoir.mc.library.utils.color.Color
-import forpleuvoir.mc.library.utils.color.Color4i
 import forpleuvoir.mc.library.utils.d
 import forpleuvoir.mc.library.utils.text.Text
 import forpleuvoir.mc.library.utils.text.literal
@@ -35,8 +34,8 @@ inline fun ParentElement.textLabel(
 	align: Align = Center,
 	shadow: Boolean = false,
 	rightToLeft: Boolean = false,
-	backgroundColor: Color<out Number> = Color4i.BLACK.apply { alpha = 0 },
-	bordColor: Color<out Number> = Color4i.BLACK.apply { alpha = 0 },
+	backgroundColor: Color = Color.BLACK.alpha(0f),
+	bordColor: Color = Color.BLACK.alpha(0f),
 	scope: (TextLabel.() -> Unit) = {},
 ): TextLabel =
 	this.addElement(TextLabel(text, width, height).apply {
@@ -62,7 +61,7 @@ inline fun ParentElement.textLabel(
 	align: Align = Center,
 	shadow: Boolean = false,
 	rightToLeft: Boolean = false,
-	backgroundColor: Color<out Number> = Color4i.BLACK.apply { alpha = 0 },
-	bordColor: Color<out Number> = Color4i.BLACK.apply { alpha = 0 },
+	backgroundColor: Color = Color.BLACK.alpha(0f),
+	bordColor: Color = Color.BLACK.alpha(0f),
 	scope: (TextLabel.() -> Unit) = {},
 ): TextLabel = textLabel({ literal(text.get()) }, width, height, onClick, align, shadow, rightToLeft, backgroundColor, bordColor, scope)

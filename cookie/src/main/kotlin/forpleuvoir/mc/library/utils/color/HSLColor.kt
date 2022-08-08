@@ -1,9 +1,7 @@
 package forpleuvoir.mc.library.utils.color
 
-import forpleuvoir.mc.library.utils.clamp
-import forpleuvoir.mc.library.utils.f
-import forpleuvoir.mc.library.utils.i
-import kotlin.math.floor
+import com.google.gson.JsonElement
+import forpleuvoir.mc.library.utils.*
 
 /**
  *
@@ -19,12 +17,29 @@ import kotlin.math.floor
  * @author forpleuvoir
 
  */
-class HSLColor(color: Color<out Number>) {
+class HSLColor() : Color {
+
+	constructor(rgba: Int) : this() {
+		this.color = rgba
+	}
+
+	constructor(color: RGBColor) : this(color.color)
+
+	constructor(hsbColor: HSBColor) : this(hsbColor.color)
+
+	constructor(hslColor: HSLColor) : this(hslColor.color)
+
+	constructor(hue: Float = 360f, saturation: Float = 1.0f, lightness: Float = 1.0f, alpha: Float = 1.0f) : this() {
+		this.hue = hue
+		this.saturation = saturation
+		this.lightness = lightness
+		this.alpha = alpha
+	}
 
 	/**
 	 * 色相
 	 */
-	var hue: Int = 0
+	var hue: Float = 360f
 		set(value) {
 			field = value.clamp(0, 360)
 		}
@@ -32,7 +47,7 @@ class HSLColor(color: Color<out Number>) {
 	/**
 	 * 饱和度
 	 */
-	var saturation: Float = 0f
+	var saturation: Float = 1f
 		set(value) {
 			field = value.clamp(0f, 1f)
 		}
@@ -40,7 +55,7 @@ class HSLColor(color: Color<out Number>) {
 	/**
 	 * 亮度
 	 */
-	var lightness: Float = 0f
+	var lightness: Float = 1f
 		set(value) {
 			field = value.clamp(0f, 1f)
 		}
@@ -50,96 +65,116 @@ class HSLColor(color: Color<out Number>) {
 			field = value.clamp(0f, 1f)
 		}
 
-	init {
-		val color4f = Color4f(color)
-		alpha = color4f.alpha
-		val red = color4f.red
-		val green = color4f.green
-		val blue = color4f.blue
-		val max = red.coerceAtLeast(green.coerceAtLeast(blue))
-		val min = red.coerceAtLeast(green.coerceAtLeast(blue))
-		lightness = (max + min) / 2
-		if (max == min) {
-			saturation = 0f
-			hue = 0
-		} else {
-			saturation = if (lightness > 0.5f) {
-				(max - min) / (2.0f - max - min)
+
+	override var color: Int
+		get() {
+			val r: Float
+			val g: Float
+			val b: Float
+			var hue: Float = this.hue / 360
+			val saturation: Float = this.saturation
+			val lightness: Float = this.lightness
+			val normalize: (Float, Float, Float) -> Float = { q, p, color ->
+				if (color < 1.0f) {
+					p + (q - p) * color
+				} else if (color < 3.0f) {
+					q
+				} else if (color < 4.0f) {
+					(p + (q - p) * (4.0f - color))
+				} else p
+			}
+			if (saturation > 0.0f) {
+				hue = if (hue < 1.0f) hue * 6.0f else 0.0f
+				val q = lightness + saturation * if (lightness > 0.5f) 1.0f - lightness else lightness
+				val p = 2.0f * lightness - q
+				r = normalize(q, p, if (hue < 4.0f) hue + 2.0f else hue - 4.0f)
+				g = normalize(q, p, hue)
+				b = normalize(q, p, if (hue < 2.0f) hue + 4.0f else hue - 2.0f)
 			} else {
-				(max - min) / (max + min)
+				r = lightness
+				g = lightness
+				b = lightness
 			}
-			val h = when (max) {
-				red   -> {
-					(green - blue) / (max + min)
-				}
-				green -> {
-					(blue - red) / (max + min)
-				}
-				else  -> {
-					(red - green) / (max + min)
-				}
+			return ((alpha * 255).i shl 24) or ((r * 255).i shl 16) or ((g * 255).i shl 8) or ((b * 255).i shl 0)
+		}
+		set(value) {
+			val color = RGBColor(value)
+			val r = color.redF
+			val g = color.greenF
+			val b = color.blueF
+			val max = max(r, g, b)
+			val min = min(r, g, b)
+			val summa = max + min
+			var saturation = max - min
+			if (saturation > 0.0f) {
+				saturation /= if (summa > 1.0f) 2.0f - summa else summa
 			}
-			hue = if (h * 60 < 0) (h * 60).i + 360 else (h * 60).i
+			this.hue = run {
+				var hue1 = max - min
+				if (hue1 > 0.0f) {
+					if (max == r) {
+						hue1 = (g - b) / hue1
+						if (hue1 < 0.0f) {
+							hue1 += 6.0f
+						}
+					} else if (max == g) {
+						hue1 = 2.0f + (b - r) / hue1
+					} else {
+						hue1 = 4.0f + (r - g) / hue1
+					}
+					hue1 /= 6.0f
+				}
+				hue1 * 360
+			}
+			this.saturation = saturation
+			this.lightness = summa / 2.0f
+			this.alpha = color.alphaF
 		}
 
+	override fun alpha(alpha: Float): HSLColor {
+		this.alpha = alpha
+		return this
 	}
 
-	fun toRgba(): Int {
-		val hue = (hue / 360).f
-		val r: Float
-		val g: Float
-		val b: Float
-		val x: Float
-		val y: Float
-		val z: Float
-		val v: Float = if (lightness <= 0.5f) lightness * (1.0f + saturation) else lightness + saturation - lightness * saturation
-		if (saturation == 0.0f) {
-			r = lightness
-			g = lightness
-			b = lightness
-			return Color4f(r, g, b, alpha).rgba
-		}
-		y = 2.0f * lightness - v
-		x = y + (v - y) * (6.0f * hue - floor(6.0f * hue))
-		z = v - (v - y) * (6.0f * hue - floor(6.0f * hue))
-		when ((6.0 * hue).toInt()) {
-			0    -> {
-				r = v
-				g = x
-				b = y
-			}
-			1    -> {
-				r = z
-				g = v
-				b = y
-			}
-			2    -> {
-				r = y
-				g = v
-				b = x
-			}
-			3    -> {
-				r = y
-				g = z
-				b = v
-			}
-			4    -> {
-				r = x
-				g = y
-				b = v
-			}
-			5    -> {
-				r = v
-				g = y
-				b = z
-			}
-			else -> {
-				r = v
-				g = x
-				b = y
-			}
-		}
-		return Color4f(r, g, b, alpha).rgba
+	override fun opacity(opacity: Float): HSLColor {
+		return HSLColor(this).apply { alpha = (alpha * opacity.clamp(0.0, 1.0)).f }
 	}
+
+	override fun copy(): HSLColor = hslColor
+
+	override val serialization: JsonElement
+		get() = jsonObject {
+			"hue" at hue
+			"saturation" at saturation
+			"lightness" at lightness
+			"alpha" at alpha
+		}
+
+	override fun deserialize(serializedObject: JsonElement) {
+		serializedObject.asJsonObject.apply {
+			hue = this["hue"].asFloat
+			saturation = this["saturation"].asFloat
+			lightness = this["lightness"].asFloat
+			alpha = this["alpha"].asFloat
+		}
+	}
+
+	override fun equals(other: Any?): Boolean {
+		if (this === other) return true
+		if (javaClass != other?.javaClass) return false
+
+		other as HSLColor
+
+		if (hashCode() != other.hashCode()) return false
+
+		return true
+	}
+
+	override fun hashCode(): Int = color
+
+	override fun toString(): String {
+		return "HSLColor(hue=$hue, saturation=$saturation, lightness=$lightness, alpha=$alpha, hexString='$hexString')"
+	}
+
 
 }

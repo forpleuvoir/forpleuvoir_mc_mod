@@ -1,6 +1,6 @@
 package forpleuvoir.mc.library.gui.icon
 
-import forpleuvoir.mc.library.utils.color.Color4f
+import forpleuvoir.mc.library.utils.color.Color
 
 /**
  * 图标
@@ -18,7 +18,7 @@ import forpleuvoir.mc.library.utils.color.Color4f
  */
 
 
-val SEARCH = CookieIcon(u = 0, v = 0, color = Color4f.WHITE, hoveredColor = Color4f.WHITE)
+val SEARCH = CookieIcon(u = 0, v = 0, color = Color.WHITE, hoveredColor = Color.WHITE)
 
 val CLOSE = CookieIcon(u = 6, v = 0)
 

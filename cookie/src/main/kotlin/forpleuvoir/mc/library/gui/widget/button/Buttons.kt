@@ -3,7 +3,6 @@ package forpleuvoir.mc.library.gui.widget.button
 import forpleuvoir.mc.library.gui.foundation.ParentElement
 import forpleuvoir.mc.library.gui.icon.Icon
 import forpleuvoir.mc.library.utils.color.Color
-import forpleuvoir.mc.library.utils.color.Color4f
 import forpleuvoir.mc.library.utils.text.Text
 import forpleuvoir.mc.library.utils.textRenderer
 
@@ -26,7 +25,7 @@ inline fun ParentElement.button(
 	noinline text: () -> Text,
 	width: Double = textRenderer.width(text()) + 8.0,
 	height: Double = 20.0,
-	color: Color<out Number> = Color4f.WHITE,
+	color: Color = Color.WHITE,
 	noinline onClick: Button.() -> Unit = { },
 	noinline onRelease: Button.() -> Unit = {},
 	scope: Button.() -> Unit = {},
@@ -45,7 +44,7 @@ inline fun ParentElement.button(
 	noinline text: () -> String,
 	width: Double = textRenderer.width(text()) + 8.0,
 	height: Double = 20.0,
-	color: Color<out Number> = Color4f.WHITE,
+	color: Color = Color.WHITE,
 	noinline onClick: Button.() -> Unit = { },
 	noinline onRelease: Button.() -> Unit = {},
 	scope: Button.() -> Unit = {},
@@ -64,7 +63,7 @@ inline fun ParentElement.iconButton(
 	icon: Icon,
 	width: Double = 20.0,
 	height: Double = 20.0,
-	color: Color<out Number> = Color4f.WHITE,
+	color: Color = Color.WHITE,
 	noinline onClick: Button.() -> Unit = { },
 	noinline onRelease: Button.() -> Unit = {},
 	scope: Button.() -> Unit = {},

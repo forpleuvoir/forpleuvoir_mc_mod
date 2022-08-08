@@ -5,7 +5,6 @@ import com.mojang.blaze3d.vertex.*
 import forpleuvoir.mc.library.gui.foundation.HorizontalAlign.*
 import forpleuvoir.mc.library.gui.texture.GuiTexture
 import forpleuvoir.mc.library.utils.color.Color
-import forpleuvoir.mc.library.utils.color.Color4f
 import forpleuvoir.mc.library.utils.d
 import forpleuvoir.mc.library.utils.f
 import forpleuvoir.mc.library.utils.textRenderer
@@ -43,9 +42,7 @@ fun Drawable.enableTexture() = RenderSystem.enableTexture()
 
 fun Drawable.disableTexture() = RenderSystem.disableTexture()
 
-fun Drawable.setShaderColor(color: Color<out Number>) = setShaderColor(Color4f().fromInt(color.rgba))
-
-fun Drawable.setShaderColor(color: Color4f) = RenderSystem.setShaderColor(color.red, color.green, color.blue, color.alpha)
+fun Drawable.setShaderColor(color: Color) = color.rgbColor.run { RenderSystem.setShaderColor(redF, greenF, blueF, alphaF) }
 
 fun Drawable.enablePolygonOffset() = RenderSystem.enablePolygonOffset()
 
@@ -71,9 +68,9 @@ fun Drawable.disableDepthTest() = RenderSystem.disableDepthTest()
  * @param y Number
  * @param width Number
  * @param height Number
- * @param color Color<out Number>
+ * @param color IColor
  */
-fun Drawable.drawRect(poseStack: PoseStack, x: Number, y: Number, width: Number, height: Number, color: Color<out Number>) {
+fun Drawable.drawRect(poseStack: PoseStack, x: Number, y: Number, width: Number, height: Number, color: Color) {
 	setShader { GameRenderer.getPositionColorShader()!! }
 	enableBlend()
 	defaultBlendFunc()
@@ -81,10 +78,10 @@ fun Drawable.drawRect(poseStack: PoseStack, x: Number, y: Number, width: Number,
 	val buffer = Tesselator.getInstance().builder
 	val matrix4f = poseStack.last().pose()
 	buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR)
-	buffer.vertex(matrix4f, x.f, y.f, zOffset.f).color(color.rgba).endVertex()
-	buffer.vertex(matrix4f, x.f, (y.f + height.f), zOffset.f).color(color.rgba).endVertex()
-	buffer.vertex(matrix4f, (x.f + width.f), (y.f + height.f), zOffset.f).color(color.rgba).endVertex()
-	buffer.vertex(matrix4f, (x.f + width.f), y.f, zOffset.f).color(color.rgba).endVertex()
+	buffer.vertex(matrix4f, x.f, y.f, zOffset.f).color(color.color).endVertex()
+	buffer.vertex(matrix4f, x.f, (y.f + height.f), zOffset.f).color(color.color).endVertex()
+	buffer.vertex(matrix4f, (x.f + width.f), (y.f + height.f), zOffset.f).color(color.color).endVertex()
+	buffer.vertex(matrix4f, (x.f + width.f), y.f, zOffset.f).color(color.color).endVertex()
 	BufferUploader.drawWithShader(buffer.end())
 	enableTexture()
 	disableBlend()
@@ -98,7 +95,7 @@ fun Drawable.drawRect(poseStack: PoseStack, x: Number, y: Number, width: Number,
  * @param y Number
  * @param width Number
  * @param height Number
- * @param color Color<out Number>
+ * @param color IColor
  * @param borderWidth Number
  */
 fun Drawable.drawOutline(
@@ -107,7 +104,7 @@ fun Drawable.drawOutline(
 	y: Number,
 	width: Number,
 	height: Number,
-	color: Color<out Number>,
+	color: Color,
 	borderWidth: Number = 1,
 ) {
 	drawRect(poseStack, x, y, borderWidth, height, color)
@@ -133,8 +130,8 @@ fun Drawable.drawOutline(
  * @param y Number
  * @param width Number
  * @param height Number
- * @param color Color<out Number>
- * @param outlineColor Color<out Number>
+ * @param color IColor
+ * @param outlineColor IColor
  * @param borderWidth Number
  * @param innerOutline Boolean
  */
@@ -144,8 +141,8 @@ fun Drawable.drawOutlinedBox(
 	y: Number,
 	width: Number,
 	height: Number,
-	color: Color<out Number>,
-	outlineColor: Color<out Number>,
+	color: Color,
+	outlineColor: Color,
 	borderWidth: Number = 1,
 	innerOutline: Boolean = true,
 ) {
@@ -172,8 +169,8 @@ fun Drawable.drawGradient(
 	startY: Number,
 	endX: Number,
 	endY: Number,
-	startColor: Color<out Number>,
-	endColor: Color<out Number>,
+	startColor: Color,
+	endColor: Color,
 ) {
 	disableTexture()
 	enableBlend()
@@ -182,10 +179,10 @@ fun Drawable.drawGradient(
 	val buffer = tess.builder
 	val matrix4f = poseStack.last().pose()
 	buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR)
-	buffer.vertex(matrix4f, endX.f, startY.f, zOffset.f).color(startColor.rgba).endVertex()
-	buffer.vertex(matrix4f, startX.f, startY.f, zOffset.f).color(startColor.rgba).endVertex()
-	buffer.vertex(matrix4f, startX.f, endY.f, zOffset.f).color(endColor.rgba).endVertex()
-	buffer.vertex(matrix4f, endX.f, endY.f, zOffset.f).color(endColor.rgba).endVertex()
+	buffer.vertex(matrix4f, endX.f, startY.f, zOffset.f).color(startColor.color).endVertex()
+	buffer.vertex(matrix4f, startX.f, startY.f, zOffset.f).color(startColor.color).endVertex()
+	buffer.vertex(matrix4f, startX.f, endY.f, zOffset.f).color(endColor.color).endVertex()
+	buffer.vertex(matrix4f, endX.f, endY.f, zOffset.f).color(endColor.color).endVertex()
 	tess.end()
 	disableBlend()
 	enableTexture()
@@ -377,7 +374,7 @@ fun Drawable.drawTexture(
 	width: Number,
 	height: Number,
 	texture: GuiTexture,
-	shaderColor: Color<out Number> = Color4f.WHITE,
+	shaderColor: Color = Color.WHITE,
 ) {
 	setShaderTexture(texture.texture)
 	enableBlend()
@@ -402,7 +399,7 @@ fun Drawable.drawTexture(
 		texture.textureHeight
 	)
 	disableBlend()
-	setShaderColor(Color4f.WHITE)
+	setShaderColor(Color.WHITE)
 }
 
 
@@ -415,8 +412,8 @@ fun Drawable.drawCenteredText(
 	height: Number,
 	shadow: Boolean = true,
 	rightToLeft: Boolean = false,
-	color: Color<out Number> = Color4f.WHITE,
-	backgroundColor: Color<out Number> = Color4f(alpha = 0.0f),
+	color: Color = Color.WHITE,
+	backgroundColor: Color = Color.WHITE.alpha(0.5f),
 ) {
 	val centerX = x.f + width.f / 2
 	val centerY = y.f + height.f / 2
@@ -426,12 +423,12 @@ fun Drawable.drawCenteredText(
 		text.string,
 		centerX - textWidth / 2,
 		centerY - textRenderer.lineHeight / 2,
-		color.rgba,
+		color.color,
 		shadow,
 		poseStack.last().pose(),
 		immediate,
 		false,
-		backgroundColor.rgba,
+		backgroundColor.color,
 		FULL_BRIGHT,
 		rightToLeft
 	)
@@ -445,18 +442,18 @@ fun Drawable.drawText(
 	x: Number,
 	y: Number,
 	shadow: Boolean = true,
-	color: Color<out Number> = Color4f.WHITE,
+	color: Color = Color.WHITE,
 ) {
 	textRenderer.drawInBatch(
 		text,
 		x.f,
 		y.f,
-		color.rgba,
+		color.color,
 		shadow,
 		poseStack.last().pose(),
 		MultiBufferSource.immediate(Tesselator.getInstance().builder),
 		false,
-		Color4f.WHITE.rgba,
+		Color.WHITE.color,
 		FULL_BRIGHT,
 		false
 	)
@@ -468,14 +465,14 @@ fun Drawable.drawStringLines(
 	x: Number,
 	y: Number,
 	lineSpacing: Number = 1,
-	color: Color<out Number> = Color4f.BLACK,
+	color: Color = Color.BLACK,
 	shadow: Boolean = false,
 	align: HorizontalAlign = Left,
 	rightToLeft: Boolean = false,
 ) {
 	val drawText: (text: String, posX: Float, posY: Float) -> Unit = { text, posX, posY ->
 		val immediate = MultiBufferSource.immediate(Tesselator.getInstance().builder)
-		textRenderer.drawInBatch(text, posX, posY, color.rgba, shadow, poseStack.last().pose(), immediate, false, 0, FULL_BRIGHT, rightToLeft)
+		textRenderer.drawInBatch(text, posX, posY, color.color, shadow, poseStack.last().pose(), immediate, false, 0, FULL_BRIGHT, rightToLeft)
 		immediate.endBatch()
 	}
 	var textY = y.f
@@ -513,7 +510,7 @@ fun Drawable.drawTextLines(
 	x: Number,
 	y: Number,
 	lineSpacing: Number = 1,
-	color: Color<out Number> = Color4f.BLACK,
+	color: Color = Color.BLACK,
 	shadow: Boolean = false,
 	align: HorizontalAlign = Left,
 	rightToLeft: Boolean = false,

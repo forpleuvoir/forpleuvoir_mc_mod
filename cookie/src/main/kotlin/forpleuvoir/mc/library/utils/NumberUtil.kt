@@ -23,6 +23,44 @@ fun Number.clamp(minValue: Number, maxValue: Number): Number {
 	} else this
 }
 
+fun min(x: Double, y: Double, z: Double): Double {
+	val min: Double = if (x < y) x else y
+	return if (min < z) min else z
+}
+
+fun min(x: Float, y: Float, z: Float): Float {
+	val min: Float = if (x < y) x else y
+	return if (min < z) min else z
+}
+
+fun min(x: Int, y: Int, z: Int): Int {
+	val min: Int = if (x < y) x else y
+	return if (min < z) min else z
+}
+
+fun max(x: Double, y: Double, z: Double): Double {
+	val max: Double = if (x > y) x else y
+	return if (max > z) max else z
+}
+
+fun max(x: Float, y: Float, z: Float): Float {
+	val max: Float = if (x > y) x else y
+	return if (max > z) max else z
+}
+
+fun max(x: Int, y: Int, z: Int): Int {
+	val max: Int = if (x > y) x else y
+	return if (max > z) max.toInt() else z
+}
+
+fun Byte.clamp(minValue: Number, maxValue: Number): Byte {
+	return (this as Number).clamp(minValue, maxValue).toByte()
+}
+
+fun Short.clamp(minValue: Number, maxValue: Number): Short {
+	return (this as Number).clamp(minValue, maxValue).toShort()
+}
+
 fun Int.clamp(minValue: Number, maxValue: Number): Int {
 	return (this as Number).clamp(minValue, maxValue).toInt()
 }

@@ -11,7 +11,7 @@ import forpleuvoir.mc.library.gui.texture.BORDER
 import forpleuvoir.mc.library.gui.texture.TEXT_FIELD
 import forpleuvoir.mc.library.gui.widget.button.IconButton
 import forpleuvoir.mc.library.utils.Direction
-import forpleuvoir.mc.library.utils.color.Color4f
+import forpleuvoir.mc.library.utils.color.Color
 import forpleuvoir.mc.library.utils.d
 import forpleuvoir.mc.library.utils.text.Text
 import forpleuvoir.mc.library.utils.text.literal
@@ -80,7 +80,7 @@ class DropMenu(
 	private val currentText: TextLabel = TextLabel(Supplier { literal(this.currentItem) }, width = width, height = fixedHeight - 2.0).apply {
 		x = this@DropMenu.x
 		y = this@DropMenu.y + 1
-		textColor = Color4f.BLACK
+		textColor = Color.BLACK
 		padding.set(Margin(left = 4.0, top = 0.5, right = fixedHeight.d))
 		align = Align.CenterLeft
 		render = { poseStack: PoseStack, delta: Double ->
@@ -121,15 +121,15 @@ class DropMenu(
 			) {
 				tip = itemTip?.run { { invoke(str) } }
 				tipDirection = itemTipDirection?.run { { invoke(str) } }
-				textColor = Color4f.BLACK
+				textColor = Color.BLACK
 				render = { poseStack, delta ->
-					mouseHover { drawRect(poseStack, x, y - 0.5, this@apply.width - scrollerBar.width, height, Color4f.BLACK.alpha(0.2f)) }
+					mouseHover { drawRect(poseStack, x, y - 0.5, this@apply.width - scrollerBar.width, height, Color.BLACK.alpha(0.2f)) }
 					onRender(poseStack, delta)
 				}
 			}
 		}
 		render = { poseStack, delta ->
-			drawRect(poseStack, x - 2, y - 2, width + 4, height + 4, Color4f.WHITE)
+			drawRect(poseStack, x - 2, y - 2, width + 4, height + 4, Color.WHITE)
 			onRender(poseStack, delta)
 			drawTexture(poseStack, x - 4, y - 4 - 1, width + 8, height + 8 + 2, BORDER)
 		}

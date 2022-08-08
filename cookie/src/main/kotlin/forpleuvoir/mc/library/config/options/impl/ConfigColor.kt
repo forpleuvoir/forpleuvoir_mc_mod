@@ -26,21 +26,21 @@ open class ConfigColor(
 	override val key: String,
 	override val displayName: Text,
 	override val description: Text,
-	final override val defaultValue: Color<out Number>,
-) : ConfigBase<Color<out Number>>(), IConfigColor {
+	final override val defaultValue: Color,
+) : ConfigBase<Color>(), IConfigColor {
 
 	override val type: ConfigType
 		get() = ConfigTypes.COLOR
 
-	override var configValue: Color<out Number> = Color.copy(defaultValue)
+	override var configValue: Color = defaultValue.copy()
 
-	override fun setValue(value: Color<out Number>) {
+	override fun setValue(value: Color) {
 		if (configValue == value) return
-		configValue = Color.copy(value)
+		configValue = value.copy()
 		onChanged()
 	}
 
-	override fun getValue(): Color<out Number> = Color.copy(configValue)
+	override fun getValue(): Color = configValue.copy()
 
 	override fun setFromJson(jsonElement: JsonElement): Boolean {
 		configValue.deserialize(jsonElement)

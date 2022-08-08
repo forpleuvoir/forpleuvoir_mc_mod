@@ -6,7 +6,6 @@ import forpleuvoir.mc.library.gui.texture.TEXT_FIELD
 import forpleuvoir.mc.library.input.*
 import forpleuvoir.mc.library.utils.clamp
 import forpleuvoir.mc.library.utils.color.Color
-import forpleuvoir.mc.library.utils.color.Color4f
 import forpleuvoir.mc.library.utils.mc
 import forpleuvoir.mc.library.utils.textRenderer
 
@@ -38,7 +37,7 @@ open class TextInput(text: String = "") : AbstractElement() {
 			field = value.clamp(0, 65535)
 		}
 
-	var textColor: Color<out Number> = Color4f.WHITE
+	var textColor: Color = Color.WHITE
 
 	/**
 	 * 输入限制
@@ -191,7 +190,7 @@ open class TextInput(text: String = "") : AbstractElement() {
 	}
 
 	protected open fun drawCursor(poseStack: PoseStack, delta: Double) {
-
+		TODO("绘制光标")
 	}
 
 	override fun onRender(poseStack: PoseStack, delta: Double) {

@@ -7,7 +7,6 @@ import forpleuvoir.mc.library.gui.foundation.Align
 import forpleuvoir.mc.library.gui.foundation.Align.*
 import forpleuvoir.mc.library.gui.foundation.drawOutlinedBox
 import forpleuvoir.mc.library.utils.color.Color
-import forpleuvoir.mc.library.utils.color.Color4i
 import forpleuvoir.mc.library.utils.d
 import forpleuvoir.mc.library.utils.f
 import forpleuvoir.mc.library.utils.text.Text
@@ -75,11 +74,11 @@ class TextLabel() : AbstractElement() {
 	private val centerX: Double get() = (this.x + this.width / 2) + padding.left
 	private val centerY: Double get() = (this.y + this.height / 2) + padding.top
 
-	var textColor: Color<out Number> = Color4i().fromInt(Color4i.WHITE.rgba)
+	var textColor: Color = Color.WHITE
 	var rightToLeft: Boolean = false
 	var shadow: Boolean = false
-	var backgroundColor: Color<out Number> = Color4i.BLACK.apply { alpha = 0 }
-	var bordColor: Color<out Number> = Color4i.BLACK.apply { alpha = 0 }
+	var backgroundColor: Color = Color.BLACK.alpha(0f)
+	var bordColor: Color = Color.BLACK.alpha(0f)
 
 	private val renderText: String
 		get() {
@@ -149,7 +148,7 @@ class TextLabel() : AbstractElement() {
 			renderText,
 			textX.f,
 			textY.f,
-			textColor.rgba,
+			textColor.color,
 			shadow,
 			poseStack.last().pose(),
 			immediate,

@@ -8,7 +8,6 @@ import forpleuvoir.mc.library.gui.foundation.ParentElement
 import forpleuvoir.mc.library.gui.foundation.drawRect
 import forpleuvoir.mc.library.input.KEY_ESCAPE
 import forpleuvoir.mc.library.utils.color.Color
-import forpleuvoir.mc.library.utils.color.Color4f
 import forpleuvoir.mc.library.utils.d
 
 /**
@@ -42,7 +41,7 @@ abstract class AbstractScreen : AbstractParentElement(), Screen {
 	/**
 	 * 背景颜色
 	 */
-	var backgroundColor: Color<out Number> = Color4f.BLACK.alpha(0.5f)
+	var backgroundColor: Color = Color.BLACK.alpha(0.5f)
 
 	internal val tipRenderer: TipRenderer = TipRenderer(this)
 
