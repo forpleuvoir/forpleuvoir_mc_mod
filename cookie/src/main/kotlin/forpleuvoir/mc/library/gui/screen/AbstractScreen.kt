@@ -41,7 +41,7 @@ abstract class AbstractScreen : AbstractParentElement(), Screen {
 	/**
 	 * 背景颜色
 	 */
-	var backgroundColor: Color = Color.BLACK.alpha(0.5f)
+	var backgroundColor: Color = Color.BLACK.alphaF(0.5f)
 
 	internal val tipRenderer: TipRenderer = TipRenderer(this)
 

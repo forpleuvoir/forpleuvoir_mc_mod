@@ -76,6 +76,14 @@ interface Color : JsonSerializer {
 
 	val hslColor: HSLColor get() = HSLColor(color)
 
+	val red: Int get() = color shr 16 and 0xFF
+
+	val green: Int get() = color shr 8 and 0xFF
+
+	val blue: Int get() = color shr 0 and 0xFF
+
+	val alpha: Int get() = color shr 24 and 0xFF
+
 	/**
 	 * 获取调整透明的之后的颜色复制对象
 	 *
@@ -88,10 +96,19 @@ interface Color : JsonSerializer {
 
 	/**
 	 * 修改alpha之后返回当前对象
-	 * @param alpha Float {0.0 - 1.0}
-	 * @return IColor
+	 * @param alphaF Float {0.0 - 1.0}
+	 * @return [Color]
 	 */
-	fun alpha(alpha: Float): Color
+	fun alphaF(alphaF: Float): Color
+
+	/**
+	 * 修改alpha之后返回当前对象
+	 * @param alpha Int {0 - 255}
+	 * @return [Color]
+	 */
+	fun alpha(alpha: Int): Color {
+		return alphaF(alpha / 255f)
+	}
 
 	/**
 	 * 获取颜色副本
@@ -101,16 +118,14 @@ interface Color : JsonSerializer {
 
 	val hexString: String
 		get() {
-			return "#${(color shr 24 and 0xFF).toString(16).run { formatStr(this) }}" +
-					(color shr 16 and 0xFF).toString(16).run { formatStr(this) } +
-					(color shr 8 and 0xFF).toString(16).run { formatStr(this) } +
-					(color shr 0 and 0xFF).toString(16).run { formatStr(this) }
+			val formatStr: (String) -> String = { str ->
+				(if (str == "0") "00" else if (str.length == 1) "0$str" else str).uppercase()
+			}
+			return "#${alpha.toString(16).run { formatStr(this) }}" +
+					red.toString(16).run { formatStr(this) } +
+					green.toString(16).run { formatStr(this) } +
+					blue.toString(16).run { formatStr(this) }
 		}
-
-	private fun formatStr(str: String): String {
-		return (if (str == "0") "00" else if (str.length == 1) "0$str" else str).uppercase()
-	}
-
 
 	override val serialization: JsonElement
 		get() = JsonPrimitive(color)

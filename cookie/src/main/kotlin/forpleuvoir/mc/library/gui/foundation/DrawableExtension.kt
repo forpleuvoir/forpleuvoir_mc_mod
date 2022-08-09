@@ -413,7 +413,7 @@ fun Drawable.drawCenteredText(
 	shadow: Boolean = true,
 	rightToLeft: Boolean = false,
 	color: Color = Color.WHITE,
-	backgroundColor: Color = Color.WHITE.alpha(0.5f),
+	backgroundColor: Color = Color.WHITE.alphaF(0.5f),
 ) {
 	val centerX = x.f + width.f / 2
 	val centerY = y.f + height.f / 2

@@ -33,11 +33,11 @@ class HSBColor() : Color {
 
 	constructor(hsbColor: HSBColor) : this(hsbColor.color)
 
-	constructor(hue: Float = 360.0f, saturation: Float = 1.0f, value: Float = 1.0f, alpha: Float = 1.0f) : this() {
+	constructor(hue: Float = 360.0f, saturation: Float = 1.0f, value: Float = 1.0f, alphaF: Float = 1.0f) : this() {
 		this.hue = hue
 		this.saturation = saturation
 		this.brightness = value
-		this.alpha = alpha
+		this.alphaF = alphaF
 	}
 
 	/**
@@ -64,7 +64,7 @@ class HSBColor() : Color {
 			field = value.clamp(0, 1f)
 		}
 
-	var alpha: Float = 1f
+	var alphaF: Float = 1f
 		set(value) {
 			field = value.clamp(0f, 1f)
 		}
@@ -123,7 +123,7 @@ class HSBColor() : Color {
 					}
 				}
 			}
-			return ((alpha * 255).i shl 24) or (r shl 16) or (g shl 8) or (b shl 0)
+			return ((alphaF * 255).i shl 24) or (r shl 16) or (g shl 8) or (b shl 0)
 		}
 		set(value) {
 			val color = RGBColor(value)
@@ -133,33 +133,33 @@ class HSBColor() : Color {
 			var hue: Float
 			val saturation: Float
 			val brightness: Float
-			var cmax: Int = if (r > g) r else g
-			if (b > cmax) cmax = b
-			var cmin: Int = if (r < g) r else g
-			if (b < cmin) cmin = b
-			brightness = cmax.toFloat() / 255.0f
-			saturation = if (cmax != 0) (cmax - cmin).toFloat() / cmax.toFloat() else 0f
+			var cMax: Int = if (r > g) r else g
+			if (b > cMax) cMax = b
+			var cMin: Int = if (r < g) r else g
+			if (b < cMin) cMin = b
+			brightness = cMax.toFloat() / 255.0f
+			saturation = if (cMax != 0) (cMax - cMin).toFloat() / cMax.toFloat() else 0f
 			if (saturation == 0f) hue = 0f else {
-				val redc: Float = (cmax - r).toFloat() / (cmax - cmin).toFloat()
-				val greenc: Float = (cmax - g).toFloat() / (cmax - cmin).toFloat()
-				val bluec: Float = (cmax - b).toFloat() / (cmax - cmin).toFloat()
-				hue = if (r == cmax) bluec - greenc else if (g == cmax) 2.0f + redc - bluec else 4.0f + greenc - redc
+				val redC: Float = (cMax - r).toFloat() / (cMax - cMin).toFloat()
+				val greenC: Float = (cMax - g).toFloat() / (cMax - cMin).toFloat()
+				val blueC: Float = (cMax - b).toFloat() / (cMax - cMin).toFloat()
+				hue = if (r == cMax) blueC - greenC else if (g == cMax) 2.0f + redC - blueC else 4.0f + greenC - redC
 				hue /= 6.0f
 				if (hue < 0) hue += 1.0f
 			}
 			this.hue = hue * 360f
 			this.saturation = saturation
 			this.brightness = brightness
-			this.alpha = color.alphaF
+			this.alphaF = color.alphaF
 		}
 
-	override fun alpha(alpha: Float): HSBColor {
-		this.alpha = alpha
+	override fun alphaF(alphaF: Float): HSBColor {
+		this.alphaF = alphaF
 		return this
 	}
 
 	override fun opacity(opacity: Float): HSBColor {
-		return HSBColor(this).apply { alpha = (alpha * opacity.clamp(0.0, 1.0)).f }
+		return HSBColor(this).apply { alphaF = (alphaF * opacity.clamp(0.0, 1.0)).f }
 	}
 
 	override fun copy(): HSBColor = hsbColor
@@ -169,7 +169,7 @@ class HSBColor() : Color {
 			"hue" at hue
 			"saturation" at saturation
 			"brightness" at brightness
-			"alpha" at alpha
+			"alpha" at alphaF
 		}
 
 	override fun deserialize(serializedObject: JsonElement) {
@@ -177,7 +177,7 @@ class HSBColor() : Color {
 			hue = this["hue"].asFloat
 			saturation = this["saturation"].asFloat
 			brightness = this["brightness"].asFloat
-			alpha = this["alpha"].asFloat
+			alphaF = this["alpha"].asFloat
 		}
 	}
 
@@ -195,7 +195,7 @@ class HSBColor() : Color {
 	override fun hashCode(): Int = color
 
 	override fun toString(): String {
-		return "HSVColor(hue=$hue, saturation=$saturation, brightness=$brightness, alpha=$alpha, hexString='$hexString')"
+		return "HSVColor(hue=$hue, saturation=$saturation, brightness=$brightness, alpha=$alphaF, hexString='$hexString')"
 	}
 
 

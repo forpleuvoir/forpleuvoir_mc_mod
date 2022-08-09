@@ -66,7 +66,7 @@ class RGBColor() : Color, JsonSerializer {
 	/**
 	 * 红色值
 	 */
-	var red: Int = MAX_INT_VALUE
+	override var red: Int = MAX_INT_VALUE
 		set(value) {
 			field = value.clamp(MIN_INT_VALUE, MAX_INT_VALUE)
 		}
@@ -77,7 +77,7 @@ class RGBColor() : Color, JsonSerializer {
 		}
 		get() = red / MAX_INT_VALUE.f
 
-	var green: Int = MAX_INT_VALUE
+	override var green: Int = MAX_INT_VALUE
 		set(value) {
 			field = value.clamp(MIN_INT_VALUE, MAX_INT_VALUE)
 		}
@@ -88,7 +88,7 @@ class RGBColor() : Color, JsonSerializer {
 		}
 		get() = green / MAX_INT_VALUE.f
 
-	var blue: Int = MAX_INT_VALUE
+	override var blue: Int = MAX_INT_VALUE
 		set(value) {
 			field = value.clamp(MIN_INT_VALUE, MAX_INT_VALUE)
 		}
@@ -99,7 +99,7 @@ class RGBColor() : Color, JsonSerializer {
 		}
 		get() = blue / MAX_INT_VALUE.f
 
-	var alpha: Int = MAX_INT_VALUE
+	override var alpha: Int = MAX_INT_VALUE
 		set(value) {
 			field = value.clamp(MIN_INT_VALUE, MAX_INT_VALUE)
 		}
@@ -125,8 +125,13 @@ class RGBColor() : Color, JsonSerializer {
 		}
 
 
-	override fun alpha(alpha: Float): RGBColor {
-		this.alphaF = alpha
+	override fun alphaF(alphaF: Float): RGBColor {
+		this.alphaF = alphaF
+		return this
+	}
+
+	override fun alpha(alpha: Int): Color {
+		this.alpha = alpha
 		return this
 	}
 

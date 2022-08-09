@@ -33,7 +33,7 @@ class HSLColor() : Color {
 		this.hue = hue
 		this.saturation = saturation
 		this.lightness = lightness
-		this.alpha = alpha
+		this.alphaF = alpha
 	}
 
 	/**
@@ -60,7 +60,7 @@ class HSLColor() : Color {
 			field = value.clamp(0f, 1f)
 		}
 
-	var alpha: Float = 1f
+	var alphaF: Float = 1f
 		set(value) {
 			field = value.clamp(0f, 1f)
 		}
@@ -95,7 +95,7 @@ class HSLColor() : Color {
 				g = lightness
 				b = lightness
 			}
-			return ((alpha * 255).i shl 24) or ((r * 255).i shl 16) or ((g * 255).i shl 8) or ((b * 255).i shl 0)
+			return ((alphaF * 255).i shl 24) or ((r * 255).i shl 16) or ((g * 255).i shl 8) or ((b * 255).i shl 0)
 		}
 		set(value) {
 			val color = RGBColor(value)
@@ -128,16 +128,16 @@ class HSLColor() : Color {
 			}
 			this.saturation = saturation
 			this.lightness = summa / 2.0f
-			this.alpha = color.alphaF
+			this.alphaF = color.alphaF
 		}
 
-	override fun alpha(alpha: Float): HSLColor {
-		this.alpha = alpha
+	override fun alphaF(alphaF: Float): HSLColor {
+		this.alphaF = alphaF
 		return this
 	}
 
 	override fun opacity(opacity: Float): HSLColor {
-		return HSLColor(this).apply { alpha = (alpha * opacity.clamp(0.0, 1.0)).f }
+		return HSLColor(this).apply { alphaF = (alphaF * opacity.clamp(0.0, 1.0)).f }
 	}
 
 	override fun copy(): HSLColor = hslColor
@@ -147,7 +147,7 @@ class HSLColor() : Color {
 			"hue" at hue
 			"saturation" at saturation
 			"lightness" at lightness
-			"alpha" at alpha
+			"alpha" at alphaF
 		}
 
 	override fun deserialize(serializedObject: JsonElement) {
@@ -155,7 +155,7 @@ class HSLColor() : Color {
 			hue = this["hue"].asFloat
 			saturation = this["saturation"].asFloat
 			lightness = this["lightness"].asFloat
-			alpha = this["alpha"].asFloat
+			alphaF = this["alpha"].asFloat
 		}
 	}
 
@@ -173,7 +173,7 @@ class HSLColor() : Color {
 	override fun hashCode(): Int = color
 
 	override fun toString(): String {
-		return "HSLColor(hue=$hue, saturation=$saturation, lightness=$lightness, alpha=$alpha, hexString='$hexString')"
+		return "HSLColor(hue=$hue, saturation=$saturation, lightness=$lightness, alpha=$alphaF, hexString='$hexString')"
 	}
 
 

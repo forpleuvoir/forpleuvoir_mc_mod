@@ -71,7 +71,7 @@ class TipRenderer(
 				enableDepthTest()
 				val textColor: Color = Color.BLACK
 				val color: Color = RGBColor(255, 182, 185)
-				val shadowColor: Color = Color.BLACK.alpha(0.3f)
+				val shadowColor: Color = Color.BLACK.alphaF(0.3f)
 				//render
 				when (direction) {
 					Left  -> {

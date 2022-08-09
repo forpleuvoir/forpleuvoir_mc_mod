@@ -34,8 +34,8 @@ inline fun ParentElement.textLabel(
 	align: Align = Center,
 	shadow: Boolean = false,
 	rightToLeft: Boolean = false,
-	backgroundColor: Color = Color.BLACK.alpha(0f),
-	bordColor: Color = Color.BLACK.alpha(0f),
+	backgroundColor: Color = Color.BLACK.alphaF(0f),
+	bordColor: Color = Color.BLACK.alphaF(0f),
 	scope: (TextLabel.() -> Unit) = {},
 ): TextLabel =
 	this.addElement(TextLabel(text, width, height).apply {
@@ -61,7 +61,7 @@ inline fun ParentElement.textLabel(
 	align: Align = Center,
 	shadow: Boolean = false,
 	rightToLeft: Boolean = false,
-	backgroundColor: Color = Color.BLACK.alpha(0f),
-	bordColor: Color = Color.BLACK.alpha(0f),
+	backgroundColor: Color = Color.BLACK.alphaF(0f),
+	bordColor: Color = Color.BLACK.alphaF(0f),
 	scope: (TextLabel.() -> Unit) = {},
 ): TextLabel = textLabel({ literal(text.get()) }, width, height, onClick, align, shadow, rightToLeft, backgroundColor, bordColor, scope)

@@ -77,8 +77,8 @@ class TextLabel() : AbstractElement() {
 	var textColor: Color = Color.WHITE
 	var rightToLeft: Boolean = false
 	var shadow: Boolean = false
-	var backgroundColor: Color = Color.BLACK.alpha(0f)
-	var bordColor: Color = Color.BLACK.alpha(0f)
+	var backgroundColor: Color = Color.BLACK.alphaF(0f)
+	var bordColor: Color = Color.BLACK.alphaF(0f)
 
 	private val renderText: String
 		get() {
