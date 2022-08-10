@@ -41,6 +41,7 @@ object ScreenHandler : Tickable {
 		mc.soundManager.resume()
 		mc.mouseHandler.grabMouse()
 		mc.updateTitle()
+		mc.screen?.init(mc, mc.window.guiScaledWidth, mc.window.guiScaledHeight)
 	}
 
 	/**
