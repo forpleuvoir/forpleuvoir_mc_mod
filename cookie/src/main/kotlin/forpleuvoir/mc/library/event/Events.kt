@@ -3,7 +3,6 @@ package forpleuvoir.mc.library.event
 import forpleuvoir.mc.cookie.util.logger
 import forpleuvoir.mc.library.api.Initializable
 import forpleuvoir.mc.library.utils.ReflectionUtil
-import forpleuvoir.mc.library.utils.eventPacks
 import forpleuvoir.mc.library.utils.modPacks
 import kotlin.reflect.full.companionObjectInstance
 
@@ -39,7 +38,7 @@ object Events : Initializable {
 	 */
 	@Suppress("UNCHECKED_CAST")
 	private fun register() {
-		eventPacks.forEach { pack ->
+		modPacks.forEach { pack ->
 			ReflectionUtil.scanPackage(pack) { e ->
 				ReflectionUtil.isExtended(e, Event::class.java)
 			}.forEach {

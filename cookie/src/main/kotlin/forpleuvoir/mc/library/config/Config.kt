@@ -17,7 +17,7 @@ import forpleuvoir.mc.library.api.serialization.JsonSerializer
  * @author forpleuvoir
 
  */
-interface Config<T> : Option, ConfigValue<T>, Notifiable<T>, Resettable, Matchable, JsonSerializer, Initializable {
+interface Config<T> : Option, ConfigValue<T>, Notifiable<Any>, Resettable, Matchable, JsonSerializer, Initializable {
 
 	val type: ConfigType
 

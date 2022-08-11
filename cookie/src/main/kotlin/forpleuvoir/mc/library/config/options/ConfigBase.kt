@@ -35,7 +35,7 @@ abstract class ConfigBase<T> : Config<T> {
 
 	override fun init() {}
 
-	private var onChangedCallbacks: MutableMap<Any, T.() -> Unit> = ConcurrentHashMap()
+	private var onChangedCallbacks: MutableMap<Any, (Any) -> Unit> = ConcurrentHashMap()
 
 	override fun getValue(): T = configValue
 
@@ -70,13 +70,13 @@ abstract class ConfigBase<T> : Config<T> {
 		}
 	}
 
-	override fun subscribeChange(obj: Any, callback: T.() -> Unit) {
+	override fun subscribeChange(obj: Any, callback: (Any) -> Unit) {
 		onChangedCallbacks[obj] = callback
 	}
 
 	override fun onChanged() {
 		onChangedCallbacks.forEach { (_, v) ->
-			v.invoke(getValue())
+			v.invoke(getValue() as Any)
 		}
 	}
 

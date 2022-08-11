@@ -29,6 +29,19 @@ fun Any.toJsonObject(): JsonObject {
 	return gson.toJsonTree(this).asJsonObject
 }
 
+fun JsonObject.getNestedObject(key: String, create: Boolean = false): JsonObject? {
+	return if (!this.has(key) || this[key].isJsonObject) {
+		if (!create) {
+			return null
+		}
+		val obj = JsonObject()
+		this.add(key, obj)
+		obj
+	} else {
+		this[key].asJsonObject
+	}
+}
+
 /**
  * 将对象转换成json字符串
  *

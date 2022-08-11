@@ -29,17 +29,3 @@ val modPacks: Set<String>
 				}
 			}
 		}
-
-
-val eventPacks: Set<String>
-	get() =
-		HashSet<String>().also { packs ->
-			FabricLoader.getInstance().allMods.forEach {
-				it.metadata.customValues["cookie"]?.apply {
-					asObject.get("events")?.asArray?.onEach { value ->
-						packs.add(value.asString)
-					}
-				}
-			}
-		}
-

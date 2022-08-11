@@ -25,6 +25,6 @@ interface Notifiable<T> {
 	 * 设置回调
 	 * @param callback Function1<T, Unit>
 	 */
-	fun subscribeChange(obj: Any, callback: T.() -> Unit)
+	fun subscribeChange(obj: Any, callback: (T) -> Unit)
 
 }

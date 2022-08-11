@@ -49,9 +49,6 @@
   },
   "custom": {
 	"cookie": {
-	  "events": [
-		"forpleuvoir.mc.library.event.events"
-	  ],
 	  "package": [
 		"forpleuvoir.mc.library",
 		"forpleuvoir.mc.cookie"

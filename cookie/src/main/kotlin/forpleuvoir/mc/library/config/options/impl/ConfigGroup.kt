@@ -37,6 +37,10 @@ open class ConfigGroup(
 
 	override var configValue: Set<Config<*>> = ImmutableSet.copyOf(defaultValue)
 
+	override fun init() {
+		getValue().forEach { it.init() }
+	}
+
 	override fun resetDefValue() {
 		setValue(ImmutableSet.copyOf(defaultValue))
 	}
@@ -52,6 +56,12 @@ open class ConfigGroup(
 	override fun matched(regex: Regex): Boolean {
 		getValue().forEach { it.matched(regex).ifc { return true } }
 		return super.matched(regex)
+	}
+
+	override fun subscribeChange(obj: Any, callback: (Any) -> Unit) {
+		getValue().forEach {
+			it.subscribeChange(obj, callback)
+		}
 	}
 
 	override fun setFromJson(jsonElement: JsonElement): Boolean {
