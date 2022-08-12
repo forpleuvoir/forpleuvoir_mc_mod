@@ -14,7 +14,7 @@
 	"issues": "https://github.com/forpleuvoir/forpleuvoir_mc_mod/issues",
 	"repo": "https://maven.forpleuvoir.com/#/releases/forpleuvoir/mc/cookie"
   },
-  "license": "MIT",
+  "license": "GPL-3.0",
   "accessWidener": "cookie.accesswidener",
   "environment": "*",
   "entrypoints": {
@@ -34,6 +34,18 @@
 	  {
 		"adapter": "kotlin",
 		"value": "forpleuvoir.mc.cookie.CookieServer"
+	  }
+	],
+	"cookie_mod_client_config": [
+	  {
+		"adapter": "kotlin",
+		"value": "forpleuvoir.mc.cookie.config.CookieClientModConfig"
+	  }
+	],
+	"cookie_mod_server_config": [
+	  {
+		"adapter": "kotlin",
+		"value": "forpleuvoir.mc.cookie.config.CookieServerModConfig"
 	  }
 	]
   },

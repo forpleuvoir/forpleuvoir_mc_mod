@@ -34,7 +34,12 @@ object ConfigUtil {
 	private val log = logger()
 
 	fun getServerConfigPath(modId: String, server: MinecraftServer): Path {
-		TODO("获取服务器配置文件路径")
+		val serverPath = server.storageSource.levelDirectory.path
+		return File(serverPath.toFile(), modId).apply {
+			if (!exists()) {
+				this.mkdir()
+			}
+		}.toPath()
 	}
 
 	fun getClientConfigPath(modId: String): Path {
@@ -97,10 +102,11 @@ object ConfigUtil {
 			try {
 				InputStreamReader(FileInputStream(file), StandardCharsets.UTF_8).use { reader ->
 					JsonParser.parseReader(reader).run {
-						action(this)
+						if (!this.isJsonNull)
+							action(this)
 					}
 				}
-			} catch (e: java.lang.Exception) {
+			} catch (e: Exception) {
 				log.error("Failed to parse the JSON file '{}'", fileName, e)
 			}
 		}

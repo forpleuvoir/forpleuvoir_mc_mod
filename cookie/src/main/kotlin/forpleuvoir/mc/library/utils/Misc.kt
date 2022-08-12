@@ -39,7 +39,7 @@ fun resources(path: String): ResourceLocation = ResourceLocation(Cookie.id, path
 /**
  * 是否为开发环境
  */
-var isDevEnv: Boolean = false
+var isDevEnv: Boolean = loader.isDevelopmentEnvironment
 
 inline fun Boolean?.ifc(action: () -> Unit) {
 	if (this == true) {

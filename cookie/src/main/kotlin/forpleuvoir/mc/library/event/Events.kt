@@ -27,9 +27,9 @@ object Events : Initializable {
 	private val events = LinkedHashSet<Class<out Event>>()
 
 	override fun init() {
-		log.info("cookie events register")
+		log.info("cookie events register...")
 		register()
-		log.info("cookie events subscribe")
+		log.info("cookie event subscribe register...")
 		subscribe()
 	}
 

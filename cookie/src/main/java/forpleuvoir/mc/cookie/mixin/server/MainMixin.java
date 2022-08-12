@@ -1,14 +1,11 @@
 package forpleuvoir.mc.cookie.mixin.server;
 
 import forpleuvoir.mc.library.event.Events;
-import forpleuvoir.mc.library.utils.MiscKt;
 import net.minecraft.server.Main;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
-import java.util.Arrays;
 
 /**
  * 项目名 forpleuvoir_mc_mod
@@ -27,6 +24,5 @@ public class MainMixin {
 	@Inject(method = "main", at = @At(value = "INVOKE", target = "Lnet/minecraft/SharedConstants;tryDetectVersion()V", shift = At.Shift.AFTER))
 	private static void main(String[] args, CallbackInfo ci) {
 		Events.INSTANCE.init();
-		MiscKt.setDevEnv(Arrays.asList(args).contains("dev"));
 	}
 }

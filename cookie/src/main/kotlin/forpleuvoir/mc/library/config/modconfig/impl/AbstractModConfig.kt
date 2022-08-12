@@ -30,7 +30,6 @@ abstract class AbstractModConfig:ModConfig {
 	}
 
 	override fun init() {
-		categories.clear()
 		allCategory.forEach {
 			it.init()
 			it.allConfigs.forEach { c ->

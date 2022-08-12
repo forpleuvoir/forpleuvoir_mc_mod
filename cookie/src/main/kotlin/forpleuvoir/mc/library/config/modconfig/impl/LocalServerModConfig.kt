@@ -2,8 +2,6 @@ package forpleuvoir.mc.library.config.modconfig.impl
 
 import forpleuvoir.mc.library.config.ConfigUtil
 import forpleuvoir.mc.library.config.modconfig.ServerModConfig
-import net.fabricmc.api.EnvType
-import net.fabricmc.api.EnvType.SERVER
 import net.minecraft.server.MinecraftServer
 import java.nio.file.Path
 
@@ -29,6 +27,11 @@ open class LocalServerModConfig(override val modId: String) : LocalModConfig(mod
 
 	override fun init(server: MinecraftServer) {
 		this.server = server
+		allCategory.forEach { configCategory ->
+			configCategory.allConfigs.forEach {
+				it.resetDefValue()
+			}
+		}
 		init()
 	}
 

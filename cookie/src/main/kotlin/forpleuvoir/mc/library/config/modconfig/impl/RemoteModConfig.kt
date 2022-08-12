@@ -32,6 +32,22 @@ abstract class RemoteModConfig(private val saveUrl: String, private val loadUrl:
 			allCategory.forEach {
 				writeConfigCategory(json, it)
 			}
+			httpPost(saveUrl, json.toJsonStr()).send().let {
+				if (it.statusCode() != 200) {
+					log.error("config save failed, url:{},json:{}", saveUrl, json.toJsonStr())
+				} else {
+					isChanged.set(false)
+				}
+			}
+		}
+	}
+
+	override fun saveAsync() {
+		ConfigUtil.run {
+			val json = JsonObject()
+			allCategory.forEach {
+				writeConfigCategory(json, it)
+			}
 			httpPost(saveUrl, json.toJsonStr()).sendAsync {
 				if (it.statusCode() != 200) {
 					log.error("config save failed, url:{},json:{}", saveUrl, json.toJsonStr())
@@ -43,7 +59,7 @@ abstract class RemoteModConfig(private val saveUrl: String, private val loadUrl:
 	}
 
 	override fun load() {
-		httpGet(loadUrl).sendAsync {
+		httpGet(loadUrl).send().let {
 			if (it.statusCode() != 200) {
 				log.error("config load failed, url:{}", saveUrl)
 			} else {
@@ -56,4 +72,18 @@ abstract class RemoteModConfig(private val saveUrl: String, private val loadUrl:
 		}
 	}
 
+
+	override fun loadAsync() {
+		httpGet(loadUrl).sendAsync {
+			if (it.statusCode() != 200) {
+				log.error("config load failed, url:{}", saveUrl)
+			} else {
+				it.body().toJsonObject().run {
+					allCategory.forEach { config ->
+						ConfigUtil.readConfigCategory(this, config)
+					}
+				}
+			}
+		}
+	}
 }

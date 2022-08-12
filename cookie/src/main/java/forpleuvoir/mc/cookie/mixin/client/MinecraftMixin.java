@@ -2,10 +2,7 @@ package forpleuvoir.mc.cookie.mixin.client;
 
 import com.mojang.blaze3d.platform.Window;
 import forpleuvoir.mc.library.event.EventBus;
-import forpleuvoir.mc.library.event.events.client.ClientStartedEvent;
-import forpleuvoir.mc.library.event.events.client.ClientStartingEvent;
-import forpleuvoir.mc.library.event.events.client.ClientTickEndEvent;
-import forpleuvoir.mc.library.event.events.client.ClientTickStartEvent;
+import forpleuvoir.mc.library.event.events.client.*;
 import forpleuvoir.mc.library.gui.screen.ScreenHandler;
 import forpleuvoir.mc.library.input.InputHandler;
 import net.minecraft.client.Minecraft;
@@ -41,6 +38,9 @@ public abstract class MinecraftMixin {
 	@Shadow
 	private volatile boolean pause;
 
+	@Shadow
+	private volatile boolean running;
+
 	@Inject(method = "<init>", at = @At("RETURN"))
 	public void init(GameConfig gameConfig, CallbackInfo ci) {}
 
@@ -52,6 +52,13 @@ public abstract class MinecraftMixin {
 	@Inject(method = "run", at = @At("RETURN"))
 	public void runStarted(CallbackInfo ci) {
 		EventBus.getINSTANCE().broadcast(new ClientStartedEvent((Minecraft) (Object) this));
+	}
+
+	@Inject(method = "stop", at = @At("HEAD"))
+	private void onStopping(CallbackInfo ci) {
+		if (this.running) {
+			EventBus.getINSTANCE().broadcast(new ClientStopEvent((Minecraft) (Object) this));
+		}
 	}
 
 	@Inject(method = "tick", at = @At("HEAD"))

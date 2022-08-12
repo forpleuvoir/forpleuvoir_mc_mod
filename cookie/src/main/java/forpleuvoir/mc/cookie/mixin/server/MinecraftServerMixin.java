@@ -1,6 +1,13 @@
 package forpleuvoir.mc.cookie.mixin.server;
 
 import com.mojang.datafixers.DataFixer;
+import forpleuvoir.mc.cookie.Cookie;
+import forpleuvoir.mc.library.event.EventBus;
+import forpleuvoir.mc.library.event.events.server.ServerStartedEvent;
+import forpleuvoir.mc.library.event.events.server.ServerStartingEvent;
+import forpleuvoir.mc.library.event.events.server.ServerStoppedEvent;
+import forpleuvoir.mc.library.event.events.server.ServerStoppingEvent;
+import forpleuvoir.mc.library.utils.ModLogger;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.Services;
 import net.minecraft.server.WorldStem;
@@ -11,6 +18,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.net.Proxy;
 
@@ -25,8 +33,11 @@ import java.net.Proxy;
  *
  * @author forpleuvoir
  */
+@SuppressWarnings("ALL")
 @Mixin(MinecraftServer.class)
 public class MinecraftServerMixin {
+
+	private static final ModLogger log = new ModLogger(MinecraftServerMixin.class, Cookie.name);
 
 	@Inject(method = "<init>", at = @At("RETURN"))
 	public void init(
@@ -40,6 +51,30 @@ public class MinecraftServerMixin {
 			ChunkProgressListenerFactory chunkProgressListenerFactory,
 			CallbackInfo ci
 	) {
-		System.out.println("server initialized");
+		log.info("server initialized");
 	}
+
+	@Inject(method = "runServer", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/MinecraftServer;initServer()Z"))
+	private void beforeSetupServer(CallbackInfo info) {
+		EventBus.getINSTANCE().broadcast(new ServerStartingEvent((MinecraftServer) (Object) this));
+	}
+
+	@Inject(method = "runServer", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/MinecraftServer;updateStatusIcon(Lnet/minecraft/network/protocol/status/ServerStatus;)V"))
+	private void afterSetupServer(CallbackInfo info) {
+		EventBus.getINSTANCE().broadcast(new ServerStartedEvent((MinecraftServer) (Object) this));
+	}
+
+	@Inject(method = "stopServer", at = @At("HEAD"))
+	private void beforeShutdownServer(CallbackInfo info) {
+		EventBus.getINSTANCE().broadcast(new ServerStoppingEvent((MinecraftServer) (Object) this));
+	}
+
+	@Inject(method = "stopServer", at = @At("TAIL"))
+	private void afterShutdownServer(CallbackInfo info) {EventBus.getINSTANCE().broadcast(new ServerStoppedEvent((MinecraftServer) (Object) this));}
+
+	@Inject(method = "saveEverything", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/MinecraftServer;saveAllChunks(ZZZ)Z", shift = At.Shift.AFTER))
+	private void saveEverything(boolean bl, boolean bl2, boolean bl3, CallbackInfoReturnable<Boolean> cir) {
+		EventBus.getINSTANCE().broadcast(new ServerStoppingEvent((MinecraftServer) (Object) this));
+	}
+
 }

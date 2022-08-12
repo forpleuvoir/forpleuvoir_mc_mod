@@ -2,6 +2,7 @@ package forpleuvoir.mc.library.config.modconfig
 
 import forpleuvoir.mc.library.api.Initializable
 import net.fabricmc.api.EnvType
+import java.util.concurrent.CompletableFuture
 import java.util.concurrent.atomic.AtomicBoolean
 
 /**
@@ -27,10 +28,22 @@ interface ModConfig : Initializable {
 	 */
 	fun save()
 
+	fun saveAsync() {
+		CompletableFuture.runAsync {
+			save()
+		}
+	}
+
 	/**
 	 * 加载配置到内存
 	 */
 	fun load()
+
+	fun loadAsync() {
+		CompletableFuture.runAsync {
+			load()
+		}
+	}
 
 	/**
 	 * 当配置关闭时

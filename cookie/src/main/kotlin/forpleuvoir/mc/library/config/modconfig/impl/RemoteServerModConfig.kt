@@ -27,6 +27,11 @@ open class RemoteServerModConfig(
 
 	override fun init(server: MinecraftServer) {
 		this.server = server
+		allCategory.forEach { configCategory ->
+			configCategory.allConfigs.forEach {
+				it.resetDefValue()
+			}
+		}
 		init()
 	}
 

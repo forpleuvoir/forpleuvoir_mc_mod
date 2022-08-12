@@ -1,6 +1,7 @@
 package forpleuvoir.mc.library.utils
 
 import net.fabricmc.loader.api.FabricLoader
+import net.fabricmc.loader.api.entrypoint.EntrypointContainer
 
 /**
  *
@@ -17,11 +18,12 @@ import net.fabricmc.loader.api.FabricLoader
 
  */
 
+val loader: FabricLoader = FabricLoader.getInstance()
 
 val modPacks: Set<String>
 	get() =
 		HashSet<String>().also { packs ->
-			FabricLoader.getInstance().allMods.forEach {
+			loader.allMods.forEach {
 				it.metadata.customValues["cookie"]?.apply {
 					asObject.get("package")?.asArray?.onEach { value ->
 						packs.add(value.asString)
@@ -29,3 +31,9 @@ val modPacks: Set<String>
 				}
 			}
 		}
+
+fun <T> getEntrypoints(name: String, type: Class<T>, scope: (EntrypointContainer<T>) -> Unit) {
+	loader.getEntrypointContainers(name, type).forEach {
+		scope(it)
+	}
+}
