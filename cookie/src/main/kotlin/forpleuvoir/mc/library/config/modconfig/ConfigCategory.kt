@@ -1,13 +1,14 @@
-package forpleuvoir.mc.library.config
+package forpleuvoir.mc.library.config.modconfig
 
 import forpleuvoir.mc.library.api.Initializable
+import forpleuvoir.mc.library.config.Config
 
 /**
  *
 
  * 项目名 forpleuvoir_mc_mod
 
- * 包名 forpleuvoir.mc.library.config
+ * 包名 forpleuvoir.mc.library.config.modconfig
 
  * 文件名 ConfigCategory
 
@@ -20,6 +21,6 @@ interface ConfigCategory : Initializable {
 
 	val name: String
 
-	val allConfigs: List<Config<*>>
+	val allConfigs: Collection<Config<*>>
 
 }

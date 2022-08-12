@@ -1,14 +1,15 @@
-package forpleuvoir.mc.library.config
+package forpleuvoir.mc.library.config.modconfig
 
 import forpleuvoir.mc.library.api.Initializable
-import java.nio.file.Path
+import net.fabricmc.api.EnvType
+import java.util.concurrent.atomic.AtomicBoolean
 
 /**
  * mod配置
 
  * 项目名 forpleuvoir_mc_mod
 
- * 包名 forpleuvoir.mc.library.config
+ * 包名 forpleuvoir.mc.library.config.modconfig
 
  * 文件名 ModConfig
 
@@ -19,23 +20,22 @@ import java.nio.file.Path
  */
 interface ModConfig : Initializable {
 
+	val env: EnvType
+
 	/**
 	 * 保存配置到文件
-	 * @param path Path 配置文件目录路径
 	 */
-	fun save(path: Path)
+	fun save()
 
 	/**
 	 * 加载配置到内存
-	 * @param path Path 配置文件目录路径
 	 */
-	fun load(path: Path)
+	fun load()
 
 	/**
 	 * 当配置关闭时
-	 * @param path Path
 	 */
-	fun close(path: Path) = save(path)
+	fun close() = save()
 
 	fun addCategory(category: ConfigCategory)
 
@@ -45,11 +45,11 @@ interface ModConfig : Initializable {
 	 * 获取所有配置
 	 * @return List<Config<*>>
 	 */
-	val allCategory: List<ConfigCategory>
+	val allCategory: Collection<ConfigCategory>
 
 	/**
 	 * 是否有配置发生改变
 	 * @return Boolean
 	 */
-	val isChanged: Boolean
+	val isChanged: AtomicBoolean
 }

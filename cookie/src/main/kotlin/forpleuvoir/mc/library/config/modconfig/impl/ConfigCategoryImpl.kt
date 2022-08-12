@@ -1,15 +1,19 @@
-package forpleuvoir.mc.library.config
+package forpleuvoir.mc.library.config.modconfig.impl
 
+import forpleuvoir.mc.library.config.Config
+import forpleuvoir.mc.library.config.modconfig.ConfigCategory
+import forpleuvoir.mc.library.config.modconfig.ModConfig
 import forpleuvoir.mc.library.config.options.impl.ConfigBoolean
 import forpleuvoir.mc.library.utils.text.Text
 import forpleuvoir.mc.library.utils.text.translatable
+import java.util.concurrent.ConcurrentLinkedQueue
 
 /**
  *
 
  * 项目名 forpleuvoir_mc_mod
 
- * 包名 forpleuvoir.mc.library.config
+ * 包名 forpleuvoir.mc.library.config.modconfig.impl
 
  * 文件名 AbstractConfigCategory
 
@@ -22,24 +26,24 @@ open class ConfigCategoryImpl(final override val name: String, modConfig: ModCon
 
 	private val modId = modConfig.modId
 
-	private val configs = ArrayList<Config<*>>()
+	private val configs = ConcurrentLinkedQueue<Config<*>>()
 
-	override val allConfigs: List<Config<*>> = configs
+	override val allConfigs: Collection<Config<*>> = configs
 
 	override fun init() {}
 
-	protected fun <C : Config<*>> addConfig(config: C): C {
+	fun <C : Config<*>> addConfig(config: C): C {
 		config.apply {
 			configs.add(this)
 			return this
 		}
 	}
 
-	protected fun displayName(key: String): Text {
+	fun displayName(key: String): Text {
 		return translatable("$modId.$name.$key")
 	}
 
-	protected fun description(key: String): Text {
+	fun description(key: String): Text {
 		return translatable("$modId.$name.description.$key")
 	}
 

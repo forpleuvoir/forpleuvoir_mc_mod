@@ -4,6 +4,7 @@ import com.google.gson.JsonElement
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import forpleuvoir.mc.cookie.util.logger
+import forpleuvoir.mc.library.config.modconfig.ConfigCategory
 import forpleuvoir.mc.library.utils.getNestedObject
 import forpleuvoir.mc.library.utils.getOr
 import forpleuvoir.mc.library.utils.gson

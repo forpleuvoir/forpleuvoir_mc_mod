@@ -1,8 +1,8 @@
 package forpleuvoir.mc.cookie.config
 
 import forpleuvoir.mc.cookie.Cookie
-import forpleuvoir.mc.library.config.modconfig.impl.LocalClientModConfig
 import forpleuvoir.mc.library.config.modconfig.impl.ConfigCategoryImpl
+import forpleuvoir.mc.library.config.modconfig.impl.LocalServerModConfig
 
 /**
  *
@@ -11,26 +11,19 @@ import forpleuvoir.mc.library.config.modconfig.impl.ConfigCategoryImpl
 
  * 包名 forpleuvoir.mc.cookie.config
 
- * 文件名 CookieConfigs
+ * 文件名 CookieServerConfigs
 
- * 创建时间 2022/8/11 23:59
+ * 创建时间 2022/8/12 16:49
 
  * @author forpleuvoir
 
  */
-internal val Toggles = CookieConfigs.Toggle
-
-object CookieConfigs : LocalClientModConfig(Cookie.id) {
-
+object CookieServerConfigs : LocalServerModConfig(Cookie.id) {
 	init {
 		addCategory(Toggle)
 	}
-
 	object Toggle : ConfigCategoryImpl("toggle", this) {
-
 		@JvmStatic
 		val enable = configBoolean("enable", true)
-
 	}
-
 }
