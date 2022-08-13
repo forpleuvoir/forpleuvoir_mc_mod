@@ -47,7 +47,6 @@ fun JsonObject.getNestedObject(key: String, create: Boolean = false): JsonObject
 /**
  * 将对象转换成json字符串
  *
- * @param json 需要转换的对象
  * @return json字符串
  */
 fun Any.toJsonStr(): String {

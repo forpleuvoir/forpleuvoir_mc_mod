@@ -2,10 +2,6 @@ package forpleuvoir.mc.library.config.modconfig.impl
 
 import forpleuvoir.mc.library.config.ConfigUtil
 import forpleuvoir.mc.library.config.modconfig.ClientModConfig
-import forpleuvoir.mc.library.utils.mc
-import net.fabricmc.api.EnvType
-import net.fabricmc.api.EnvType.CLIENT
-import net.minecraft.client.Minecraft
 import java.nio.file.Path
 
 /**

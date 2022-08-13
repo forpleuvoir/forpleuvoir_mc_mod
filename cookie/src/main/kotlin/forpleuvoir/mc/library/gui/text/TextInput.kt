@@ -162,9 +162,7 @@ open class TextInput(text: String = "") : AbstractElement() {
 				KEY_RIGHT     -> rightShift()
 			}
 		} else if (InputHandler.hasKey(KEY_LEFT_SHIFT)) {
-			when (keyCode) {
-
-			}
+			TODO("未实现")
 		}
 		return super.onKeyPress(keyCode, modifiers)
 	}

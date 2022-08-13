@@ -1,3 +1,5 @@
+@file:Suppress("UnusedReceiverParameter")
+
 package forpleuvoir.mc.library.gui.screen
 
 /**

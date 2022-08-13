@@ -2,7 +2,6 @@ package forpleuvoir.mc.library.config.modconfig
 
 import net.fabricmc.api.EnvType
 import net.fabricmc.api.EnvType.CLIENT
-import net.minecraft.client.Minecraft
 
 /**
  *

@@ -1,8 +1,6 @@
 package forpleuvoir.mc.library.config.modconfig.impl
 
 import forpleuvoir.mc.library.config.modconfig.ClientModConfig
-import forpleuvoir.mc.library.utils.mc
-import net.minecraft.client.Minecraft
 
 /**
  *
@@ -18,7 +16,5 @@ import net.minecraft.client.Minecraft
  * @author forpleuvoir
 
  */
-open class RemoteClientModConfig(override val modId: String, saveUrl:String, loadUrl:String):RemoteModConfig(saveUrl, loadUrl),ClientModConfig {
-
-
-}
+open class RemoteClientModConfig(override val modId: String, saveUrl: String, loadUrl: String) : RemoteModConfig(saveUrl, loadUrl),
+	ClientModConfig

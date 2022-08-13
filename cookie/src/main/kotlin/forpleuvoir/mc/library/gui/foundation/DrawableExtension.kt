@@ -1,3 +1,5 @@
+@file:Suppress("UnusedReceiverParameter")
+
 package forpleuvoir.mc.library.gui.foundation
 
 import com.mojang.blaze3d.systems.RenderSystem

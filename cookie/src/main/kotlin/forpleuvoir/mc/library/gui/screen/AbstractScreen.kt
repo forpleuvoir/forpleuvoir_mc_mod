@@ -24,6 +24,7 @@ import forpleuvoir.mc.library.utils.d
  * @author forpleuvoir
 
  */
+@Suppress("LeakingThis")
 abstract class AbstractScreen : AbstractParentElement(), Screen {
 
 	override var parentScreen: Screen? = null

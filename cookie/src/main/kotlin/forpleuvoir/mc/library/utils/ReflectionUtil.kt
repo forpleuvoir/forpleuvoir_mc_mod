@@ -45,6 +45,7 @@ object ReflectionUtil {
 		return listOf(*interfaces)
 	}
 
+	@Suppress("UnstableApiUsage")
 	@JvmStatic
 	fun scanPackage(pack: String, predicate: (Class<*>) -> Boolean = { true }): List<Class<*>> {
 		val list = ArrayList<Class<*>>()

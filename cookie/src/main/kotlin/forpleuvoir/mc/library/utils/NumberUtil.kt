@@ -50,7 +50,7 @@ fun max(x: Float, y: Float, z: Float): Float {
 
 fun max(x: Int, y: Int, z: Int): Int {
 	val max: Int = if (x > y) x else y
-	return if (max > z) max.toInt() else z
+	return if (max > z) max else z
 }
 
 fun Byte.clamp(minValue: Number, maxValue: Number): Byte {

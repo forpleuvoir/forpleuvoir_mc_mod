@@ -25,6 +25,7 @@ import java.util.concurrent.ConcurrentLinkedQueue
  * @author forpleuvoir
 
  */
+@Suppress("SameParameterValue")
 open class ConfigCategoryImpl(final override val name: String, modConfig: ModConfig) : ConfigCategory {
 
 	private val modId = modConfig.modId

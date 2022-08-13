@@ -20,6 +20,7 @@ import java.util.concurrent.ConcurrentHashMap
  * @author forpleuvoir
 
  */
+@Suppress("LeakingThis")
 abstract class AbstractConfigHandler<T : ModConfig> : ConfigHandler {
 
 	private val log = logger()

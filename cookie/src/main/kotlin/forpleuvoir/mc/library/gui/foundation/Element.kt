@@ -24,6 +24,7 @@ import net.minecraft.client.renderer.texture.Tickable
  * @author forpleuvoir
 
  */
+@Suppress("KDocUnresolvedReference")
 interface Element : Drawable, Tickable, Initializable {
 
 	/**

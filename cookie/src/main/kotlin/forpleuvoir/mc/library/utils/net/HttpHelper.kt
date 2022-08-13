@@ -24,6 +24,7 @@ import java.util.*
  * @author forpleuvoir
 
  */
+@Suppress("KDocUnresolvedReference")
 class HttpHelper<T>(
 	private val uri: String,
 	private val bodyHandler: BodyHandler<T>,
