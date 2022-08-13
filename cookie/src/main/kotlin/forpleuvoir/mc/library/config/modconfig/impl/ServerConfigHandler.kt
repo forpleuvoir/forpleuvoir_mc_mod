@@ -29,6 +29,8 @@ object ServerConfigHandler : AbstractConfigHandler<ServerModConfig>() {
 
 	private val log = logger()
 
+	override fun init() {}
+
 	@Subscriber
 	fun init(event: ServerStartedEvent) {
 		log.info("init server config...")

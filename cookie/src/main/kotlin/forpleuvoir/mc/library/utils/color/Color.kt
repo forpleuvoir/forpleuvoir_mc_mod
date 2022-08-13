@@ -23,7 +23,26 @@ interface Color : JsonSerializer {
 	companion object {
 
 		@JvmStatic
-		fun color(color: Int): Color = RGBColor(color)
+		fun decode(color: Int): Color = RGBColor(color)
+
+		/**
+		 * 字符串格式的颜色
+		 *
+		 * @param color String #FF66CCFF #ARGB
+		 * @return Int
+		 */
+		@JvmStatic
+		fun decode(color: String): Int {
+			val hex: String = color.replace(Regex("0x|0X"), "").replace("#", "")
+			if (hex.length == 8) {
+				val alpha: Int = hex.substring(0, 2).toInt(16)
+				val red: Int = hex.substring(2, 4).toInt(16)
+				val green: Int = hex.substring(4, 6).toInt(16)
+				val blue: Int = hex.substring(6, 8).toInt(16)
+				return alpha shl 24 or (red shl 16) or (green shl 8) or blue
+			}
+			return 0
+		}
 
 		@JvmStatic
 		val WHITE: Color get() = RGBColor(255, 255, 255)
@@ -132,7 +151,12 @@ interface Color : JsonSerializer {
 
 	override fun deserialize(serializedObject: JsonElement) {
 		serializedObject.asJsonPrimitive.run {
-			color = this.asInt
+			if (this.isNumber) {
+				color = this.asInt
+			}
+			if (this.isString) {
+				color = decode(this.asString)
+			}
 		}
 	}
 }

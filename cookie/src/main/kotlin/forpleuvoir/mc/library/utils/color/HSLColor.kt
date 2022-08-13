@@ -151,11 +151,22 @@ class HSLColor() : Color {
 		}
 
 	override fun deserialize(serializedObject: JsonElement) {
-		serializedObject.asJsonObject.apply {
-			hue = this["hue"].asFloat
-			saturation = this["saturation"].asFloat
-			lightness = this["lightness"].asFloat
-			alphaF = this["alpha"].asFloat
+		if (serializedObject.isJsonPrimitive) {
+			serializedObject.asJsonPrimitive.run {
+				if (this.isNumber) {
+					color = this.asInt
+				}
+				if (this.isString) {
+					color = Color.decode(this.asString)
+				}
+			}
+		} else {
+			serializedObject.asJsonObject.apply {
+				hue = this["hue"].asFloat
+				saturation = this["saturation"].asFloat
+				lightness = this["lightness"].asFloat
+				alphaF = this["alpha"].asFloat
+			}
 		}
 	}
 

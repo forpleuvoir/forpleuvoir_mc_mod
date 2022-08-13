@@ -23,6 +23,8 @@ val String.parseToJsonArray: JsonArray get() = JsonParser.parseString(this).asJs
 
 val String.parseToJsonObject: JsonObject get() = JsonParser.parseString(this).asJsonObject
 
+val String.parseToJsonElement: JsonElement get() = JsonParser.parseString(this)
+
 val JsonElement.string: String get() = this.toString()
 
 fun Any.toJsonObject(): JsonObject {

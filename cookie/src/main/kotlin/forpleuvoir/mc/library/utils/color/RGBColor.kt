@@ -151,11 +151,22 @@ class RGBColor() : Color, JsonSerializer {
 		}
 
 	override fun deserialize(serializedObject: JsonElement) {
-		serializedObject.asJsonObject.apply {
-			red = this["red"].asInt
-			green = this["green"].asInt
-			blue = this["blue"].asInt
-			alpha = this["alpha"].asInt
+		if (serializedObject.isJsonPrimitive) {
+			serializedObject.asJsonPrimitive.run {
+				if (this.isNumber) {
+					color = this.asInt
+				}
+				if (this.isString) {
+					color = Color.decode(this.asString)
+				}
+			}
+		} else {
+			serializedObject.asJsonObject.apply {
+				red = this["red"].asInt
+				green = this["green"].asInt
+				blue = this["blue"].asInt
+				alpha = this["alpha"].asInt
+			}
 		}
 	}
 

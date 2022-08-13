@@ -1,8 +1,9 @@
 package forpleuvoir.mc.cookie.config
 
 import forpleuvoir.mc.cookie.Cookie
-import forpleuvoir.mc.library.config.modconfig.impl.LocalClientModConfig
 import forpleuvoir.mc.library.config.modconfig.impl.ConfigCategoryImpl
+import forpleuvoir.mc.library.config.modconfig.impl.LocalClientModConfig
+import forpleuvoir.mc.library.utils.color.Color
 
 /**
  *
@@ -30,6 +31,9 @@ object CookieConfigs : LocalClientModConfig(Cookie.id) {
 
 		@JvmStatic
 		val enable = configBoolean("enable", true)
+
+		@JvmStatic
+		val color = configColor("color", Color.BLUE)
 
 	}
 

@@ -173,11 +173,22 @@ class HSBColor() : Color {
 		}
 
 	override fun deserialize(serializedObject: JsonElement) {
-		serializedObject.asJsonObject.apply {
-			hue = this["hue"].asFloat
-			saturation = this["saturation"].asFloat
-			brightness = this["brightness"].asFloat
-			alphaF = this["alpha"].asFloat
+		if (serializedObject.isJsonPrimitive) {
+			serializedObject.asJsonPrimitive.run {
+				if (this.isNumber) {
+					color = this.asInt
+				}
+				if (this.isString) {
+					color = Color.decode(this.asString)
+				}
+			}
+		} else {
+			serializedObject.asJsonObject.run {
+				hue = this["hue"].asFloat
+				saturation = this["saturation"].asFloat
+				brightness = this["brightness"].asFloat
+				alphaF = this["alpha"].asFloat
+			}
 		}
 	}
 

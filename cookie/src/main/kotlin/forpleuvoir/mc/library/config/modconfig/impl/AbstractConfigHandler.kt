@@ -1,5 +1,6 @@
 package forpleuvoir.mc.library.config.modconfig.impl
 
+import forpleuvoir.mc.cookie.util.logger
 import forpleuvoir.mc.library.config.modconfig.ConfigHandler
 import forpleuvoir.mc.library.config.modconfig.ModConfig
 import java.util.*
@@ -21,6 +22,7 @@ import java.util.concurrent.ConcurrentHashMap
  */
 abstract class AbstractConfigHandler<T : ModConfig> : ConfigHandler {
 
+	private val log = logger()
 	protected val configs = ConcurrentHashMap<String, T>()
 
 	init {
@@ -31,6 +33,7 @@ abstract class AbstractConfigHandler<T : ModConfig> : ConfigHandler {
 		Timer().schedule(object : TimerTask() {
 			override fun run() {
 				configs.values.forEach {
+					log.info("[{}]config auto saving..", it.modId)
 					if (it.isChanged.get()) {
 						it.saveAsync()
 					}
