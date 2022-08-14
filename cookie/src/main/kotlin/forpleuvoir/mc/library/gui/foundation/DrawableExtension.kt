@@ -1,4 +1,3 @@
-@file:Suppress("UnusedReceiverParameter")
 
 package forpleuvoir.mc.library.gui.foundation
 
@@ -34,33 +33,33 @@ import java.util.function.Supplier
  */
 
 
-fun Drawable.setShader(shaderSupplier: Supplier<ShaderInstance>) = RenderSystem.setShader(shaderSupplier)
+fun setShader(shaderSupplier: Supplier<ShaderInstance>) = RenderSystem.setShader(shaderSupplier)
 
-fun Drawable.setShader(shaderSupplier: (() -> ShaderInstance)) = RenderSystem.setShader(shaderSupplier)
+fun setShader(shaderSupplier: (() -> ShaderInstance)) = RenderSystem.setShader(shaderSupplier)
 
-fun Drawable.setShaderTexture(texture: ResourceLocation) = RenderSystem.setShaderTexture(0, texture)
+fun setShaderTexture(texture: ResourceLocation) = RenderSystem.setShaderTexture(0, texture)
 
-fun Drawable.enableTexture() = RenderSystem.enableTexture()
+fun enableTexture() = RenderSystem.enableTexture()
 
-fun Drawable.disableTexture() = RenderSystem.disableTexture()
+fun disableTexture() = RenderSystem.disableTexture()
 
-fun Drawable.setShaderColor(color: Color) = color.rgbColor.run { RenderSystem.setShaderColor(redF, greenF, blueF, alphaF) }
+fun setShaderColor(color: Color) = RenderSystem.setShaderColor(color.redF, color.greenF, color.blueF, color.alphaF)
 
-fun Drawable.enablePolygonOffset() = RenderSystem.enablePolygonOffset()
+fun enablePolygonOffset() = RenderSystem.enablePolygonOffset()
 
-fun Drawable.polygonOffset(factor: Number, units: Number) = RenderSystem.polygonOffset(factor.f, units.f)
+fun polygonOffset(factor: Number, units: Number) = RenderSystem.polygonOffset(factor.f, units.f)
 
-fun Drawable.disablePolygonOffset() = RenderSystem.disablePolygonOffset()
+fun disablePolygonOffset() = RenderSystem.disablePolygonOffset()
 
-fun Drawable.enableBlend() = RenderSystem.enableBlend()
+fun enableBlend() = RenderSystem.enableBlend()
 
-fun Drawable.defaultBlendFunc() = RenderSystem.defaultBlendFunc()
+fun defaultBlendFunc() = RenderSystem.defaultBlendFunc()
 
-fun Drawable.disableBlend() = RenderSystem.disableBlend()
+fun disableBlend() = RenderSystem.disableBlend()
 
-fun Drawable.enableDepthTest() = RenderSystem.enableDepthTest()
+fun enableDepthTest() = RenderSystem.enableDepthTest()
 
-fun Drawable.disableDepthTest() = RenderSystem.disableDepthTest()
+fun disableDepthTest() = RenderSystem.disableDepthTest()
 
 /**
  * 绘制矩形
@@ -80,10 +79,10 @@ fun Drawable.drawRect(poseStack: PoseStack, x: Number, y: Number, width: Number,
 	val buffer = Tesselator.getInstance().builder
 	val matrix4f = poseStack.last().pose()
 	buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR)
-	buffer.vertex(matrix4f, x.f, y.f, zOffset.f).color(color.color).endVertex()
-	buffer.vertex(matrix4f, x.f, (y.f + height.f), zOffset.f).color(color.color).endVertex()
-	buffer.vertex(matrix4f, (x.f + width.f), (y.f + height.f), zOffset.f).color(color.color).endVertex()
-	buffer.vertex(matrix4f, (x.f + width.f), y.f, zOffset.f).color(color.color).endVertex()
+	buffer.vertex(matrix4f, x.f, y.f, zOffset.f).color(color.argb).endVertex()
+	buffer.vertex(matrix4f, x.f, (y.f + height.f), zOffset.f).color(color.argb).endVertex()
+	buffer.vertex(matrix4f, (x.f + width.f), (y.f + height.f), zOffset.f).color(color.argb).endVertex()
+	buffer.vertex(matrix4f, (x.f + width.f), y.f, zOffset.f).color(color.argb).endVertex()
 	BufferUploader.drawWithShader(buffer.end())
 	enableTexture()
 	disableBlend()
@@ -181,10 +180,10 @@ fun Drawable.drawGradient(
 	val buffer = tess.builder
 	val matrix4f = poseStack.last().pose()
 	buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR)
-	buffer.vertex(matrix4f, endX.f, startY.f, zOffset.f).color(startColor.color).endVertex()
-	buffer.vertex(matrix4f, startX.f, startY.f, zOffset.f).color(startColor.color).endVertex()
-	buffer.vertex(matrix4f, startX.f, endY.f, zOffset.f).color(endColor.color).endVertex()
-	buffer.vertex(matrix4f, endX.f, endY.f, zOffset.f).color(endColor.color).endVertex()
+	buffer.vertex(matrix4f, endX.f, startY.f, zOffset.f).color(startColor.argb).endVertex()
+	buffer.vertex(matrix4f, startX.f, startY.f, zOffset.f).color(startColor.argb).endVertex()
+	buffer.vertex(matrix4f, startX.f, endY.f, zOffset.f).color(endColor.argb).endVertex()
+	buffer.vertex(matrix4f, endX.f, endY.f, zOffset.f).color(endColor.argb).endVertex()
 	tess.end()
 	disableBlend()
 	enableTexture()
@@ -405,7 +404,7 @@ fun Drawable.drawTexture(
 }
 
 
-fun Drawable.drawCenteredText(
+fun drawCenteredText(
 	poseStack: PoseStack,
 	text: Component,
 	x: Number,
@@ -415,7 +414,7 @@ fun Drawable.drawCenteredText(
 	shadow: Boolean = true,
 	rightToLeft: Boolean = false,
 	color: Color = Color.WHITE,
-	backgroundColor: Color = Color.WHITE.alphaF(0.5f),
+	backgroundColor: Color = Color.WHITE.alpha(0.5f),
 ) {
 	val centerX = x.f + width.f / 2
 	val centerY = y.f + height.f / 2
@@ -425,12 +424,12 @@ fun Drawable.drawCenteredText(
 		text.string,
 		centerX - textWidth / 2,
 		centerY - textRenderer.lineHeight / 2,
-		color.color,
+		color.argb,
 		shadow,
 		poseStack.last().pose(),
 		immediate,
 		false,
-		backgroundColor.color,
+		backgroundColor.argb,
 		FULL_BRIGHT,
 		rightToLeft
 	)
@@ -438,7 +437,7 @@ fun Drawable.drawCenteredText(
 }
 
 
-fun Drawable.drawText(
+fun drawText(
 	poseStack: PoseStack,
 	text: String,
 	x: Number,
@@ -450,18 +449,18 @@ fun Drawable.drawText(
 		text,
 		x.f,
 		y.f,
-		color.color,
+		color.argb,
 		shadow,
 		poseStack.last().pose(),
 		MultiBufferSource.immediate(Tesselator.getInstance().builder),
 		false,
-		Color.WHITE.color,
+		Color.WHITE.argb,
 		FULL_BRIGHT,
 		false
 	)
 }
 
-fun Drawable.drawStringLines(
+fun drawStringLines(
 	poseStack: PoseStack,
 	lines: List<String>,
 	x: Number,
@@ -474,7 +473,7 @@ fun Drawable.drawStringLines(
 ) {
 	val drawText: (text: String, posX: Float, posY: Float) -> Unit = { text, posX, posY ->
 		val immediate = MultiBufferSource.immediate(Tesselator.getInstance().builder)
-		textRenderer.drawInBatch(text, posX, posY, color.color, shadow, poseStack.last().pose(), immediate, false, 0, FULL_BRIGHT, rightToLeft)
+		textRenderer.drawInBatch(text, posX, posY, color.argb, shadow, poseStack.last().pose(), immediate, false, 0, FULL_BRIGHT, rightToLeft)
 		immediate.endBatch()
 	}
 	var textY = y.f
@@ -506,7 +505,7 @@ fun Drawable.drawStringLines(
 
 }
 
-fun Drawable.drawTextLines(
+fun drawTextLines(
 	poseStack: PoseStack,
 	lines: List<Component>,
 	x: Number,

@@ -6,7 +6,6 @@ import forpleuvoir.mc.library.gui.texture.COOKIE_WIDGET_TEXTURE
 import forpleuvoir.mc.library.utils.*
 import forpleuvoir.mc.library.utils.Direction.*
 import forpleuvoir.mc.library.utils.color.Color
-import forpleuvoir.mc.library.utils.color.RGBColor
 import forpleuvoir.mc.library.utils.text.maxWidth
 import forpleuvoir.mc.library.utils.text.wrapToLines
 import net.minecraft.client.renderer.texture.Tickable
@@ -70,11 +69,11 @@ class TipRenderer(
 				defaultBlendFunc()
 				enableDepthTest()
 				val textColor: Color = Color.BLACK
-				val color: Color = RGBColor(255, 182, 185)
-				val shadowColor: Color = Color.BLACK.alphaF(0.3f)
+				val color = Color(255, 182, 185)
+				val shadowColor: Color = Color.BLACK.alpha(0.3f)
 				//render
 				when (direction) {
-					Left  -> {
+					Left -> {
 						//draw shadow
 						setShaderColor(shadowColor)
 						draw9Texture(

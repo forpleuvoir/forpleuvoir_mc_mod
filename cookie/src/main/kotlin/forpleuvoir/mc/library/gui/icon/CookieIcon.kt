@@ -4,7 +4,6 @@ import com.mojang.blaze3d.vertex.PoseStack
 import forpleuvoir.mc.library.gui.foundation.*
 import forpleuvoir.mc.library.gui.texture.COOKIE_ICON_TEXTURE
 import forpleuvoir.mc.library.utils.color.Color
-import forpleuvoir.mc.library.utils.color.RGBColor
 import forpleuvoir.mc.library.utils.d
 import forpleuvoir.mc.library.utils.i
 import net.minecraft.resources.ResourceLocation
@@ -31,7 +30,7 @@ class CookieIcon(
 	override val v: Int,
 	override val color: Color = Color.WHITE,
 	override val hoveredColor: Color = Color.BLACK,
-	override val pressedColor: Color = RGBColor(0.8f, 0.8f, 0.8f),
+	override val pressedColor: Color = Color(0.8f, 0.8f, 0.8f),
 	override val texture: ResourceLocation = COOKIE_ICON_TEXTURE,
 	override var textureSize: Int = 16,
 	override val textureHeight: Int = 256,

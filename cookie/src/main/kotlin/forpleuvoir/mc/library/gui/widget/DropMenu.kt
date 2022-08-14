@@ -123,7 +123,7 @@ class DropMenu(
 				tipDirection = itemTipDirection?.run { { invoke(str) } }
 				textColor = Color.BLACK
 				render = { poseStack, delta ->
-					mouseHover { drawRect(poseStack, x, y - 0.5, this@apply.width - scrollerBar.width, height, Color.BLACK.alphaF(0.2f)) }
+					mouseHover { drawRect(poseStack, x, y - 0.5, this@apply.width - scrollerBar.width, height, Color.BLACK.alpha(0.2f)) }
 					onRender(poseStack, delta)
 				}
 			}

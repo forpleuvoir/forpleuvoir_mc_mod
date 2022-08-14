@@ -65,17 +65,63 @@ fun Int.clamp(minValue: Number, maxValue: Number): Int {
 	return (this as Number).clamp(minValue, maxValue).toInt()
 }
 
+fun Int.clamp(range: IntRange): Int {
+	return if (range.first > this) {
+		range.first
+	} else if (range.last < this) {
+		range.last
+	} else {
+		this
+	}
+}
+
 fun Long.clamp(minValue: Number, maxValue: Number): Long {
 	return (this as Number).clamp(minValue, maxValue).toLong()
 }
 
+fun Long.clamp(range: LongRange): Long {
+	return if (range.first > this) {
+		range.first
+	} else if (range.last < this) {
+		range.last
+	} else {
+		this
+	}
+}
 
 fun Double.clamp(minValue: Number, maxValue: Number): Double {
 	return (this as Number).clamp(minValue, maxValue).toDouble()
 }
 
+fun Double.clamp(range: IntRange): Double {
+	return if (range.first > this) {
+		range.first.d
+	} else if (range.last < this) {
+		range.last.d
+	} else {
+		this
+	}
+}
+
 fun Float.clamp(minValue: Number, maxValue: Number): Float {
 	return (this as Number).clamp(minValue, maxValue).toFloat()
+}
+
+fun Float.clamp(range: IntRange): Float {
+	return if (range.first > this) {
+		range.first.f
+	} else if (range.last < this) {
+		range.last.f
+	} else {
+		this
+	}
+}
+
+fun <T> T.isIn(vararg args: T): Boolean {
+	for (arg in args) {
+		if (this == arg) return true
+	}
+	return false
 }
 
 val Number.d: Double get() = this.toDouble()

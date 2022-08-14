@@ -62,7 +62,7 @@ open class Button() : ClickableElement() {
 			textY,
 			width,
 			height,
-			color = Color.BLACK.alphaF(if (active) 0.9f else 0.6f),
+			color = Color.BLACK.alpha(if (active) 0.9f else 0.6f),
 			shadow = false
 		)
 	}

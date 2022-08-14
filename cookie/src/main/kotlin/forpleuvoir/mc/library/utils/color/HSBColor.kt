@@ -1,10 +1,7 @@
 package forpleuvoir.mc.library.utils.color
 
-import com.google.gson.JsonElement
 import forpleuvoir.mc.library.utils.clamp
-import forpleuvoir.mc.library.utils.f
 import forpleuvoir.mc.library.utils.i
-import forpleuvoir.mc.library.utils.jsonObject
 import kotlin.math.floor
 
 /**
@@ -21,27 +18,10 @@ import kotlin.math.floor
  * @author forpleuvoir
 
  */
-class HSBColor() : Color {
-
-	constructor(rgba: Int) : this() {
-		this.color = rgba
-	}
-
-	constructor(color: RGBColor) : this(color.color)
-
-	constructor(hslColor: HSLColor) : this(hslColor.color)
-
-	constructor(hsbColor: HSBColor) : this(hsbColor.color)
-
-	constructor(hue: Float = 360.0f, saturation: Float = 1.0f, value: Float = 1.0f, alphaF: Float = 1.0f) : this() {
-		this.hue = hue
-		this.saturation = saturation
-		this.brightness = value
-		this.alphaF = alphaF
-	}
+class HSBColor(val color: Color) {
 
 	/**
-	 * 色相
+	 * 色相 Range(0.0f ~ 360.0f)
 	 */
 	var hue: Float = 360f
 		set(value) {
@@ -49,7 +29,7 @@ class HSBColor() : Color {
 		}
 
 	/**
-	 * 饱和度
+	 * 饱和度 Range(0.0F ~ 1.0F)
 	 */
 	var saturation: Float = 1f
 		set(value) {
@@ -57,19 +37,22 @@ class HSBColor() : Color {
 		}
 
 	/**
-	 * 明度
+	 * 明度 Range(0.0F ~ 1.0F)
 	 */
 	var brightness: Float = 1f
 		set(value) {
 			field = value.clamp(0, 1f)
 		}
 
-	var alphaF: Float = 1f
+	/**
+	 * 透明度 Range(0.0F ~ 1.0F)
+	 */
+	var alpha: Float = 1f
 		set(value) {
 			field = value.clamp(0f, 1f)
 		}
 
-	override var color: Int
+	var argb: Int
 		get() {
 			var r = 0
 			var g = 0
@@ -123,10 +106,10 @@ class HSBColor() : Color {
 					}
 				}
 			}
-			return ((alphaF * 255).i shl 24) or (r shl 16) or (g shl 8) or (b shl 0)
+			return ((alpha * 255).i shl 24) or (r shl 16) or (g shl 8) or (b shl 0)
 		}
 		set(value) {
-			val color = RGBColor(value)
+			val color = Color(value)
 			val r = color.red
 			val g = color.green
 			val b = color.blue
@@ -150,64 +133,25 @@ class HSBColor() : Color {
 			this.hue = hue * 360f
 			this.saturation = saturation
 			this.brightness = brightness
-			this.alphaF = color.alphaF
+			this.alpha = color.alphaF
 		}
 
-	override fun alphaF(alphaF: Float): HSBColor {
-		this.alphaF = alphaF
-		return this
+	init {
+		this.argb = color.argb
 	}
 
-	override fun opacity(opacity: Float): HSBColor {
-		return HSBColor(this).apply { alphaF = (alphaF * opacity.clamp(0.0, 1.0)).f }
+	/**
+	 * 将此对象颜色同步到[color]
+	 */
+	fun syncToColor() {
+		color.argb = this.argb
 	}
 
-	override fun copy(): HSBColor = hsbColor
-
-	override val serialization: JsonElement
-		get() = jsonObject {
-			"hue" at hue
-			"saturation" at saturation
-			"brightness" at brightness
-			"alpha" at alphaF
-		}
-
-	override fun deserialize(serializedObject: JsonElement) {
-		if (serializedObject.isJsonPrimitive) {
-			serializedObject.asJsonPrimitive.run {
-				if (this.isNumber) {
-					color = this.asInt
-				}
-				if (this.isString) {
-					color = Color.decode(this.asString)
-				}
-			}
-		} else {
-			serializedObject.asJsonObject.run {
-				hue = this["hue"].asFloat
-				saturation = this["saturation"].asFloat
-				brightness = this["brightness"].asFloat
-				alphaF = this["alpha"].asFloat
-			}
-		}
+	/**
+	 * 将[color]颜色同步到此对象
+	 */
+	fun syncFromColor() {
+		this.argb = color.argb
 	}
-
-	override fun equals(other: Any?): Boolean {
-		if (this === other) return true
-		if (javaClass != other?.javaClass) return false
-
-		other as HSBColor
-
-		if (hashCode() != other.hashCode()) return false
-
-		return true
-	}
-
-	override fun hashCode(): Int = color
-
-	override fun toString(): String {
-		return "HSVColor(hue=$hue, saturation=$saturation, brightness=$brightness, alpha=$alphaF, hexString='$hexString')"
-	}
-
 
 }

@@ -2,7 +2,6 @@ package forpleuvoir.mc.library.gui.icon
 
 import forpleuvoir.mc.library.gui.foundation.Drawable
 import forpleuvoir.mc.library.utils.color.Color
-import forpleuvoir.mc.library.utils.color.RGBColor
 import forpleuvoir.mc.library.utils.d
 import net.minecraft.resources.ResourceLocation
 
@@ -27,7 +26,7 @@ interface Icon : Drawable {
 	var size: Double
 	val color: Color get() = Color.WHITE
 	val hoveredColor: Color get() = Color.BLACK
-	val pressedColor: Color get() = RGBColor(0.8f, 0.8f, 0.8f)
+	val pressedColor: Color get() = Color(0.8f, 0.8f, 0.8f)
 	var currentColor: () -> Color
 	val u: Int
 	val v: Int
