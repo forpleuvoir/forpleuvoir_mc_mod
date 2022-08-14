@@ -1,9 +1,8 @@
 package forpleuvoir.mc.library.utils.color
 
-import forpleuvoir.mc.library.utils.clamp
-import forpleuvoir.mc.library.utils.i
-import forpleuvoir.mc.library.utils.max
-import forpleuvoir.mc.library.utils.min
+import forpleuvoir.mc.library.utils.*
+import forpleuvoir.mc.library.utils.color.Color.Companion.fixHueValue
+import forpleuvoir.mc.library.utils.color.Color.Companion.fixValue
 
 /**
  *
@@ -21,12 +20,14 @@ import forpleuvoir.mc.library.utils.min
  */
 class HSLColor(val color: Color) {
 
+	val checkedRange: Boolean get() = color.checkedRange
+
 	/**
 	 * 色相 Range(0.0f ~ 360.0f)
 	 */
 	var hue: Float = 360f
 		set(value) {
-			field = value.clamp(0, 360)
+			field = value.fixHueValue(checkedRange, "Hue")
 		}
 
 	/**
@@ -34,7 +35,7 @@ class HSLColor(val color: Color) {
 	 */
 	var saturation: Float = 1f
 		set(value) {
-			field = value.clamp(0f, 1f)
+			field = value.fixValue(checkedRange, "Saturation")
 		}
 
 	/**
@@ -42,15 +43,15 @@ class HSLColor(val color: Color) {
 	 */
 	var lightness: Float = 1f
 		set(value) {
-			field = value.clamp(0f, 1f)
+			field = value.fixValue(checkedRange, "Lightness")
 		}
 
 	/**
-	 * 透明度 Range(0.0F ~ 1.0F)
+	 * 不透明度 Range(0.0F ~ 1.0F)
 	 */
 	var alpha: Float = 1f
 		set(value) {
-			field = value.clamp(0f, 1f)
+			field = value.fixValue(checkedRange, "Alpha")
 		}
 
 
@@ -86,10 +87,9 @@ class HSLColor(val color: Color) {
 			return ((alpha * 255).i shl 24) or ((r * 255).i shl 16) or ((g * 255).i shl 8) or ((b * 255).i shl 0)
 		}
 		set(value) {
-			val color = Color(value)
-			val r = color.redF
-			val g = color.greenF
-			val b = color.blueF
+			val r = (value shr 16 and 0xFF).f / 255
+			val g = (value shr 8 and 0xFF).f / 255
+			val b = (value and 0xFF).f / 255
 			val max = max(r, g, b)
 			val min = min(r, g, b)
 			val summa = max + min
@@ -114,8 +114,8 @@ class HSLColor(val color: Color) {
 				}
 				hue1 * 360
 			}
-			this.saturation = saturation
-			this.lightness = summa / 2.0f
+			this.saturation = saturation.clamp(0f, 1.0f)
+			this.lightness = (summa / 2.0f).clamp(0f, 1.0f)
 			this.alpha = color.alphaF
 		}
 
@@ -135,6 +135,10 @@ class HSLColor(val color: Color) {
 	 */
 	fun syncFromColor() {
 		this.argb = color.argb
+	}
+
+	override fun toString(): String {
+		return "HSLColor(hue=$hue, saturation=$saturation, lightness=$lightness, alpha=$alpha)"
 	}
 
 

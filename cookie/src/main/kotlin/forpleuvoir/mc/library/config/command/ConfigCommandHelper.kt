@@ -135,6 +135,7 @@ abstract class ConfigCommandHelper<S : SharedSuggestionProvider>(
 			?.run {
 				val origin = this.toString()
 				deserialize(value.toString().parseToJsonElement)
+				onChanged()
 				sendFeedback(translatable("cookie.command.config.set_value", this.key, origin, toString()), context)
 			}
 		return 1

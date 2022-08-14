@@ -87,7 +87,7 @@ abstract class ConfigBase<T> : Config<T> {
 	}
 
 	override fun hashCode(): Int {
-		return key.hashCode()
+		return key.hashCode() and this.getValue().hashCode()
 	}
 
 }
