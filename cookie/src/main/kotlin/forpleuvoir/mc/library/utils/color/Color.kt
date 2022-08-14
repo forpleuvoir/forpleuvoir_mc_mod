@@ -47,18 +47,26 @@ class Color : JsonSerializer {
 			}
 		}
 
-		private fun Int.fixValue(checkedRange: Boolean): Int {
+		internal fun Int.fixValue(checkedRange: Boolean, parameterName: String): Int {
 			if (!(0..255).contains(this) && checkedRange) {
-				log.error("[{}]Value outside the expected range[0 ~ 255]", this)
-				throw IllegalArgumentException("[$this]Value outside the expected range[0 ~ 255]")
+				log.error("[$parameterName : $this}]Color parameter outside of expected range[0 ~ 255]")
+				throw IllegalArgumentException("[$parameterName : $this]Color parameter outside of expected range[0 ~ 255]")
 			}
 			return this.clamp(0, 255)
 		}
 
-		private fun Float.fixValue(checkedRange: Boolean): Float {
+		internal fun Float.fixValue(checkedRange: Boolean, parameterName: String): Float {
 			if ((this < 0f || this > 1f) && checkedRange) {
-				log.error("[{}]Value outside the expected range[0.0F ~ 1.0F]", this)
-				throw IllegalArgumentException("[$this]Value outside the expected range[0.0F ~ 1.0F]")
+				log.error("[$parameterName : $this}]Color parameter outside of expected range[0.0F ~ 1.0F]")
+				throw IllegalArgumentException("[$parameterName : $this]Color parameter outside of expected range[0.0F ~ 1.0F]")
+			}
+			return this.clamp(0f, 1f)
+		}
+
+		internal fun Float.fixHueValue(checkedRange: Boolean, parameterName: String): Float {
+			if ((this < 0f || this > 360f) && checkedRange) {
+				log.error("[$parameterName : $this}]Color parameter outside of expected range[0.0F ~ 360.0F]")
+				throw IllegalArgumentException("[$parameterName : $this]Color parameter outside of expected range[0.0F ~  360.0F]")
 			}
 			return this.clamp(0f, 1f)
 		}
@@ -126,10 +134,10 @@ class Color : JsonSerializer {
 		this.argb = argb
 		this.checkedRange = checkedRange
 		if (!fixed) {
-			red = red.fixValue(checkedRange)
-			green = green.fixValue(checkedRange)
-			blue = blue.fixValue(checkedRange)
-			alpha = alpha.fixValue(checkedRange)
+			red = red.fixValue(checkedRange, "Red")
+			green = green.fixValue(checkedRange, "Green")
+			blue = blue.fixValue(checkedRange, "Blue")
+			alpha = alpha.fixValue(checkedRange, "Alpha")
 		}
 	}
 
@@ -165,10 +173,10 @@ class Color : JsonSerializer {
 	 * @constructor
 	 */
 	constructor(red: Int = 255, green: Int = 255, blue: Int = 255, alpha: Int = 255, checkedRange: Boolean = false) : this(
-		((alpha.fixValue(checkedRange) and 0xFF) shl 24) or
-				((red.fixValue(checkedRange) and 0xFF) shl 16) or
-				((green.fixValue(checkedRange) and 0xFF) shl 8) or
-				((blue.fixValue(checkedRange) and 0xFF) shl 0),
+		((alpha.fixValue(checkedRange, "Red") and 0xFF) shl 24) or
+				((red.fixValue(checkedRange, "Green") and 0xFF) shl 16) or
+				((green.fixValue(checkedRange, "Blue") and 0xFF) shl 8) or
+				((blue.fixValue(checkedRange, "Alpha") and 0xFF)),
 		checkedRange,
 		true
 	)
@@ -190,10 +198,10 @@ class Color : JsonSerializer {
 	 * @constructor
 	 */
 	constructor(red: Float = 1.0F, green: Float = 1.0F, blue: Float = 1.0F, alpha: Float = 1.0F, checkedRange: Boolean = false) : this(
-		(red.fixValue(checkedRange) * 255).toInt(),
-		(green.fixValue(checkedRange) * 255).toInt(),
-		(blue.fixValue(checkedRange) * 255).toInt(),
-		(alpha.fixValue(checkedRange) * 255).toInt(),
+		(red.fixValue(checkedRange, "Red") * 255).toInt(),
+		(green.fixValue(checkedRange, "Green") * 255).toInt(),
+		(blue.fixValue(checkedRange, "Blue") * 255).toInt(),
+		(alpha.fixValue(checkedRange, "Alpha") * 255).toInt(),
 		checkedRange
 	)
 
@@ -218,7 +226,7 @@ class Color : JsonSerializer {
 	var red: Int
 		get() = argb shr 16 and 0xFF
 		set(value) {
-			argb = (alpha and 0XFF shl 24) or (value.fixValue(checkedRange) and 0xFF shl 16) or (green and 0XFF shl 8) or (blue and 0XFF)
+			argb = (alpha and 0XFF shl 24) or (value.fixValue(checkedRange, "Red") and 0xFF shl 16) or (green and 0XFF shl 8) or (blue and 0XFF)
 		}
 
 	/**
@@ -227,7 +235,7 @@ class Color : JsonSerializer {
 	var redF: Float
 		get() = red.f / 255
 		set(value) {
-			red = (value.fixValue(checkedRange) * 255).i
+			red = (value.fixValue(checkedRange, "Red") * 255).i
 		}
 
 
@@ -251,7 +259,7 @@ class Color : JsonSerializer {
 	var green: Int
 		get() = argb shr 8 and 0xFF
 		set(value) {
-			argb = (alpha and 0XFF shl 24) or (red and 0xFF shl 16) or (value.fixValue(checkedRange) and 0XFF shl 8) or (blue and 0XFF)
+			argb = (alpha and 0XFF shl 24) or (red and 0xFF shl 16) or (value.fixValue(checkedRange, "Green") and 0XFF shl 8) or (blue and 0XFF)
 		}
 
 	/**
@@ -260,7 +268,7 @@ class Color : JsonSerializer {
 	var greenF: Float
 		get() = green.f / 255
 		set(value) {
-			green = (value.fixValue(checkedRange) * 255).i
+			green = (value.fixValue(checkedRange, "Green") * 255).i
 		}
 
 	/**
@@ -283,7 +291,7 @@ class Color : JsonSerializer {
 	var blue: Int
 		get() = argb shr 0 and 0xFF
 		set(value) {
-			argb = (alpha and 0XFF shl 24) or (red and 0xFF shl 16) or (green and 0XFF shl 8) or (value.fixValue(checkedRange) and 0XFF)
+			argb = (alpha and 0XFF shl 24) or (red and 0xFF shl 16) or (green and 0XFF shl 8) or (value.fixValue(checkedRange, "Blue") and 0XFF)
 		}
 
 	/**
@@ -292,7 +300,7 @@ class Color : JsonSerializer {
 	var blueF: Float
 		get() = blue.f / 255
 		set(value) {
-			blue = (value.fixValue(checkedRange) * 255).i
+			blue = (value.fixValue(checkedRange, "Blue") * 255).i
 		}
 
 	/**
@@ -310,21 +318,21 @@ class Color : JsonSerializer {
 	fun blue(blue: Float): Color = this.apply { this.blueF = blue }
 
 	/**
-	 * 透明度 Range(0 ~ 255)
+	 * 不透明度 Range(0 ~ 255)
 	 */
 	var alpha: Int
 		get() = argb shr 24 and 0xFF
 		set(value) {
-			argb = (value.fixValue(checkedRange) and 0XFF shl 24) or (red and 0xFF shl 16) or (green and 0XFF shl 8) or (blue and 0XFF)
+			argb = (value.fixValue(checkedRange, "Alpha") and 0XFF shl 24) or (red and 0xFF shl 16) or (green and 0XFF shl 8) or (blue and 0XFF)
 		}
 
 	/**
-	 * 透明度 Range(0.0F ~ 1.0F)
+	 * 不透明度 Range(0.0F ~ 1.0F)
 	 */
 	var alphaF: Float
 		get() = alpha.f / 255
 		set(value) {
-			alpha = (value.fixValue(checkedRange) * 255).i
+			alpha = (value.fixValue(checkedRange, "Alpha") * 255).i
 		}
 
 	/**
@@ -348,24 +356,24 @@ class Color : JsonSerializer {
 	fun copy(): Color = Color(argb)
 
 	/**
-	 * 获取调整透明的之后的颜色复制对象
+	 * 获取调整不透明度之后的颜色复制对象
 	 *
-	 * 透明度 = 当前透明 * opacity
+	 * 不透明度 = 当前不透明度 * opacity
 	 *
 	 * @param opacity [Float] Range(0.0F ~ 1.0F)
 	 * @return [Color] 原始对象
 	 */
-	fun opacity(opacity: Float): Color = this.copy().apply { alphaF *= opacity.fixValue(checkedRange) }
+	fun opacity(opacity: Float): Color = this.copy().apply { alphaF *= opacity.fixValue(checkedRange, "OPACITY") }
 
 	/**
-	 * 获取调整透明的之后的颜色复制对象
+	 * 获取调整不透明度之后的颜色复制对象
 	 *
-	 * 透明度 = 当前透明 * opacity
+	 * 不透明度 = 当前不透明度 * opacity
 	 *
 	 * @param opacity [Float] Range(0 ~ 255)
 	 * @return [Color] 原始对象
 	 */
-	fun opacity(opacity: Int): Color = this.copy().apply { alpha *= opacity.fixValue(checkedRange) }
+	fun opacity(opacity: Int): Color = this.copy().apply { alpha *= opacity.fixValue(checkedRange, "OPACITY") }
 
 	val hsl: HSLColor by lazy { HSLColor(this) }
 
@@ -399,7 +407,7 @@ class Color : JsonSerializer {
 	}
 
 	override fun toString(): String {
-		return "Color(argb=$argb, hexStr='$hexStr')"
+		return "Color(argb=$argb, hexStr='$hexStr', red=$red, green=$green, blue=$blue, alpha=$alpha)"
 	}
 
 

@@ -1,5 +1,6 @@
 package forpleuvoir.mc.library.config.options.impl
 
+import com.google.common.collect.ImmutableList
 import com.google.gson.JsonElement
 import forpleuvoir.mc.library.config.ConfigType
 import forpleuvoir.mc.library.config.ConfigTypes
@@ -49,7 +50,7 @@ open class ConfigStringList(
 		}
 	}
 
-	override fun getValue(): List<String> = ArrayList(configValue)
+	override fun getValue(): List<String> = ImmutableList.copyOf(configValue)
 
 	override fun add(element: String): String? {
 		valueAsMutable {

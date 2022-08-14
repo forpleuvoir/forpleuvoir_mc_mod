@@ -1,6 +1,8 @@
 package forpleuvoir.mc.library.utils.color
 
 import forpleuvoir.mc.library.utils.clamp
+import forpleuvoir.mc.library.utils.color.Color.Companion.fixHueValue
+import forpleuvoir.mc.library.utils.color.Color.Companion.fixValue
 import forpleuvoir.mc.library.utils.i
 import kotlin.math.floor
 
@@ -20,12 +22,14 @@ import kotlin.math.floor
  */
 class HSBColor(val color: Color) {
 
+	val checkedRange: Boolean get() = color.checkedRange
+
 	/**
 	 * 色相 Range(0.0f ~ 360.0f)
 	 */
 	var hue: Float = 360f
 		set(value) {
-			field = value.clamp(0, 360)
+			field = value.fixHueValue(checkedRange, "Hue")
 		}
 
 	/**
@@ -33,7 +37,7 @@ class HSBColor(val color: Color) {
 	 */
 	var saturation: Float = 1f
 		set(value) {
-			field = value.clamp(0, 1f)
+			field = value.fixValue(checkedRange, "Saturation")
 		}
 
 	/**
@@ -41,15 +45,15 @@ class HSBColor(val color: Color) {
 	 */
 	var brightness: Float = 1f
 		set(value) {
-			field = value.clamp(0, 1f)
+			field = value.fixValue(checkedRange, "Brightness")
 		}
 
 	/**
-	 * 透明度 Range(0.0F ~ 1.0F)
+	 * 不透明度 Range(0.0F ~ 1.0F)
 	 */
 	var alpha: Float = 1f
 		set(value) {
-			field = value.clamp(0f, 1f)
+			field = value.fixValue(checkedRange, "Alpha")
 		}
 
 	var argb: Int
@@ -130,9 +134,9 @@ class HSBColor(val color: Color) {
 				hue /= 6.0f
 				if (hue < 0) hue += 1.0f
 			}
-			this.hue = hue * 360f
-			this.saturation = saturation
-			this.brightness = brightness
+			this.hue = (hue * 360f).clamp(0f, 360.0f)
+			this.saturation = saturation.clamp(0f, 1.0f)
+			this.brightness = brightness.clamp(0f, 1.0f)
 			this.alpha = color.alphaF
 		}
 
@@ -154,4 +158,10 @@ class HSBColor(val color: Color) {
 		this.argb = color.argb
 	}
 
+	override fun toString(): String {
+		return "HSBColor(hue=$hue, saturation=$saturation, brightness=$brightness, alpha=$alpha)"
+	}
+
+
 }
+
