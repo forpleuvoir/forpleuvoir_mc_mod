@@ -109,6 +109,7 @@ abstract class ConfigCommandHelper<S : SharedSuggestionProvider>(
 		return 1
 	}
 
+	@Suppress("unused_parameter")
 	protected fun categorySuggests(context: CommandContext<S>, builder: SuggestionsBuilder): CompletableFuture<Suggestions> {
 		val category = ArrayList<String>().apply {
 			modConfig.allCategory.forEach { add(it.name) }

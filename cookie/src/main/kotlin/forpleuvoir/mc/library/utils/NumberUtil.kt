@@ -124,10 +124,10 @@ fun <T> T.isIn(vararg args: T): Boolean {
 	return false
 }
 
-val Number.d: Double get() = this.toDouble()
+inline val Number.d: Double get() = this.toDouble()
 
-val Number.i: Int get() = this.toInt()
+inline val Number.i: Int get() = this.toInt()
 
-val Number.l: Long get() = this.toLong()
+inline val Number.l: Long get() = this.toLong()
 
-val Number.f: Float get() = this.toFloat()
+inline val Number.f: Float get() = this.toFloat()

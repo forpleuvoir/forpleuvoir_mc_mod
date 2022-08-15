@@ -101,8 +101,8 @@ class ConfigStringPairs(
 	}
 
 	override val serialization: JsonElement
-		get() = jsonArray().apply {
-			configValue.forEach { add(jsonObject { it.first at it.second }) }
+		get() = jsonArray(configValue) {
+			jsonObject { it.first at it.second }
 		}
 
 }

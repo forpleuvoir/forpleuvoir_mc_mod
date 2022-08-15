@@ -1,6 +1,5 @@
 package forpleuvoir.mc.library.utils
 
-import forpleuvoir.mc.cookie.Cookie
 import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.Font
 import net.minecraft.client.renderer.texture.TextureManager
@@ -34,7 +33,7 @@ val textureManager: TextureManager by lazy { mc.textureManager }
 
 val resourceManager: ReloadableResourceManager by lazy { mc.resourceManager as ReloadableResourceManager }
 
-fun resources(path: String): ResourceLocation = ResourceLocation(Cookie.id, path)
+fun resources(nameSpace: String, path: String): ResourceLocation = ResourceLocation(nameSpace, path)
 
 /**
  * 是否为开发环境
@@ -50,3 +49,5 @@ inline fun Boolean?.ifc(action: () -> Unit) {
 inline fun Boolean?.notc(action: () -> Unit) = if (this != null) {
 	if (!this) action() else Unit
 } else Unit
+
+fun <T> Boolean?.ternary(v1: T, v2: T): T = if (this == true) v1 else v2

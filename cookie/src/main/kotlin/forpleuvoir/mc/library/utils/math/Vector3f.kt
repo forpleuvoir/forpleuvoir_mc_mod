@@ -2,6 +2,7 @@ package forpleuvoir.mc.library.utils.math
 
 import com.google.gson.JsonElement
 import com.google.gson.JsonObject
+import forpleuvoir.mc.library.utils.jsonObject
 
 /**
  *
@@ -32,10 +33,10 @@ class Vector3f(
 	}
 
 	override val serialization: JsonElement
-		get() = JsonObject().apply {
-			addProperty("x", x)
-			addProperty("y", y)
-			addProperty("z", z)
+		get() = jsonObject {
+			"x" at x
+			"y" at y
+			"y" at z
 		}
 
 	override fun unaryMinus(): Vector3f {

@@ -17,7 +17,7 @@ import com.google.gson.*
 
  */
 
-val gson = GsonBuilder().setPrettyPrinting().create()!!
+val gson: Gson by lazy { GsonBuilder().setPrettyPrinting().create() }
 
 val String.parseToJsonArray: JsonArray get() = JsonParser.parseString(this).asJsonArray
 
@@ -55,6 +55,14 @@ fun Any.toJsonStr(): String {
 
 fun jsonArray(vararg elements: Any): JsonArray {
 	return jsonArray(elements.toList())
+}
+
+inline fun <T> jsonArray(iterable: Iterable<T>, converter: (T) -> JsonElement): JsonArray {
+	return JsonArray().apply {
+		for (t in iterable) {
+			add(converter(t))
+		}
+	}
 }
 
 fun jsonArray(elements: Iterable<Any>): JsonArray {
@@ -114,6 +122,14 @@ fun jsonObject(map: Map<String, Any>): JsonObject {
 				is JsonElement -> key at element
 				else           -> key at element.toJsonObject()
 			}
+		}
+	}
+}
+
+fun <T> jsonObject(map: Map<String, T>, converter: (T) -> JsonElement): JsonObject {
+	return jsonObject {
+		for (entry in map) {
+			entry.key at converter(entry.value)
 		}
 	}
 }

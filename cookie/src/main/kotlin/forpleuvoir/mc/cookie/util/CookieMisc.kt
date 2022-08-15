@@ -2,6 +2,8 @@ package forpleuvoir.mc.cookie.util
 
 import forpleuvoir.mc.cookie.Cookie
 import forpleuvoir.mc.library.utils.ModLogger
+import forpleuvoir.mc.library.utils.resources
+import net.minecraft.resources.ResourceLocation
 
 /**
  *
@@ -21,3 +23,5 @@ import forpleuvoir.mc.library.utils.ModLogger
 internal fun Any.logger(): ModLogger {
 	return ModLogger(this::class.java, Cookie.name)
 }
+
+internal fun resources(path: String): ResourceLocation = resources(Cookie.id, path)

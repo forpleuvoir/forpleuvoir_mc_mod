@@ -39,8 +39,8 @@ class Text(
 	}
 
 	@JvmName("appendComponent")
-	fun append(string: () -> Component) {
-		siblings.add(string())
+	fun append(component: () -> Component) {
+		siblings.add(component())
 	}
 
 	override fun append(string: String): Text {

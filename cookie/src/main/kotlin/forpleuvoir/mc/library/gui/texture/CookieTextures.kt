@@ -1,7 +1,7 @@
 package forpleuvoir.mc.library.gui.texture
 
+import forpleuvoir.mc.cookie.util.resources
 import forpleuvoir.mc.library.gui.texture.GuiTexture.Corner
-import forpleuvoir.mc.library.utils.resources
 
 /**
  * 材质

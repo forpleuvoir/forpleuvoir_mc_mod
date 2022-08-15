@@ -48,7 +48,7 @@ class Color : JsonSerializer {
 		}
 
 		internal fun Int.fixValue(checkedRange: Boolean, parameterName: String, minValue: Int = 0, maxValue: Int = 255): Int {
-			if (!(minValue..maxValue).contains(this) && checkedRange) {
+			if ((this < minValue || this > maxValue) && checkedRange) {
 				log.error("[$parameterName : $this}]Color parameter outside of expected range[$minValue ~ $maxValue]")
 				throw IllegalArgumentException("[$parameterName : $this]Color parameter outside of expected range[$minValue ~ $maxValue]")
 			}
@@ -210,7 +210,7 @@ class Color : JsonSerializer {
 	 */
 	var argb: Int
 
-	val hexStr: String get() ="$${argb.toUInt().toString(16).fillBefore(8, '0').uppercase()}"
+	val hexStr: String get() = "#${argb.toUInt().toString(16).fillBefore(8, '0').uppercase()}"
 
 	/**
 	 * 红色值 Range(0 ~ 255)

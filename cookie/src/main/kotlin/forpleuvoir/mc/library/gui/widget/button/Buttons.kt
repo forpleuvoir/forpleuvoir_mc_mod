@@ -41,15 +41,15 @@ inline fun ParentElement.button(
 
 @JvmName("buttonString")
 inline fun ParentElement.button(
-	noinline text: () -> String,
-	width: Double = textRenderer.width(text()) + 8.0,
+	noinline strText: () -> String,
+	width: Double = textRenderer.width(strText()) + 8.0,
 	height: Double = 20.0,
 	color: Color = Color.WHITE,
 	noinline onClick: Button.() -> Unit = { },
 	noinline onRelease: Button.() -> Unit = {},
 	scope: Button.() -> Unit = {},
 ): Button =
-	this.addElement(Button(text).apply {
+	this.addElement(Button(strText).apply {
 		this.width = width
 		this.height = height
 		this.buttonColor = color
