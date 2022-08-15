@@ -47,28 +47,20 @@ class Color : JsonSerializer {
 			}
 		}
 
-		internal fun Int.fixValue(checkedRange: Boolean, parameterName: String): Int {
-			if (!(0..255).contains(this) && checkedRange) {
-				log.error("[$parameterName : $this}]Color parameter outside of expected range[0 ~ 255]")
-				throw IllegalArgumentException("[$parameterName : $this]Color parameter outside of expected range[0 ~ 255]")
+		internal fun Int.fixValue(checkedRange: Boolean, parameterName: String, minValue: Int = 0, maxValue: Int = 255): Int {
+			if (!(minValue..maxValue).contains(this) && checkedRange) {
+				log.error("[$parameterName : $this}]Color parameter outside of expected range[$minValue ~ $maxValue]")
+				throw IllegalArgumentException("[$parameterName : $this]Color parameter outside of expected range[$minValue ~ $maxValue]")
 			}
-			return this.clamp(0, 255)
+			return this.clamp(minValue, maxValue)
 		}
 
-		internal fun Float.fixValue(checkedRange: Boolean, parameterName: String): Float {
-			if ((this < 0f || this > 1f) && checkedRange) {
-				log.error("[$parameterName : $this}]Color parameter outside of expected range[0.0F ~ 1.0F]")
-				throw IllegalArgumentException("[$parameterName : $this]Color parameter outside of expected range[0.0F ~ 1.0F]")
+		internal fun Float.fixValue(checkedRange: Boolean, parameterName: String, minValue: Float = 0.0F, maxValue: Float = 1.0F): Float {
+			if ((this < minValue || this > maxValue) && checkedRange) {
+				log.error("[$parameterName : $this}]Color parameter outside of expected range[$minValue ~ $maxValue]")
+				throw IllegalArgumentException("[$parameterName : $this]Color parameter outside of expected range[$minValue ~ $maxValue]")
 			}
-			return this.clamp(0f, 1f)
-		}
-
-		internal fun Float.fixHueValue(checkedRange: Boolean, parameterName: String): Float {
-			if ((this < 0f || this > 360f) && checkedRange) {
-				log.error("[$parameterName : $this}]Color parameter outside of expected range[0.0F ~ 360.0F]")
-				throw IllegalArgumentException("[$parameterName : $this]Color parameter outside of expected range[0.0F ~  360.0F]")
-			}
-			return this.clamp(0f, 1f)
+			return this.clamp(minValue, maxValue)
 		}
 
 		@JvmStatic
@@ -218,7 +210,7 @@ class Color : JsonSerializer {
 	 */
 	var argb: Int
 
-	val hexStr: String get() = argb.toUInt().toString(16).fillBefore(8, '0').uppercase()
+	val hexStr: String get() ="$${argb.toUInt().toString(16).fillBefore(8, '0').uppercase()}"
 
 	/**
 	 * 红色值 Range(0 ~ 255)
@@ -363,7 +355,7 @@ class Color : JsonSerializer {
 	 * @param opacity [Float] Range(0.0F ~ 1.0F)
 	 * @return [Color] 原始对象
 	 */
-	fun opacity(opacity: Float): Color = this.copy().apply { alphaF *= opacity.fixValue(checkedRange, "OPACITY") }
+	fun opacity(opacity: Float): Color = this.copy().apply { alphaF *= opacity.fixValue(checkedRange, "Opacity") }
 
 	/**
 	 * 获取调整不透明度之后的颜色复制对象
@@ -373,9 +365,7 @@ class Color : JsonSerializer {
 	 * @param opacity [Float] Range(0 ~ 255)
 	 * @return [Color] 原始对象
 	 */
-	fun opacity(opacity: Int): Color = this.copy().apply { alpha *= opacity.fixValue(checkedRange, "OPACITY") }
-
-	val hsl: HSLColor by lazy { HSLColor(this) }
+	fun opacity(opacity: Int): Color = this.copy().apply { alpha *= opacity.fixValue(checkedRange, "Opacity") }
 
 	val hsb: HSBColor by lazy { HSBColor(this) }
 
