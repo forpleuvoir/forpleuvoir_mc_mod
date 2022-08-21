@@ -4,6 +4,8 @@ import com.mojang.blaze3d.vertex.PoseStack
 import forpleuvoir.mc.library.gui.foundation.*
 import forpleuvoir.mc.library.gui.texture.TEXT_FIELD
 import forpleuvoir.mc.library.input.*
+import forpleuvoir.mc.library.utils.Direction
+import forpleuvoir.mc.library.utils.Direction.*
 import forpleuvoir.mc.library.utils.clamp
 import forpleuvoir.mc.library.utils.color.Color
 import forpleuvoir.mc.library.utils.mc
@@ -65,9 +67,15 @@ open class TextInput(text: String = "") : AbstractElement() {
 
 	var textChange: (String) -> Unit = {}
 
-	val selectionStart: Int get() = 0
+	var selectionStart: Int = 0
+		set(value) {
+			field = value.clamp(0, selectionEnd)
+		}
 
-	val selectionEnd: Int get() = 0
+	var selectionEnd: Int = 0
+		set(value) {
+			field = value.clamp(selectionStart, text.length)
+		}
 
 	val selectionText: String get() = text.substring(selectionStart, selectionEnd)
 
@@ -138,19 +146,47 @@ open class TextInput(text: String = "") : AbstractElement() {
 	/**
 	 * 左移动
 	 */
-	protected open fun leftShift() {
+	protected open fun wordStart() {
 		TODO("光标移动到单词头部")
 	}
 
 	/**
 	 * 右移动
 	 */
-	protected open fun rightShift() {
+	protected open fun wordEnding() {
 		TODO("光标移动到单词结尾")
 	}
 
+	/**
+	 * 光标移动
+	 * @param direction Direction 移动方向
+	 * @param shift Int 偏移量
+	 */
+	protected open fun cursorMove(direction: Direction, shift: Int = 1) {
+		when (direction) {
+			Left  -> cursorPosition -= shift
+			Right -> cursorPosition += shift
+			else  -> Unit
+		}
+	}
+
+	/**
+	 * 选择文本向左移动
+	 */
+	protected open fun selectionShl() {
+
+	}
+
+	/**
+	 * 选择文本向右移动
+	 */
+	protected open fun selectionShr() {
+
+	}
+
+
 	override fun onKeyPress(keyCode: Int, modifiers: Int): HandleStatus {
-		if (InputHandler.hasKey(KEY_LEFT_CONTROL)) {
+		if (InputHandler.hasKey(KEY_LEFT_CONTROL) || InputHandler.hasKey(KEY_RIGHT_CONTROL)) {
 			when (keyCode) {
 				KEY_V         -> paste()
 				KEY_C         -> copy()
@@ -158,11 +194,21 @@ open class TextInput(text: String = "") : AbstractElement() {
 				KEY_BACKSPACE -> deleteWord()
 				KEY_Z         -> undo()
 				KEY_Y         -> redo()
-				KEY_LEFT      -> leftShift()
-				KEY_RIGHT     -> rightShift()
+				KEY_LEFT      -> wordStart()
+				KEY_RIGHT     -> wordEnding()
 			}
-		} else if (InputHandler.hasKey(KEY_LEFT_SHIFT)) {
-			TODO("未实现")
+		} else if (InputHandler.hasKey(KEY_LEFT_SHIFT) || InputHandler.hasKey(KEY_RIGHT_SHIFT)) {
+			when (keyCode) {
+				KEY_LEFT  -> selectionShl()
+				KEY_RIGHT -> selectionShr()
+			}
+		} else {
+			when (keyCode) {
+				KEY_UP    -> cursorMove(Up)
+				KEY_DOWN  -> cursorMove(Down)
+				KEY_LEFT  -> cursorMove(Left)
+				KEY_RIGHT -> cursorMove(Right)
+			}
 		}
 		return super.onKeyPress(keyCode, modifiers)
 	}
