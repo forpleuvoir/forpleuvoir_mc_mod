@@ -30,14 +30,10 @@ object ReflectionUtil {
 	}
 
 	@JvmStatic
-	fun isExtended(type: Class<*>, target: Class<*>): Boolean {
-		return getSuperClass(type).stream().anyMatch { aClass: Class<*> -> aClass.name == target.name }
+	fun isAssignableFrom(type: Class<*>, target: Class<*>): Boolean {
+		return target.isAssignableFrom(type)
 	}
 
-	@JvmStatic
-	fun isImplemented(type: Class<*>, target: Class<*>): Boolean {
-		return getInterfaces(type).stream().anyMatch { aClass: Class<*> -> aClass.name == target.name }
-	}
 
 	@JvmStatic
 	fun getInterfaces(clazz: Class<*>): List<Class<*>> {

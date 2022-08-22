@@ -3,7 +3,7 @@ package forpleuvoir.mc.library.event
 import forpleuvoir.mc.cookie.util.logger
 import forpleuvoir.mc.library.api.Initializable
 import forpleuvoir.mc.library.utils.ReflectionUtil
-import forpleuvoir.mc.library.utils.modPacks
+import forpleuvoir.mc.library.utils.scanModPackage
 import kotlin.reflect.full.companionObjectInstance
 
 /**
@@ -38,12 +38,10 @@ object Events : Initializable {
 	 */
 	@Suppress("UNCHECKED_CAST")
 	private fun register() {
-		modPacks.forEach { pack ->
-			ReflectionUtil.scanPackage(pack) { e ->
-				ReflectionUtil.isExtended(e, Event::class.java)
-			}.forEach {
-				events.add(it as Class<out Event>)
-			}
+		scanModPackage { e ->
+			ReflectionUtil.isAssignableFrom(e, Event::class.java)
+		}.forEach { (_, clazz) ->
+			clazz.forEach { events.add(it as Class<out Event>) }
 		}
 	}
 
@@ -52,9 +50,9 @@ object Events : Initializable {
 	 */
 	@Suppress("UNCHECKED_CAST")
 	private fun subscribe() {
-		modPacks.forEach { pack ->
-			ReflectionUtil.scanPackage(pack) { it.isAnnotationPresent(EventSubscriber::class.java) }
-				.forEach { e ->
+		scanModPackage { it.isAnnotationPresent(EventSubscriber::class.java) }
+			.forEach { (_, set) ->
+				set.forEach { e ->
 					val eventSubscriber = e.getAnnotation(EventSubscriber::class.java)
 					EventBus[eventSubscriber.eventBus]?.let { bus ->
 						e.methods.toList()
@@ -62,7 +60,7 @@ object Events : Initializable {
 							.filter { m ->
 								m.isAnnotationPresent(Subscriber::class.java)
 										&& m.parameterCount == 1
-										&& (ReflectionUtil.isExtended(
+										&& (ReflectionUtil.isAssignableFrom(
 									m.parameterTypes[0],
 									Event::class.java
 								) || m.parameterTypes[0].equals(Event::class.java))
@@ -78,8 +76,7 @@ object Events : Initializable {
 							}
 					}
 				}
-		}
-
+			}
 	}
 
 	fun eventSet(): Set<Class<out Event>> {

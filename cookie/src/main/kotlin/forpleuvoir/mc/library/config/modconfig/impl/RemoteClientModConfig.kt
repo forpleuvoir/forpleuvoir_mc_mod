@@ -1,6 +1,7 @@
 package forpleuvoir.mc.library.config.modconfig.impl
 
-import forpleuvoir.mc.library.config.modconfig.ClientModConfig
+import forpleuvoir.mc.library.api.impl.ClientSavable
+import net.minecraft.client.Minecraft
 
 /**
  *
@@ -16,5 +17,15 @@ import forpleuvoir.mc.library.config.modconfig.ClientModConfig
  * @author forpleuvoir
 
  */
-open class RemoteClientModConfig(override val modId: String, saveUrl: String, loadUrl: String) : RemoteModConfig(saveUrl, loadUrl),
-	ClientModConfig
+open class RemoteClientModConfig(
+	override val modId: String,
+	saveUrl: String, loadUrl: String
+) : RemoteModConfig(saveUrl, loadUrl), ClientSavable {
+
+	override lateinit var client: Minecraft
+
+	override fun init(client: Minecraft) {
+		this.client = client
+		init()
+	}
+}

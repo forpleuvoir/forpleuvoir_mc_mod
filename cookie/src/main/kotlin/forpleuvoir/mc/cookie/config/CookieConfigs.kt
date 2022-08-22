@@ -1,6 +1,7 @@
 package forpleuvoir.mc.cookie.config
 
 import forpleuvoir.mc.cookie.Cookie
+import forpleuvoir.mc.library.api.CookieSavable
 import forpleuvoir.mc.library.config.modconfig.impl.ConfigCategoryImpl
 import forpleuvoir.mc.library.config.modconfig.impl.LocalClientModConfig
 import forpleuvoir.mc.library.utils.color.Color
@@ -21,6 +22,7 @@ import forpleuvoir.mc.library.utils.color.Color
  */
 internal val Toggles = CookieConfigs.Toggle
 
+@CookieSavable("config")
 object CookieConfigs : LocalClientModConfig(Cookie.id) {
 
 	init {

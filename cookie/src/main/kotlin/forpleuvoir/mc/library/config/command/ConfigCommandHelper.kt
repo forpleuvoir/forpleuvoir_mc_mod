@@ -7,9 +7,9 @@ import com.mojang.brigadier.builder.RequiredArgumentBuilder
 import com.mojang.brigadier.context.CommandContext
 import com.mojang.brigadier.suggestion.Suggestions
 import com.mojang.brigadier.suggestion.SuggestionsBuilder
-import forpleuvoir.mc.library.config.modconfig.ClientModConfig
+import forpleuvoir.mc.library.api.impl.ClientSavable
+import forpleuvoir.mc.library.api.impl.ServerSavable
 import forpleuvoir.mc.library.config.modconfig.ModConfig
-import forpleuvoir.mc.library.config.modconfig.ServerModConfig
 import forpleuvoir.mc.library.utils.parseToJsonElement
 import forpleuvoir.mc.library.utils.text.Text
 import forpleuvoir.mc.library.utils.text.translatable
@@ -43,11 +43,11 @@ abstract class ConfigCommandHelper<S : SharedSuggestionProvider>(
 	companion object {
 
 		@JvmStatic
-		fun client(
+		fun <T> client(
 			name: String,
-			modConfig: ClientModConfig,
+			modConfig: T,
 			requires: (FabricClientCommandSource) -> Boolean = { true },
-		): ConfigCommandHelper<FabricClientCommandSource> =
+		): ConfigCommandHelper<FabricClientCommandSource> where T : ModConfig, T : ClientSavable =
 			object : ConfigCommandHelper<FabricClientCommandSource>(name, modConfig, requires) {
 				override fun sendFeedback(text: Text, context: CommandContext<FabricClientCommandSource>) {
 					context.source.sendFeedback(text)
@@ -55,11 +55,11 @@ abstract class ConfigCommandHelper<S : SharedSuggestionProvider>(
 			}
 
 		@JvmStatic
-		fun server(
+		fun <T> server(
 			name: String,
-			modConfig: ServerModConfig,
+			modConfig: T,
 			requires: (CommandSourceStack) -> Boolean = { true },
-		): ConfigCommandHelper<CommandSourceStack> =
+		): ConfigCommandHelper<CommandSourceStack> where T : ModConfig, T : ServerSavable =
 			object : ConfigCommandHelper<CommandSourceStack>(name, modConfig, requires) {
 				override fun sendFeedback(text: Text, context: CommandContext<CommandSourceStack>) {
 					context.source.sendSuccess(text, false)
@@ -82,6 +82,16 @@ abstract class ConfigCommandHelper<S : SharedSuggestionProvider>(
 									argument("config_value", NbtPathArgument.nbtPath())
 										.executes(::setValue)
 								)
+						)
+				)
+			)
+			.then(
+				literal("get").then(
+					argument("config_category", StringArgumentType.string())
+						.suggests(::categorySuggests).then(
+							argument("config_key", StringArgumentType.string())
+								.suggests(::keySuggests)
+								.executes(::getValue)
 						)
 				)
 			)
@@ -138,6 +148,19 @@ abstract class ConfigCommandHelper<S : SharedSuggestionProvider>(
 				deserialize(value.toString().parseToJsonElement)
 				onChanged()
 				sendFeedback(translatable("cookie.command.config.set_value", this.key, origin, toString()), context)
+			}
+		return 1
+	}
+
+	protected fun getValue(context: CommandContext<S>): Int {
+		val category = context.getArgument("config_category", String::class.java)
+		val key = context.getArgument("config_key", String::class.java)
+		modConfig
+			.allCategory.find { it.name == category }
+			?.allConfigs?.find { it.key == key }
+			?.run {
+				println(this.getValue().toString())
+				sendFeedback(translatable("cookie.command.config.get_value", this.key, toString()), context)
 			}
 		return 1
 	}

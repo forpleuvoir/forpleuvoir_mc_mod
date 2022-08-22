@@ -1,7 +1,7 @@
 package forpleuvoir.mc.library.config.modconfig.impl
 
+import forpleuvoir.mc.library.api.impl.ServerSavable
 import forpleuvoir.mc.library.config.ConfigUtil
-import forpleuvoir.mc.library.config.modconfig.ServerModConfig
 import net.minecraft.server.MinecraftServer
 import java.nio.file.Path
 
@@ -19,7 +19,7 @@ import java.nio.file.Path
  * @author forpleuvoir
 
  */
-open class LocalServerModConfig(override val modId: String) : LocalModConfig(modId), ServerModConfig {
+open class LocalServerModConfig(override val modId: String) : LocalModConfig(modId), ServerSavable {
 
 	override fun localConfigPath(): Path = ConfigUtil.getServerConfigPath(modId, server)
 

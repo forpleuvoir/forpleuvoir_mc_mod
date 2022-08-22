@@ -1,7 +1,7 @@
 package forpleuvoir.mc.library.config.modconfig
 
 import forpleuvoir.mc.library.api.Initializable
-import net.fabricmc.api.EnvType
+import forpleuvoir.mc.library.api.Savable
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.atomic.AtomicBoolean
 
@@ -19,16 +19,14 @@ import java.util.concurrent.atomic.AtomicBoolean
  * @author forpleuvoir
 
  */
-interface ModConfig : Initializable {
-
-	val env: EnvType
+interface ModConfig : Savable, Initializable {
 
 	/**
 	 * 保存配置到文件
 	 */
-	fun save()
+	override fun save()
 
-	fun saveAsync() {
+	override fun saveAsync() {
 		CompletableFuture.runAsync {
 			save()
 		}
@@ -37,9 +35,9 @@ interface ModConfig : Initializable {
 	/**
 	 * 加载配置到内存
 	 */
-	fun load()
+	override fun load()
 
-	fun loadAsync() {
+	override fun loadAsync() {
 		CompletableFuture.runAsync {
 			load()
 		}
@@ -65,4 +63,7 @@ interface ModConfig : Initializable {
 	 * @return Boolean
 	 */
 	val isChanged: AtomicBoolean
+
+	override val needSave: Boolean
+		get() = isChanged.get()
 }

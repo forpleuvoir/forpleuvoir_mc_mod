@@ -1,6 +1,7 @@
 package forpleuvoir.mc.cookie.config
 
 import forpleuvoir.mc.cookie.Cookie
+import forpleuvoir.mc.library.api.CookieSavable
 import forpleuvoir.mc.library.config.modconfig.impl.ConfigCategoryImpl
 import forpleuvoir.mc.library.config.modconfig.impl.LocalServerModConfig
 
@@ -18,6 +19,7 @@ import forpleuvoir.mc.library.config.modconfig.impl.LocalServerModConfig
  * @author forpleuvoir
 
  */
+@CookieSavable("config")
 object CookieServerConfigs : LocalServerModConfig(Cookie.id) {
 	init {
 		addCategory(Toggle)

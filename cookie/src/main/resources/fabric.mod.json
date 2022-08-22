@@ -35,18 +35,6 @@
 		"adapter": "kotlin",
 		"value": "forpleuvoir.mc.cookie.CookieServer"
 	  }
-	],
-	"cookie_mod_client_config": [
-	  {
-		"adapter": "kotlin",
-		"value": "forpleuvoir.mc.cookie.config.CookieClientModConfig"
-	  }
-	],
-	"cookie_mod_server_config": [
-	  {
-		"adapter": "kotlin",
-		"value": "forpleuvoir.mc.cookie.config.CookieServerModConfig"
-	  }
 	]
   },
   "mixins": [

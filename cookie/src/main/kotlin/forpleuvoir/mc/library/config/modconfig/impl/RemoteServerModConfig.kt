@@ -1,6 +1,6 @@
 package forpleuvoir.mc.library.config.modconfig.impl
 
-import forpleuvoir.mc.library.config.modconfig.ServerModConfig
+import forpleuvoir.mc.library.api.impl.ServerSavable
 import net.minecraft.server.MinecraftServer
 
 /**
@@ -21,7 +21,7 @@ open class RemoteServerModConfig(
 	override val modId: String,
 	saveUrl: String,
 	loadUrl: String,
-) : RemoteModConfig(saveUrl, loadUrl), ServerModConfig {
+) : RemoteModConfig(saveUrl, loadUrl), ServerSavable {
 
 	override lateinit var server: MinecraftServer
 
