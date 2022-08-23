@@ -23,6 +23,7 @@ import forpleuvoir.mc.library.utils.scanModPackage
 
  */
 @EventSubscriber
+@Suppress("unused_parameter")
 object ServerSavableHandler : SavableHandler<ServerSavable>() {
 
 	override fun init() {}
@@ -47,10 +48,10 @@ object ServerSavableHandler : SavableHandler<ServerSavable>() {
 
 	@Subscriber
 	fun serverSave(event: ServerSavingEvent) {
-		log.info("save server savable...")
-		configs.values.forEach {
-			if (it.needSave) {
-				it.saveAsync()
+		configs.forEach { (key, value) ->
+			if (value.needSave) {
+				log.info("[{}]auto save server savable...", key)
+				value.saveAsync()
 			}
 		}
 	}

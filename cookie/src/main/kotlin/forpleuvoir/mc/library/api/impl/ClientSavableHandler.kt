@@ -23,6 +23,7 @@ import java.util.*
 
  */
 @EventSubscriber
+@Suppress("unused_parameter")
 object ClientSavableHandler : SavableHandler<ClientSavable>() {
 
 	override fun init() {

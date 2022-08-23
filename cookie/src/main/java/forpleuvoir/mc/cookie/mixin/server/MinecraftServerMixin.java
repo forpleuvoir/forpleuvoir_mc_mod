@@ -3,10 +3,7 @@ package forpleuvoir.mc.cookie.mixin.server;
 import com.mojang.datafixers.DataFixer;
 import forpleuvoir.mc.cookie.Cookie;
 import forpleuvoir.mc.library.event.EventBus;
-import forpleuvoir.mc.library.event.events.server.ServerStartedEvent;
-import forpleuvoir.mc.library.event.events.server.ServerStartingEvent;
-import forpleuvoir.mc.library.event.events.server.ServerStoppedEvent;
-import forpleuvoir.mc.library.event.events.server.ServerStoppingEvent;
+import forpleuvoir.mc.library.event.events.server.*;
 import forpleuvoir.mc.library.utils.ModLogger;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.Services;
@@ -74,7 +71,7 @@ public class MinecraftServerMixin {
 
 	@Inject(method = "saveEverything", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/MinecraftServer;saveAllChunks(ZZZ)Z", shift = At.Shift.AFTER))
 	private void saveEverything(boolean bl, boolean bl2, boolean bl3, CallbackInfoReturnable<Boolean> cir) {
-		EventBus.getINSTANCE().broadcast(new ServerStoppingEvent((MinecraftServer) (Object) this));
+		EventBus.getINSTANCE().broadcast(new ServerSavingEvent((MinecraftServer) (Object) this));
 	}
 
 }
