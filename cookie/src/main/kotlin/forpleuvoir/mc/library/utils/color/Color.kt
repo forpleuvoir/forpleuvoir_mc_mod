@@ -165,10 +165,10 @@ class Color : JsonSerializer {
 	 * @constructor
 	 */
 	constructor(red: Int = 255, green: Int = 255, blue: Int = 255, alpha: Int = 255, checkedRange: Boolean = false) : this(
-		((alpha.fixValue(checkedRange, "Red") and 0xFF) shl 24) or
-				((red.fixValue(checkedRange, "Green") and 0xFF) shl 16) or
-				((green.fixValue(checkedRange, "Blue") and 0xFF) shl 8) or
-				((blue.fixValue(checkedRange, "Alpha") and 0xFF)),
+		((alpha.fixValue(checkedRange, "Alpha") and 0xFF) shl 24) or
+				((red.fixValue(checkedRange, "Red") and 0xFF) shl 16) or
+				((green.fixValue(checkedRange, "Green") and 0xFF) shl 8) or
+				((blue.fixValue(checkedRange, "Blue") and 0xFF)),
 		checkedRange,
 		true
 	)

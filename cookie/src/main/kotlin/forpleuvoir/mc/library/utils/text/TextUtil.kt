@@ -30,9 +30,13 @@ inline fun text(text: ComponentContents, scope: Text.() -> Unit = {}): Text = Te
 val String.literal: Text get() = Text.create(LiteralContents(this))
 
 @JvmName("translatable1")
-fun translatable(text: String, vararg params: Any): Text = Text.create(TranslatableContents(text, params))
+fun translatable(text: String, vararg params: Any): Text = Text.create(TranslatableContents(text, *params))
 
-fun String.translatable(vararg params: Any): Text = Text.create(TranslatableContents(this, params))
+fun serverText(key: String, vararg params: Any): Text = ServerText(key, *params)
+
+fun serverText(key: String): Text = ServerText(key)
+
+fun String.translatable(vararg params: Any): Text = Text.create(TranslatableContents(this, *params))
 
 val String.translatable: Text get() = Text.create(TranslatableContents(this))
 

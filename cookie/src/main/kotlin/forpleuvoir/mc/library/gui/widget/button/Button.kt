@@ -40,7 +40,7 @@ open class Button() : ClickableElement() {
 
 	var text: () -> Text = { literal() }
 
-	override var width: Double = textRenderer.width(text()) + 8.0
+	override var width: Double = textRenderer.width(text()) + 12.0
 		set(value) {
 			field = value.coerceAtLeast(6.0)
 		}
@@ -62,7 +62,7 @@ open class Button() : ClickableElement() {
 			textY,
 			width,
 			height,
-			color = Color.BLACK.alpha(if (active) 0.9f else 0.6f),
+			color = Color.RED.alpha(if (active) 1.0f else 0.7f),
 			shadow = false
 		)
 	}

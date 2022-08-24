@@ -1,0 +1,4 @@
+{
+  "rightToLeft": false,
+  "cookie.command.config.set_value": "设置配置[%s]值成功[%s -> %s]"
+}

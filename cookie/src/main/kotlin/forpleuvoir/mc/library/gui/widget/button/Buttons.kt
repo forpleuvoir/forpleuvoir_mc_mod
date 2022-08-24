@@ -23,7 +23,7 @@ import forpleuvoir.mc.library.utils.textRenderer
 
 inline fun ParentElement.button(
 	noinline text: () -> Text,
-	width: Double = textRenderer.width(text()) + 8.0,
+	width: Double = textRenderer.width(text()) + 12.0,
 	height: Double = 20.0,
 	color: Color = Color.WHITE,
 	noinline onClick: Button.() -> Unit = { },
@@ -42,7 +42,7 @@ inline fun ParentElement.button(
 @JvmName("buttonString")
 inline fun ParentElement.button(
 	noinline strText: () -> String,
-	width: Double = textRenderer.width(strText()) + 8.0,
+	width: Double = textRenderer.width(strText()) + 12.0,
 	height: Double = 20.0,
 	color: Color = Color.WHITE,
 	noinline onClick: Button.() -> Unit = { },

@@ -34,7 +34,9 @@ open class ConfigCategoryImpl(final override val name: String, modConfig: ModCon
 
 	override val allConfigs: Collection<Config<*>> = configs
 
-	override fun init() {}
+	override fun init() {
+		configs.forEach { it.init() }
+	}
 
 	fun <C : Config<*>> addConfig(config: C): C {
 		config.apply {

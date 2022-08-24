@@ -4,6 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack
 import forpleuvoir.mc.library.gui.foundation.AbstractParentElement
 import forpleuvoir.mc.library.gui.foundation.HandleStatus
 import forpleuvoir.mc.library.gui.foundation.HandleStatus.Continue
+import forpleuvoir.mc.library.gui.foundation.HandleStatus.Interrupt
 import forpleuvoir.mc.library.gui.foundation.ParentElement
 import forpleuvoir.mc.library.gui.foundation.drawRect
 import forpleuvoir.mc.library.input.KEY_ESCAPE
@@ -75,6 +76,6 @@ abstract class AbstractScreen : AbstractParentElement(), Screen {
 			close()
 			return Continue
 		}
-		return super.keyPress(keyCode, modifiers)
+		return Interrupt
 	}
 }

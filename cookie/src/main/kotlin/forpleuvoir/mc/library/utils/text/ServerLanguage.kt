@@ -50,42 +50,25 @@ import java.util.regex.Pattern
 object ServerLanguage : Language() {
 	private val log = logger()
 	private val UNSUPPORTED_FORMAT_PATTERN = Pattern.compile("%(\\d+\\$)?[\\d.]*[df]")
-	private var map: MutableMap<Language, MutableMap<String, String>> = HashMap()
+	private var map: MutableMap<String, MutableMap<String, String>> = HashMap()
+	private var languageRightToLft: MutableMap<String, Boolean> = HashMap()
 	private var defaultRightToLeft: Boolean = false
 
-	private class Language(val name: String, val rightToLeft: Boolean) {
-		override fun hashCode(): Int {
-			return name.hashCode()
-		}
-
-		override fun equals(other: Any?): Boolean {
-			if (this === other) return true
-			if (javaClass != other?.javaClass) return false
-
-			other as Language
-
-			if (name != other.name) return false
-			if (rightToLeft != other.rightToLeft) return false
-
-			return true
-		}
-
-	}
-
-	private val current: Language
+	private val current: String
 		get() {
-			val c = Language(CookieServerConfigs.Setting.language.getValue(), false)
+			val c = CookieServerConfigs.Setting.language.getValue()
 			return if (map.containsKey(c)) {
 				return c
-			} else Language("en_Us", false)
+			} else "en_us"
 		}
 
 	@Subscriber
 	fun onModInitializerEvent(event: ModInitializerEvent) {
 		ResourceManagerHelper.get(PackType.SERVER_DATA).registerReloadListener(object : SimpleSynchronousResourceReloadListener {
-			override fun getFabricId(): ResourceLocation = resources(event.meta.id, "server_language")
+			override fun getFabricId(): ResourceLocation = resources(event.meta.id, "server_lang")
 
 			override fun onResourceManagerReload(resourceManager: ResourceManager) {
+				println("加载服务器语言")
 				loadForm(resourceManager)
 			}
 		})
@@ -94,10 +77,10 @@ object ServerLanguage : Language() {
 	fun loadForm(resourceManager: ResourceManager) {
 		map.clear()
 		val languageName = CookieServerConfigs.Setting.language.getValue()
-		val name = String.format(Locale.ROOT, "server_language/%s.json", languageName)
+		val name = String.format(Locale.ROOT, "server_lang/%s.json", languageName)
 		resourceManager.namespaces.forEach { nameSpace ->
 			resourceManager
-				.listResources("server_language")
+				.listResources("server_lang")
 				{ it.path.endsWith(".json") }
 				.forEach { (resourceLocation, resource) ->
 					try {
@@ -110,21 +93,21 @@ object ServerLanguage : Language() {
 	}
 
 	private fun appendFrom(languageName: String, resource: Resource) {
-		val path = languageName.replace(".json", "")
+		val path = languageName.replace(".json", "").replace("server_lang/", "")
 		try {
 			resource.open().use {
 				val json = gson.fromJson(InputStreamReader(it, StandardCharsets.UTF_8) as Reader, JsonObject::class.java)
-				val language = Language(path, json.getOr("rightToLeft", false))
+				this.languageRightToLft[path] = json.getOr("rightToLft", false)
 				val map = Maps.newHashMap<String, String>()
 
 				json.entrySet().forEach { entry ->
 					map[entry.key] =
 						UNSUPPORTED_FORMAT_PATTERN.matcher(GsonHelper.convertToString(entry.value, entry.key)).replaceAll("%$1s")
 				}
-				if (this.map.containsKey(language)) {
-					this.map[language]!!.putAll(map)
+				if (this.map.containsKey(path)) {
+					this.map[path]!!.putAll(map)
 				} else {
-					this.map[language] = map
+					this.map[path] = map
 				}
 			}
 		} catch (e: IOException) {
@@ -133,14 +116,21 @@ object ServerLanguage : Language() {
 	}
 
 
-	override fun getOrDefault(string: String): String = if (map.containsKey(current)) map[current]!![string] ?: string else string
+	override fun getOrDefault(string: String): String {
+		return if (map.containsKey(current)) map[current]!![string] ?: string
+		else string
+	}
 
 	override fun has(string: String): Boolean = if (map.containsKey(current)) map[current]!!.containsKey(string) else false
 
 	override fun isDefaultRightToLeft(): Boolean = defaultRightToLeft
 
 
-	override fun getVisualOrder(formattedText: FormattedText): FormattedCharSequence = reorder(formattedText, current.rightToLeft)
+	override fun getVisualOrder(formattedText: FormattedText): FormattedCharSequence = reorder(
+		formattedText, languageRightToLft.getOrDefault(
+			current, false
+		)
+	)
 
 
 	private fun reorder(formattedText: FormattedText, bl: Boolean): FormattedCharSequence {

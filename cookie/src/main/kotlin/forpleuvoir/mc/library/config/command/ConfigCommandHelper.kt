@@ -12,6 +12,7 @@ import forpleuvoir.mc.library.api.impl.ServerSavable
 import forpleuvoir.mc.library.config.modconfig.ModConfig
 import forpleuvoir.mc.library.utils.parseToJsonElement
 import forpleuvoir.mc.library.utils.text.Text
+import forpleuvoir.mc.library.utils.text.serverText
 import forpleuvoir.mc.library.utils.text.translatable
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource
 import net.minecraft.commands.CommandSourceStack
@@ -107,15 +108,22 @@ abstract class ConfigCommandHelper<S : SharedSuggestionProvider>(
 
 	protected abstract fun sendFeedback(text: Text, context: CommandContext<S>)
 
+	protected fun translatable(context: CommandContext<S>, key: String, vararg params: Any): Text {
+		if (context.source is CommandSourceStack) {
+			return serverText(key, *params)
+		}
+		return translatable(key, *params)
+	}
+
 	protected fun configLoad(context: CommandContext<S>): Int {
 		modConfig.loadAsync()
-		sendFeedback(translatable("cookie.command.config.load.success"), context)
+		sendFeedback(translatable(context, "cookie.command.config.load.success"), context)
 		return 1
 	}
 
 	protected fun configSave(context: CommandContext<S>): Int {
 		modConfig.saveAsync()
-		sendFeedback(translatable("cookie.command.config.save.success"), context)
+		sendFeedback(translatable(context, "cookie.command.config.save.success"), context)
 		return 1
 	}
 
@@ -147,7 +155,7 @@ abstract class ConfigCommandHelper<S : SharedSuggestionProvider>(
 				val origin = this.toString()
 				deserialize(value.toString().parseToJsonElement)
 				onChanged()
-				sendFeedback(translatable("cookie.command.config.set_value", this.key, origin, toString()), context)
+				sendFeedback(translatable(context, "cookie.command.config.set_value", this.key, origin, toString()), context)
 			}
 		return 1
 	}
@@ -159,8 +167,7 @@ abstract class ConfigCommandHelper<S : SharedSuggestionProvider>(
 			.allCategory.find { it.name == category }
 			?.allConfigs?.find { it.key == key }
 			?.run {
-				println(this.getValue().toString())
-				sendFeedback(translatable("cookie.command.config.get_value", this.key, toString()), context)
+				sendFeedback(translatable(context, "cookie.command.config.get_value", this.key, toString()), context)
 			}
 		return 1
 	}

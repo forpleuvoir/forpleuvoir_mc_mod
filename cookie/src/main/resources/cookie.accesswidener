@@ -1,4 +1,8 @@
 accessWidener v2 named
 extendable method net/minecraft/network/chat/MutableComponent <init> (Lnet/minecraft/network/chat/ComponentContents;Ljava/util/List;Lnet/minecraft/network/chat/Style;)V
+extendable method net/minecraft/network/chat/contents/TranslatableContents decompose ()V
+extendable method net/minecraft/network/chat/contents/TranslatableContents decomposeTemplate (Ljava/lang/String;Ljava/util/function/Consumer;)V
+accessible field net/minecraft/network/chat/contents/TranslatableContents decomposedWith Lnet/minecraft/locale/Language;
+accessible field net/minecraft/network/chat/contents/TranslatableContents decomposedParts Ljava/util/List;
 accessible field net/minecraft/server/MinecraftServer storageSource Lnet/minecraft/world/level/storage/LevelStorageSource$LevelStorageAccess;
 accessible field net/minecraft/world/level/storage/LevelStorageSource$LevelStorageAccess levelDirectory Lnet/minecraft/world/level/storage/LevelStorageSource$LevelDirectory;

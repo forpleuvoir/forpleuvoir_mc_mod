@@ -1,0 +1,4 @@
+{
+  "rightToLeft": false,
+  "cookie.command.config.set_value": "Set configuration [%s] value successful [%s -> %s]"
+}

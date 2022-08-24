@@ -22,7 +22,7 @@ import java.util.function.UnaryOperator
  * @author forpleuvoir
 
  */
-class Text(
+open class Text(
 	componentContents: ComponentContents,
 	list: MutableList<Component>,
 	style: Style,

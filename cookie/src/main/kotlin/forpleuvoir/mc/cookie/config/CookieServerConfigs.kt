@@ -4,7 +4,6 @@ import forpleuvoir.mc.cookie.Cookie
 import forpleuvoir.mc.library.api.CookieSavable
 import forpleuvoir.mc.library.config.modconfig.impl.ConfigCategoryImpl
 import forpleuvoir.mc.library.config.modconfig.impl.LocalServerModConfig
-import forpleuvoir.mc.library.config.options.impl.ConfigString
 
 /**
  *
@@ -37,7 +36,7 @@ object CookieServerConfigs : LocalServerModConfig(Cookie.id) {
 	object Setting : ConfigCategoryImpl("setting", this) {
 
 		@JvmStatic
-		val language = configString("language", "en_US").apply {
+		val language = configString("language", "en_us").apply {
 			subscribeChange(Toggle) {
 				it as String
 
