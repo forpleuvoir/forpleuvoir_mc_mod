@@ -1,7 +1,9 @@
 package forpleuvoir.mc.cookie
 
 import forpleuvoir.mc.library.event.EventBus
+import forpleuvoir.mc.library.event.events.ModInitializerEvent
 import forpleuvoir.mc.library.event.events.server.ServerCommandRegisterEvent
+import forpleuvoir.mc.library.utils.loader
 import net.fabricmc.api.ModInitializer
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback
 
@@ -23,6 +25,7 @@ object Cookie : ModInitializer {
 	const val name: String = "Cookie"
 	const val id: String = "cookie"
 	override fun onInitialize() {
+		EventBus.broadcast(ModInitializerEvent(loader.getModContainer(this.id).get().metadata))
 		CommandRegistrationCallback.EVENT.register { dispatcher, registryAccess, environment ->
 			EventBus.broadcast(ServerCommandRegisterEvent(dispatcher, registryAccess, environment))
 		}

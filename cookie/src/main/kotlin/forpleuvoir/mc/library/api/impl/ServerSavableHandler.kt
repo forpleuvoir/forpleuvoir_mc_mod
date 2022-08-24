@@ -5,6 +5,7 @@ import forpleuvoir.mc.library.event.EventSubscriber
 import forpleuvoir.mc.library.event.Subscriber
 import forpleuvoir.mc.library.event.events.server.ServerSavingEvent
 import forpleuvoir.mc.library.event.events.server.ServerStartedEvent
+import forpleuvoir.mc.library.event.events.server.ServerStartingEvent
 import forpleuvoir.mc.library.event.events.server.ServerStoppedEvent
 import forpleuvoir.mc.library.utils.scanModPackage
 
@@ -29,7 +30,7 @@ object ServerSavableHandler : SavableHandler<ServerSavable>() {
 	override fun init() {}
 
 	@Subscriber
-	fun init(event: ServerStartedEvent) {
+	fun init(event: ServerStartingEvent) {
 		log.info("init server savable...")
 		scanModPackage {
 			it.isAnnotationPresent(CookieSavable::class.java) && ServerSavable::class.java.isAssignableFrom(it)
