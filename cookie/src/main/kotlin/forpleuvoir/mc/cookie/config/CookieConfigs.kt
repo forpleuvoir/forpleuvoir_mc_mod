@@ -4,12 +4,15 @@ import forpleuvoir.mc.cookie.Cookie
 import forpleuvoir.mc.library.api.CookieSavable
 import forpleuvoir.mc.library.config.modconfig.impl.ConfigCategoryImpl
 import forpleuvoir.mc.library.config.modconfig.impl.LocalClientModConfig
+import forpleuvoir.mc.library.gui.foundation.drawOutline
+import forpleuvoir.mc.library.gui.foundation.drawRect
 import forpleuvoir.mc.library.gui.foundation.layout.list
 import forpleuvoir.mc.library.gui.screen.ScreenHandler
 import forpleuvoir.mc.library.gui.screen.screen
 import forpleuvoir.mc.library.gui.text.textLabel
 import forpleuvoir.mc.library.gui.widget.button.button
 import forpleuvoir.mc.library.input.KEY_C
+import forpleuvoir.mc.library.input.KEY_I
 import forpleuvoir.mc.library.input.KeyBind
 import forpleuvoir.mc.library.input.KeyTriggerMode.OnLongPress
 import forpleuvoir.mc.library.input.keyBindSetting
@@ -36,10 +39,6 @@ internal val Toggles = CookieConfigs.Toggle
 @CookieSavable("config")
 object CookieConfigs : LocalClientModConfig(Cookie.id) {
 
-	init {
-		addCategory(Toggle)
-	}
-
 	object Toggle : ConfigCategoryImpl("toggle", this) {
 
 		@JvmStatic
@@ -49,10 +48,14 @@ object CookieConfigs : LocalClientModConfig(Cookie.id) {
 		val color = configColor("color", Color.BLUE)
 
 		@JvmStatic
-		val open_gui = configKeyBind("open_gui", KeyBind(KEY_C, defaultSetting = keyBindSetting(triggerMode = OnLongPress)) {
+		val open_gui = configKeyBind("open_gui", KeyBind(KEY_I, KEY_C) {
 			ScreenHandler.openScreen {
 				screen {
 					list {
+						render = { poseStack, delta ->
+							onRender(poseStack, delta)
+							drawOutline(poseStack, this.x, this.y, this.width, this.height, Color.WHITE)
+						}
 						textLabel({ literal("test") }) {
 							textColor = Color.RED
 						}
@@ -64,6 +67,10 @@ object CookieConfigs : LocalClientModConfig(Cookie.id) {
 			}
 		})
 
+	}
+
+	init {
+		addCategory(Toggle)
 	}
 
 }

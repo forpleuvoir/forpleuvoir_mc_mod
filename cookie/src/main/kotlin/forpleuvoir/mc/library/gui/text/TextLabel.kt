@@ -6,6 +6,7 @@ import forpleuvoir.mc.library.gui.foundation.AbstractElement
 import forpleuvoir.mc.library.gui.foundation.Align
 import forpleuvoir.mc.library.gui.foundation.Align.*
 import forpleuvoir.mc.library.gui.foundation.drawOutlinedBox
+import forpleuvoir.mc.library.gui.foundation.setShaderColor
 import forpleuvoir.mc.library.utils.color.Color
 import forpleuvoir.mc.library.utils.d
 import forpleuvoir.mc.library.utils.f
@@ -143,6 +144,7 @@ class TextLabel() : AbstractElement() {
 				textY = this.y - textHeight - padding.bottom
 			}
 		}
+		setShaderColor(Color.WHITE)
 		val immediate = MultiBufferSource.immediate(Tesselator.getInstance().builder)
 		textRenderer.drawInBatch(
 			renderText,

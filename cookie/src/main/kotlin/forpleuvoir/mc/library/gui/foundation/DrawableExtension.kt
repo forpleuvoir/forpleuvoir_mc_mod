@@ -1,4 +1,3 @@
-
 package forpleuvoir.mc.library.gui.foundation
 
 import com.mojang.blaze3d.systems.RenderSystem
@@ -416,6 +415,7 @@ fun drawCenteredText(
 	color: Color = Color.WHITE,
 	backgroundColor: Color = Color.WHITE.alpha(0.5f),
 ) {
+	setShaderColor(Color.WHITE)
 	val centerX = x.f + width.f / 2
 	val centerY = y.f + height.f / 2
 	val textWidth = textRenderer.width(text)
